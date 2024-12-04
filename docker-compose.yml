@@ -1,0 +1,58 @@
+services:
+
+  vscode:
+    container_name: vscode
+    image: ghcr.io/linuxserver/code-server
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - PGID=$PGID
+      - PUID=$PUID
+      - TZ=$TZ
+    volumes:
+      - $DOCKER_ROOT:/docker_root
+      - $VOLUME_ROOT/vscode:/config
+    ports:
+      - 8443:8443
+    restart: unless-stopped
+
+#  frontend:
+#    container_name: frontend
+#    build: $VOLUME_ROOT/frontend
+#    volumes:
+#    - $VOLUME_ROOT/shared_static/scripts:/app/scripts
+#    - $VOLUME_ROOT/shared_static/styles:/app/styles
+#    - $VOLUME_ROOT/shared_static/images:/app/images
+#    - $VOLUME_ROOT/frontend/html:/app/html
+#    ports:
+#      - 3000:80
+#    restart: unless-stopped
+
+#  backend:
+#    container_name: backend
+#    build: $VOLUME_ROOT/backend
+#    environment:
+#      - OLLAMA_URL=http://192.168.5.15:11434
+#    volumes:
+#      - $VOLUME_ROOT/db:/db
+#      - $VOLUME_ROOT/shared_static/scripts:/app/scripts
+#      - $VOLUME_ROOT/shared_static/styles:/app/styles
+#      - $VOLUME_ROOT/shared_static/images:/app/images
+#    ports:
+#      - 5000:5000
+#    restart: unless-stopped
+
+  web:
+    container_name: web
+    build: $VOLUME_ROOT/web
+    environment:
+      - OLLAMA_URL=$OLLAMA_URL
+      - OLLAMA_MODEL=$OLLAMA_MODEL
+      - PUBLIC_BASE_URL=$PUBLIC_BASE_URL
+    volumes:
+      - $VOLUME_ROOT/db:/db
+      - $VOLUME_ROOT/web/templates:/app/templates
+      - $VOLUME_ROOT/shared_static:/app/static
+    ports:
+      - 5000:5000
+    restart: unless-stopped

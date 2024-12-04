@@ -1,0 +1,55 @@
+/* Narrower container for articles */
+.container {
+    max-width: 800px;
+}
+
+/* Article Header */
+.article-header h1 {
+    font-size: 2em;
+    font-weight: bold;
+    color: #003366;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Section Headings */
+.article-content h2 {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #003366;
+    margin: 30px 0 15px;
+    border-bottom: 2px solid #cccccc;
+    padding-bottom: 5px;
+}
+
+/* Paragraph Styling */
+.article-content p {
+    font-size: 1em;
+    line-height: 1.6;
+    text-align: justify;
+    margin-bottom: 20px;
+}
+
+/* References Section */
+#references {
+    margin-top: 30px;
+    font-size: 0.95em;
+    line-height: 1.5;
+}
+
+#references ol {
+    padding-left: 25px;
+}
+
+#references li {
+    margin-bottom: 10px;
+}
+
+/* Blockquote Styling */
+.article-content blockquote {
+    margin: 25px 0;
+    padding: 15px 20px;
+    background: #f9f9f9;
+    border-left: 4px solid #cccccc;
+    font-style: italic;
+}

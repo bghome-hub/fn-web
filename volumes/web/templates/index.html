@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Generator</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/static/styles/styles.css">
+    <link rel="stylesheet" href="/static/styles/banner.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="/static/images/favicon.ico">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-content">
+            <div class="logo-title">
+                <img src="/static/images/logo.webp" alt="Site Logo" class="logo">
+                <h1 class="site-title">Article Generator</h1>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/articles">All Articles</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Form Section -->
+        <section class="form-section">
+            <form id="article-form">
+                <label for="topic">Enter a topic:</label>
+                <input type="text" id="topic" name="topic" required>
+                <button type="submit">Generate</button>
+            </form>
+            <div id="message">
+                <!-- Loading spinner and messages will be dynamically inserted here -->
+            </div>
+        </section>
+
+        <!-- Recent Articles Section -->
+        <section class="recent-articles">
+            <h2>Recent Articles</h2>
+            <ul id="recent-articles" class="article-list">
+                <!-- Recent articles will be dynamically loaded here -->
+            </ul>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Article Generator. All rights reserved.</p>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/articles">All Articles</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="/static/scripts/script.js"></script>
+</body>
+
+</html>

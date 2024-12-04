@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Generator - All Articles</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/static/styles/styles.css">
+    <link rel="stylesheet" href="/static/styles/banner.css">
+    <link rel="stylesheet" href="/static/styles/article_styles.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="/static/images/favicon.ico">
+
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-content">
+            <div class="logo-title">
+                <img src="/static/images/logo.webp" alt="Site Logo" class="logo">
+                <h1 class="site-title">Article Generator</h1>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/articles">All Articles</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h2>All Articles</h2>
+        <ul class="article-list">
+            {% for article in articles %}
+            <li class="article-item" id="article-{{ article[0] }}">
+                <div class="article-details">
+                    <a href="/article/{{ article[0] }}" class="article-title">{{ article[1] }}</a>
+                </div>
+                <div class="article-actions">
+                    <button class="rename-btn" data-id="{{ article[0] }}" data-title="{{ article[1] }}">Rename</button>
+                    <button class="delete-btn" data-id="{{ article[0] }}">Delete</button>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Rename Modal -->
+    <div class="modal" id="renameModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Rename Article</h3>
+            <input type="text" id="renameInput" placeholder="Enter new title" />
+            <button id="confirmRename">Confirm</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Article Generator. All rights reserved.</p>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/articles">All Articles</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        const renameModal = document.getElementById('renameModal');
+        const renameInput = document.getElementById('renameInput');
+        const confirmRename = document.getElementById('confirmRename');
+        const closeModal = document.querySelector('.close-modal');
+        let articleIdToRename = null;
+
+        // Open Modal for Rename
+        document.querySelectorAll('.rename-btn').forEach(button => {
+            button.addEventListener('click', (event) => {
+                articleIdToRename = event.target.dataset.id;
+                renameInput.value = event.target.dataset.title;
+                renameModal.style.display = 'block';
+            });
+        });
+
+        // Close Modal
+        closeModal.addEventListener('click', () => {
+            renameModal.style.display = 'none';
+        });
+
+        // Confirm Rename
+        confirmRename.addEventListener('click', async () => {
+            const newName = renameInput.value.trim();
+            if (newName) {
+                try {
+                    const response = await fetch(`/articles/rename/${articleIdToRename}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ new_name: newName })
+                    });
+                    if (response.ok) {
+                        // Dynamically update the article title without reloading
+                        document.querySelector(`#article-${articleIdToRename} .article-title`).textContent = newName;
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                } finally {
+                    renameModal.style.display = 'none';
+                }
+            } else {
+                alert('Please enter a valid title.');
+            }
+        });
+
+        // Delete Article
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', async (event) => {
+                const articleId = event.target.dataset.id;
+                const confirmDelete = confirm('Are you sure you want to delete this article?');
+                if (confirmDelete) {
+                    try {
+                        const response = await fetch(`/articles/delete/${articleId}`, {
+                            method: 'DELETE'
+                        });
+                        if (response.ok) {
+                            // Dynamically remove the article from the list
+                            document.getElementById(`article-${articleId}`).remove();
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('An error occurred while deleting the article.');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
