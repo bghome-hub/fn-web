@@ -29,7 +29,7 @@ document.getElementById('article-form').addEventListener('submit', async (e) => 
     const topic = topicInput.value.trim();
 
     if (!topic) {
-        alert('Please enter a topic.');
+        alert('Please enter a statement to affirm.');
         return;
     }
 
