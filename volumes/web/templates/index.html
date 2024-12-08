@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +15,6 @@
     <!-- Favicon -->
     <link rel="icon" href="/static/images/favicon.ico">
 </head>
-
 <body>
     <!-- Header -->
     <header class="main-header">
@@ -43,15 +41,13 @@
                 <input type="text" id="topic" name="topic" required>
                 <button type="submit">Generate</button>
             </form>
-            <div id="message">
-                <!-- Loading spinner and messages will be dynamically inserted here -->
-            </div>
+            <div id="message"></div>
         </section>
 
         <!-- Recent Articles Section -->
         <section class="recent-articles">
             <h2>Recent Articles</h2>
-            <ul id="recent-articles" class="article-list">
+            <ul id="recent-articles" class="entry-list">
                 <!-- Recent articles will be dynamically loaded here -->
             </ul>
         </section>
@@ -72,5 +68,4 @@
     <!-- JavaScript -->
     <script src="/static/scripts/script.js"></script>
 </body>
-
 </html>

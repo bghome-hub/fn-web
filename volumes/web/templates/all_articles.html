@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,13 +11,11 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="/static/styles/styles.css">
     <link rel="stylesheet" href="/static/styles/banner.css">
-    <link rel="stylesheet" href="/static/styles/article_styles.css">
+    <!-- No article_styles.css here since this page lists entries, not a single article -->
 
     <!-- Favicon -->
     <link rel="icon" href="/static/images/favicon.ico">
-
 </head>
-
 <body>
     <!-- Header -->
     <header class="main-header">
@@ -39,15 +36,15 @@
     <!-- Main Content -->
     <div class="container">
         <h2>All Articles</h2>
-        <ul class="article-list">
+        <ul class="entry-list">
             {% for article in articles %}
-            <li class="article-item" id="article-{{ article[0] }}">
-                <div class="article-details">
-                    <a href="/article/{{ article[0] }}" class="article-title">{{ article[1] }}</a>
+            <li class="entry-item" id="entry-{{ article.id }}">
+                <div class="entry-details">
+                    <a href="/article/{{ article.id }}" class="entry-title">{{ article.topic }}</a>
                 </div>
-                <div class="article-actions">
-                    <button class="rename-btn" data-id="{{ article[0] }}" data-title="{{ article[1] }}">Rename</button>
-                    <button class="delete-btn" data-id="{{ article[0] }}">Delete</button>
+                <div class="entry-actions">
+                    <button class="rename-btn" data-id="{{ article.id }}" data-title="{{ article.topic }}">Rename</button>
+                    <button class="delete-btn" data-id="{{ article.id }}">Delete</button>
                 </div>
             </li>
             {% endfor %}
@@ -82,12 +79,12 @@
         const renameInput = document.getElementById('renameInput');
         const confirmRename = document.getElementById('confirmRename');
         const closeModal = document.querySelector('.close-modal');
-        let articleIdToRename = null;
+        let entryIdToRename = null;
 
         // Open Modal for Rename
         document.querySelectorAll('.rename-btn').forEach(button => {
             button.addEventListener('click', (event) => {
-                articleIdToRename = event.target.dataset.id;
+                entryIdToRename = event.target.dataset.id;
                 renameInput.value = event.target.dataset.title;
                 renameModal.style.display = 'block';
             });
@@ -103,14 +100,14 @@
             const newName = renameInput.value.trim();
             if (newName) {
                 try {
-                    const response = await fetch(`/articles/rename/${articleIdToRename}`, {
+                    const response = await fetch(`/articles/rename/${entryIdToRename}`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ new_name: newName })
                     });
                     if (response.ok) {
-                        // Dynamically update the article title without reloading
-                        document.querySelector(`#article-${articleIdToRename} .article-title`).textContent = newName;
+                        // Update the entry title
+                        document.querySelector(`#entry-${entryIdToRename} .entry-title`).textContent = newName;
                     }
                 } catch (error) {
                     console.error('Error:', error);
@@ -122,19 +119,18 @@
             }
         });
 
-        // Delete Article
+        // Delete Entry
         document.querySelectorAll('.delete-btn').forEach(button => {
             button.addEventListener('click', async (event) => {
-                const articleId = event.target.dataset.id;
+                const entryId = event.target.dataset.id;
                 const confirmDelete = confirm('Are you sure you want to delete this article?');
                 if (confirmDelete) {
                     try {
-                        const response = await fetch(`/articles/delete/${articleId}`, {
+                        const response = await fetch(`/articles/delete/${entryId}`, {
                             method: 'DELETE'
                         });
                         if (response.ok) {
-                            // Dynamically remove the article from the list
-                            document.getElementById(`article-${articleId}`).remove();
+                            document.getElementById(`entry-${entryId}`).remove();
                         }
                     } catch (error) {
                         console.error('Error:', error);
@@ -145,5 +141,4 @@
         });
     </script>
 </body>
-
 </html>

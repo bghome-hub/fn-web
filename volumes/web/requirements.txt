@@ -2,3 +2,4 @@ flask
 requests
 markdown
 Flask-CORS==3.0.10
+bs4

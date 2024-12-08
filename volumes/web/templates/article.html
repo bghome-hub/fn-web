@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,56 +9,49 @@
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="/static/styles/styles.css">
-    <link rel="stylesheet" href="/static/styles/banner.css">
-    <link rel="stylesheet" href="/static/styles/article_styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/article_styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/banner.css') }}">
 
     <!-- Favicon -->
-    <link rel="icon" href="/static/images/favicon.ico">   
-
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
 </head>
-
 <body>
     <!-- Header -->
     <header class="main-header">
         <div class="header-content">
             <div class="logo-title">
-                <img src="/static/images/logo.webp" alt="Site Logo" class="logo">
+                <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="Site Logo" class="logo">
                 <h1 class="site-title">BGHome Article Generator</h1>
             </div>
             <nav class="main-nav">
                 <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/articles">All Articles</a></li>
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+                    <li><a href="{{ url_for('show_all_articles') }}">All Articles</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <div class="container">
-        <!-- Article Header -->
-        <header class="article-header">
-            <h1>{{ topic }}</h1>
-        </header>
+    <main class="container">
+        <article>
+            <div class="article-header">
+                <h1>{{ topic }}</h1>
+            </div>
+            <div class="article-content">
+                {{ content | safe }}
+            </div>
+        </article>
+    </main>
 
-        <!-- Article Content -->
-        <div class="article-content">
-            {{ content | safe }}
-        </div>
-    </div>
-
-    <!-- Footer -->
     <footer>
         <p>&copy; 2024 BGHome Article Generator. All rights reserved.</p>
         <nav>
-            <ul class="footer-links">
-                <li><a href="/">Home</a></li>
-                <li><a href="/articles">Recent Articles</a></li>
-                <li><a href="#">Contact</a></li>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('show_all_articles') }}">All Articles</a></li>
             </ul>
         </nav>
     </footer>
 </body>
-
 </html>

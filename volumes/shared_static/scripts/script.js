@@ -90,6 +90,8 @@ document.getElementById('article-form').addEventListener('submit', async (e) => 
 
 // Function to load recent articles
 async function loadRecentArticles() {
+    const recentArticlesList = document.getElementById('recent-articles');
+    recentArticlesList.innerHTML = "<li>Loading...</li>";
     try {
         const response = await fetch('/articles', {
             headers: {

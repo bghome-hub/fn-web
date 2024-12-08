@@ -1,6 +1,6 @@
 /* Header Styling */
 .main-header {
-    background: linear-gradient(to right, #0056b3, #003366); /* Elegant gradient */
+    background: linear-gradient(to right, #0056b3, #003366);
     color: white;
     padding: 10px 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -9,7 +9,6 @@
     z-index: 1000;
 }
 
-/* Flex container for header content */
 .header-content {
     display: flex;
     justify-content: space-between;
@@ -18,14 +17,12 @@
     margin: 0 auto;
 }
 
-/* Logo */
 .logo {
     width: 40px;
     height: auto;
     margin-right: 10px;
 }
 
-/* Site Title */
 .site-title {
     font-size: 1.4em;
     font-family: 'Merriweather', serif;
@@ -54,16 +51,7 @@
     transform: scale(1.05);
 }
 
-/* Footer Styling */
-footer {
-    background: #003366;
-    color: white;
-    padding: 20px;
-    text-align: center;
-    border-top: 4px solid #0056b3;
-    margin-top: 40px;
-}
-
+/* Footer Navigation */
 footer nav ul {
     list-style: none;
     padding: 0;
