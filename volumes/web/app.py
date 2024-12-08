@@ -36,7 +36,7 @@ def generate_article():
             "You must make bold, assertive claims to support the topic. "
             "The article MUST have sections titled: Abstract, Introduction, Methodology, Results, Discussion, Conclusion, and References. "
             "You MUST Use markdown formatting with headings for each section. "
-            "You MUST cite at least five credible sources in APA format. "
+            "You MUST cite at least five credible sources and they MUST be in APA format. "
             "Do not provide any personal commentary."
         )
 
