@@ -1,8 +1,8 @@
 import os
 from flask import Flask, request, jsonify, render_template, abort
 from ollama_query import init_db, generate_article_data, save_to_database
-from article_logic import fetch_article, fetch_last_20_articles
-from db_utils import execute_sql_query
+from article_logic import fetch_article, fetch_last_20_articles, fetch_all_articles
+from db_utils import execute_sql_query, get_all_articles
 from datetime import datetime
 
 app = Flask(__name__)
@@ -50,6 +50,14 @@ def article(article_id):
         abort(404, description="Article not found")
 
     return render_template('article.html', article=article)
+
+# All articles
+@app.route('/all_articles')
+def all_articles():
+    """Display a page with all article IDs and titles."""
+    articles = fetch_all_articles()
+    return render_template('all_articles.html', articles=articles)
+
 
 # New Route: DB Utilities Page
 @app.route('/db_utils', methods=['GET'])

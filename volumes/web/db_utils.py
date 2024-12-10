@@ -37,3 +37,14 @@ def execute_sql_query(sql_query):
         return {'results': None, 'error': str(e), 'affected_rows': None}
     except Exception as ex:
         return {'results': None, 'error': str(ex), 'affected_rows': None}
+
+def get_all_articles():
+    conn = sqlite3.connect(DB_FILE)  # Adjust the database name/path if necessary
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, title, summary FROM articles")
+    articles = [
+        {'id': row[0], 'title': row[1], 'summary': row[2]}
+        for row in cursor.fetchall()
+    ]
+    conn.close()
+    return articles

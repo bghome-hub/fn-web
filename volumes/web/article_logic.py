@@ -78,3 +78,12 @@ def fetch_last_20_articles():
     except sqlite3.Error as e:
         print(f"Database error: {e}")
         return []
+
+def fetch_all_articles():
+    """Fetch all articles from the database, returning ID and title."""
+    conn = sqlite3.connect(DB_FILE)  # Adjust the path if necessary
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, title FROM articles")
+    articles = [{'id': row[0], 'title': row[1]} for row in cursor.fetchall()]
+    conn.close()
+    return articles
