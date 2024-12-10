@@ -48,3 +48,29 @@
     margin-bottom: 15px;
     color: #333;
 }
+
+.references ol {
+    margin-left: 20px;
+    padding-left: 0;
+    list-style-position: outside;
+}
+
+.references li {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.article-content sup {
+    font-size: 0.8em;
+    line-height: 1;
+    vertical-align: super;
+}
+
+.article-content sup a {
+    text-decoration: none;
+    color: #0056b3;
+}
+
+.article-content sup a:hover {
+    text-decoration: underline;
+}

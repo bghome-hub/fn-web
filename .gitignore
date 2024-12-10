@@ -1,3 +1,6 @@
 /.env
 /volumes/vscode/
 /volumes/db/
+/volumes/db_old/
+/volumes/shared_static
+/volumes/web_old

@@ -1,5 +1,2 @@
-flask
-requests
-markdown
-Flask-CORS==3.0.10
-bs4
+Flask==2.3.2
+requests==2.31.0

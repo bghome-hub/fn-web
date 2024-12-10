@@ -20,13 +20,16 @@ services:
     container_name: web
     build: $VOLUME_ROOT/web
     environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=true
+      - DB_FILE=$DB_FILE
       - OLLAMA_URL=$OLLAMA_URL
       - OLLAMA_MODEL=$OLLAMA_MODEL
       - PUBLIC_BASE_URL=$PUBLIC_BASE_URL
     volumes:
       - $VOLUME_ROOT/db:/db
       - $VOLUME_ROOT/web/templates:/app/templates
-      - $VOLUME_ROOT/shared_static:/app/static
+      - $VOLUME_ROOT/static:/app/static
     ports:
       - 5000:5000
     restart: unless-stopped
