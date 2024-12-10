@@ -4,23 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Article Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Import Merriweather and Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
 </head>
 <body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="{{ url_for('index') }}" class="navbar-brand">Article Generator</a>
+            <ul class="navbar-menu">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <!-- Add more navigation links if needed -->
+            </ul>
+        </div>
+    </nav>
+
     <header>
         <h1>Generate Academic Articles</h1>
         <p>Enter a topic to generate an academic article with citations.</p>
     </header>
 
-    <form id="generate-form">
-        <input type="text" id="topic" placeholder="Enter a topic..." required>
-        <button type="submit">Generate Article</button>
-    </form>
+    <main>
+        <form id="generate-form">
+            <input type="text" id="topic" placeholder="Enter a topic..." required>
+            <button type="submit" id="generate-button">Generate Article</button>
+            <!-- Spinner Element -->
+            <div id="spinner" class="spinner hidden" role="status" aria-live="polite" aria-label="Loading"></div>
+        </form>
 
-    <section id="articles">
-        <h2>Generated Articles</h2>
-        <p>Loading articles...</p>
-    </section>
+        <section id="articles">
+            <!-- Assigning the 'section-title' class to the h2 tag -->
+            <h2 class="section-title">Generated Articles</h2>
+            <p>Loading articles...</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; {{ current_year }} Article Generator. All rights reserved.</p>
+    </footer>
 
     <script src="{{ url_for('static', filename='scripts/script.js') }}"></script>
 </body>

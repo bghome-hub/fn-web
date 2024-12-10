@@ -1,117 +1,227 @@
+/* Define CSS Variables for Colors and Fonts */
+:root {
+    /* Color Palette */
+    --primary-color: #2C3E50; /* Deep Blue */
+    --secondary-color: #34495E; /* Slate Gray */
+    --accent-color: #2980B9; /* Soft Blue */
+    --background-color: #ECF0F1; /* Light Gray */
+    --text-color: #2C3E50; /* Dark Gray */
+    --text-light-color: #7F8C8D; /* Lighter Gray */
+    --button-hover-color: #1A5276; /* Darker Blue */
+
+    /* Fonts */
+    --font-heading: 'Merriweather', serif;
+    --font-body: 'Roboto', sans-serif;
+}
+
 /* Reset some basic styles */
 body, h1, h2, h3, p, ul, li, a, form, input, button, section {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: var(--font-body);
 }
 
 body {
-    background-color: #f4f4f4;
-    padding: 20px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    padding: 0;
+    margin: 0;
 }
 
+/* Header Styling */
 header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 20px 0;
     text-align: center;
     margin-bottom: 30px;
+    position: relative;
 }
 
 header h1 {
+    font-family: var(--font-heading);
     font-size: 2.5em;
     margin-bottom: 10px;
 }
 
 header p {
     font-size: 1.2em;
-    color: #555;
+    color: #BDC3C7;
 }
 
+/* Back Link Styling */
+.back-link {
+    position: absolute;
+    top: 20px;
+    left: 40px;
+    text-decoration: none;
+    color: var(--accent-color);
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.back-link:hover {
+    color: var(--button-hover-color);
+}
+
+/* Form Styling */
 form {
     display: flex;
     justify-content: center;
+    align-items: center;
     margin-bottom: 40px;
+    padding: 0 20px;
 }
 
 form input[type="text"] {
     width: 300px;
-    padding: 10px;
+    padding: 12px 20px;
     font-size: 1em;
-    border: 1px solid #ccc;
+    border: 1px solid #BDC3C7;
     border-radius: 4px 0 0 4px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+form input[type="text"]:focus {
+    border-color: var(--accent-color);
 }
 
 form button {
-    padding: 10px 20px;
+    padding: 12px 20px;
     font-size: 1em;
     border: none;
-    background-color: #28a745;
+    background-color: var(--accent-color);
     color: white;
     cursor: pointer;
     border-radius: 0 4px 4px 0;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 form button:hover {
-    background-color: #218838;
+    background-color: var(--button-hover-color);
+    transform: translateY(-2px);
 }
 
+form button:disabled {
+    background-color: #95A5A6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Spinner Styling */
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-top: 4px solid var(--accent-color);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+    margin-left: 10px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.hidden {
+    display: none;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Articles Section */
 section#articles {
     max-width: 800px;
     margin: 0 auto;
+    padding: 0 20px;
 }
 
+section#articles h2 {
+    font-family: var(--font-heading);
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+}
+
+section#articles p {
+    color: var(--text-light-color);
+}
+
+/* Article Cards */
 section#articles ul {
     list-style: none;
+    padding: 0;
 }
 
 section#articles li {
     background-color: white;
     padding: 20px;
     margin-bottom: 15px;
-    border-radius: 4px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+section#articles li:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 10px rgba(0,0,0,0.15);
 }
 
 section#articles li h3 {
+    font-family: var(--font-heading);
+    font-size: 1.5em;
     margin-bottom: 10px;
+    color: var(--primary-color);
 }
 
 section#articles li h3 a {
     text-decoration: none;
-    color: #007bff;
+    color: var(--primary-color);
 }
 
 section#articles li h3 a:hover {
-    text-decoration: underline;
+    color: var(--accent-color);
 }
 
 section#articles li p {
     margin-bottom: 5px;
-    color: #333;
+    color: #7F8C8D;
 }
 
+/* Article Detail Section */
 section.article {
     max-width: 800px;
     margin: 0 auto;
     background-color: white;
-    padding: 30px;
-    border-radius: 4px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 30px 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 section.article h2 {
+    font-family: var(--font-heading);
+    font-size: 2em;
     margin-bottom: 20px;
+    color: var(--primary-color);
 }
 
 section.article p {
     margin-bottom: 15px;
-    line-height: 1.6;
+    color: #34495E;
+    line-height: 1.8;
 }
 
 section.article .citations {
     font-style: italic;
-    color: #555;
+    color: #7F8C8D;
 }
 
+/* Messages */
 .message {
     position: fixed;
     top: 20px;
@@ -120,7 +230,10 @@ section.article .citations {
     border-radius: 4px;
     color: white;
     z-index: 1000;
-    opacity: 0.9;
+    opacity: 0.95;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    font-family: var(--font-body);
+    font-size: 1em;
 }
 
 .message.info {
@@ -135,11 +248,12 @@ section.article .citations {
     background-color: #dc3545;
 }
 
+
 /* Responsive Design */
 @media (max-width: 600px) {
     form {
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
     }
 
     form input[type="text"], form button {
@@ -149,5 +263,188 @@ section.article .citations {
 
     form input[type="text"] {
         margin-bottom: 10px;
+    }
+
+    section.article {
+        padding: 20px;
+    }
+
+    .back-link {
+        position: static;
+        margin-top: 10px;
+    }
+}
+
+/* Navigation Bar Styles */
+.navbar {
+    background-color: var(--secondary-color);
+    padding: 10px 0;
+    margin-bottom: 20px;
+}
+
+.navbar .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-brand {
+    font-family: var(--font-heading);
+    font-size: 1.5em;
+    color: white;
+    text-decoration: none;
+}
+
+.navbar-menu {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.navbar-menu li a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.navbar-menu li a:hover {
+    color: var(--accent-color);
+}
+
+/* Adjust Header Positioning with Navbar */
+header {
+    margin-top: 0;
+    margin-bottom: 30px;
+}
+/* Existing styles... */
+
+/* Article Title Styling */
+.article-title {
+    font-family: var(--font-heading);
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    text-align: center; /* Center-align the title */
+    letter-spacing: 0.5px; /* Slight letter spacing for readability */
+    font-weight: 700; /* Bold weight for emphasis */
+}
+
+/* Optional: Add a subtle underline or border */
+.article-title::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 3px;
+    background-color: var(--accent-color);
+    margin: 10px auto 0 auto;
+    border-radius: 2px;
+}
+
+/* DB Utilities Page Styling */
+.db-utils {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.db-utils form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.db-utils label {
+    font-size: 1.1em;
+    color: var(--primary-color);
+}
+
+.db-utils textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #BDC3C7;
+    border-radius: 4px;
+    resize: vertical;
+    font-family: var(--font-body);
+    transition: border-color 0.3s ease;
+}
+
+.db-utils textarea:focus {
+    border-color: var(--accent-color);
+}
+
+.db-utils button {
+    align-self: flex-start;
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    background-color: var(--accent-color);
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.db-utils button:hover {
+    background-color: var(--button-hover-color);
+    transform: translateY(-2px);
+}
+
+/* Query Results Styling */
+.query-results {
+    margin-top: 20px;
+}
+
+.query-results h2 {
+    font-family: var(--font-heading);
+    font-size: 1.8em;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+}
+
+.error-message {
+    color: #dc3545; /* Red color for errors */
+    font-weight: bold;
+}
+
+/* Result Table Styling */
+.query-results table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+}
+
+.query-results th, .query-results td {
+    border: 1px solid #BDC3C7;
+    padding: 10px;
+    text-align: left;
+}
+
+.query-results th {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.query-results tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.query-results tr:hover {
+    background-color: #e9ecef;
+}
+
+/* Responsive Design for DB Utilities */
+@media (max-width: 600px) {
+    .db-utils {
+        padding: 10px;
+    }
+
+    .query-results table, .query-results th, .query-results td {
+        font-size: 0.9em;
     }
 }

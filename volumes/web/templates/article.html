@@ -4,23 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ article.title }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Import Merriweather and Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
 </head>
 <body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="{{ url_for('index') }}" class="navbar-brand">Article Generator</a>
+            <ul class="navbar-menu">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <!-- Add more navigation links if needed -->
+            </ul>
+        </div>
+    </nav>
+
     <header>
         <h1>Article Details</h1>
-        <a href="{{ url_for('index') }}">Back to All Articles</a>
+        <a href="{{ url_for('index') }}" class="back-link" aria-label="Back to all articles">← Back to All Articles</a>
     </header>
 
-    <section class="article">
-        <h2>{{ article.title }}</h2>
-        <p><strong>Abstract:</strong> {{ article.abstract }}</p>
-        <p><strong>Introduction:</strong> {{ article.introduction }}</p>
-        <p><strong>Methodology:</strong> {{ article.methodology }}</p>
-        <p><strong>Results:</strong> {{ article.results }}</p>
-        <p><strong>Discussion:</strong> {{ article.discussion }}</p>
-        <p><strong>Conclusion:</strong> {{ article.conclusion }}</p>
-        <p class="citations"><strong>Citations:</strong> {{ article.citations|join(', ') }}</p>
-    </section>
+    <main>
+        <section class="article">
+            <!-- Assigning the 'article-title' class to the h2 tag -->
+            <h2 class="article-title">{{ article.title|title }}</h2>
+            <p><strong>Abstract:</strong> {{ article.abstract }}</p>
+            <p><strong>Introduction:</strong> {{ article.introduction }}</p>
+            <p><strong>Methodology:</strong> {{ article.methodology }}</p>
+            <p><strong>Results:</strong> {{ article.results }}</p>
+            <p><strong>Discussion:</strong> {{ article.discussion }}</p>
+            <p><strong>Conclusion:</strong> {{ article.conclusion }}</p>
+            
+            <div class="citations">
+                <strong>Citations:</strong>
+                <ol>
+                    {% for citation in article.citations %}
+                        <li>{{ citation }}</li>
+                    {% endfor %}
+                </ol>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; {{ current_year }} Article Generator. All rights reserved.</p>
+    </footer>
 </body>
 </html>

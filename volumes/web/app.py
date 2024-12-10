@@ -2,6 +2,8 @@ import os
 from flask import Flask, request, jsonify, render_template, abort
 from ollama_query import init_db, generate_article_data, save_to_database
 from article_logic import fetch_article, fetch_last_20_articles
+from db_utils import execute_sql_query
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -48,6 +50,38 @@ def article(article_id):
         abort(404, description="Article not found")
 
     return render_template('article.html', article=article)
+
+# New Route: DB Utilities Page
+@app.route('/db_utils', methods=['GET'])
+def db_utils():
+    """Render the Database Utilities page."""
+    current_year = datetime.now().year
+    return render_template('db_utils.html', current_year=current_year, query=False)
+
+# New Route: Execute SQL Query
+@app.route('/execute_query', methods=['POST'])
+def execute_query():
+    """Handle the execution of SQL queries from the DB Utilities page."""
+    sql_query = request.form.get('sql_query')
+
+    if not sql_query:
+        error = "No SQL query provided."
+        return render_template('db_utils.html',
+                               current_year=datetime.now().year,
+                               query=True,
+                               results=None,
+                               error=error,
+                               affected_rows=None)
+
+    # Execute the SQL query using the db_utils module
+    query_result = execute_sql_query(sql_query)
+
+    return render_template('db_utils.html',
+                           current_year=datetime.now().year,
+                           query=True,
+                           results=query_result['results'],
+                           error=query_result['error'],
+                           affected_rows=query_result['affected_rows'])
 
 # Error Handler for 404
 @app.errorhandler(404)

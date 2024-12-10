@@ -1,5 +1,12 @@
 const form = document.getElementById('generate-form');
 const articlesContainer = document.getElementById('articles');
+const spinner = document.getElementById('spinner');
+const generateButton = document.getElementById('generate-button');
+
+console.log('Form Element:', form);
+console.log('Articles Container:', articlesContainer);
+console.log('Spinner Element:', spinner);
+console.log('Generate Button:', generateButton);
 
 // Display Message Function
 function displayMessage(message, type = 'info') {
@@ -64,14 +71,17 @@ form.addEventListener('submit', async (e) => {
     const topicInput = document.getElementById('topic');
     const topic = topicInput.value.trim();
 
+    console.log('Form Submitted. Topic:', topic);
+
     if (!topic) {
         displayMessage('Please enter a topic!', 'error');
         return;
     }
 
-    // Disable form and show loading
-    form.querySelector('button').disabled = true;
-    displayMessage('Generating article...', 'info');
+    // Show spinner and disable button
+    spinner.classList.remove('hidden');
+    generateButton.disabled = true;
+    console.log('Spinner shown and button disabled.');
 
     try {
         const response = await fetch('/generate', {
@@ -82,21 +92,28 @@ form.addEventListener('submit', async (e) => {
             body: JSON.stringify({ topic }),
         });
 
+        console.log('Response Status:', response.status);
+
         if (response.ok) {
             const data = await response.json();
+            console.log('Article Generated:', data);
             displayMessage('Article generated successfully!', 'success');
             // Redirect to the article detail page
             window.location.href = `/article/${data.article_id}`;
         } else {
             const error = await response.json();
+            console.log('Error Response:', error);
             displayMessage(`Error: ${error.error}`, 'error');
         }
     } catch (error) {
         console.error('Error generating article:', error);
         displayMessage('An error occurred while generating the article.', 'error');
     } finally {
-        form.querySelector('button').disabled = false;
+        // Hide spinner and enable button
+        spinner.classList.add('hidden');
+        generateButton.disabled = false;
         topicInput.value = '';
+        console.log('Spinner hidden and button enabled.');
     }
 });
 

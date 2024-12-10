@@ -1,3 +1,4 @@
+from titlecase import titlecase
 import requests
 import sqlite3
 import json
@@ -114,6 +115,9 @@ def save_to_database(topic, article_data):
     try:
         conn = sqlite3.connect(DB_FILE)
         cursor = conn.cursor()
+
+        # Capitalize
+        title = titlecase(topic)
 
         # Insert into Articles Table
         cursor.execute('''

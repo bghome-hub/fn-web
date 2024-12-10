@@ -21,7 +21,6 @@ services:
     build: $VOLUME_ROOT/web
     environment:
       - FLASK_ENV=development
-      - FLASK_DEBUG=true
       - DB_FILE=$DB_FILE
       - OLLAMA_URL=$OLLAMA_URL
       - OLLAMA_MODEL=$OLLAMA_MODEL
