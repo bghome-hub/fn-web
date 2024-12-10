@@ -1,6 +1,5 @@
 /.env
 /volumes/vscode/
-/volumes/db/
-/volumes/db_old/
+/volumes/db*/
 /volumes/shared_static/
 /volumes/web_old/
