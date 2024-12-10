@@ -124,7 +124,7 @@ def save_to_database(topic, article_data):
             INSERT INTO articles (topic, title, abstract, introduction, methodology, results, discussion, conclusion)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ''', (
-            topic, topic, article_data["abstract"], article_data["introduction"],
+            topic, title, article_data["abstract"], article_data["introduction"],
             article_data["methodology"], article_data["results"], article_data["discussion"],
             article_data["conclusion"]
         ))

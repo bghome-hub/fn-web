@@ -88,6 +88,7 @@ def execute_query():
 def not_found(error):
     return render_template('404.html', message=error.description), 404
 
+
 # Run the Flask App
 if __name__ == '__main__':
     debug_mode = os.getenv("FLASK_DEBUG", "false").lower() == "true"

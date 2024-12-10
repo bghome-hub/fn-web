@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Articles</title>
+    <!-- Preconnect and Google Fonts as in other templates -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Import Merriweather and Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Link to existing stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="{{ url_for('index') }}" class="navbar-brand">Article Generator</a>
+            <ul class="navbar-menu">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('db_utils') }}">DB Utilities</a></li>
+                <li><a href="{{ url_for('all_articles') }}">All Articles</a></li>
+                <!-- Add more navigation links if needed -->
+            </ul>
+        </div>
+    </nav>
+
+    <header>
+        <h1>All Generated Articles</h1>
+    </header>
+
+    <main>
+        <section class="all-articles">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Topic</th>
+                        <th>Title</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for article in articles %}
+                        <tr>
+                            <td>{{ article.id }}</td>
+                            <td>{{ article.topic }}</td>
+                            <td>{{ article.title }}</td>
+                            <td>
+                                <!-- Rename Topic Form -->
+                                <form method="POST" action="{{ url_for('rename_topic', article_id=article.id) }}" class="action-form">
+                                    <input type="text" name="new_topic" placeholder="New Topic" required>
+                                    <button type="submit">Rename Topic</button>
+                                </form>
+
+                                <!-- Delete Article Form -->
+                                <form method="POST" action="{{ url_for('delete_article', article_id=article.id) }}" class="action-form" onsubmit="return confirm('Are you sure you want to delete this article?');">
+                                    <button type="submit">Delete</button>
+                                </form>
+
+                                <!-- Regenerate Article Form -->
+                                <form method="POST" action="{{ url_for('regenerate_article', article_id=article.id) }}" class="action-form">
+                                    <button type="submit">Regenerate</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4">No articles found.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; {{ current_year }} Article Generator. All rights reserved.</p>
+    </footer>
+</body>
+</html>

@@ -117,5 +117,9 @@ form.addEventListener('submit', async (e) => {
     }
 });
 
+
+
+
+
 // Load Articles on Page Load
 document.addEventListener('DOMContentLoaded', fetchArticles);
