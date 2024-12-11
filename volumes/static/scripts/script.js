@@ -22,6 +22,11 @@ function displayMessage(message, type = 'info') {
     setTimeout(() => messageDiv.remove(), 3000);
 }
 
+// Add to your JavaScript file
+document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
+    document.querySelector('.navbar-menu').classList.toggle('active');
+});
+
 // Show Loading Indicator
 function showLoading() {
     articlesContainer.innerHTML = '<h2>Generated Articles</h2><p>Loading articles...</p>';

@@ -3,31 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Database Utilities</title>
-    <!-- Preconnect and Google Fonts as in other templates -->
+    <title>Article Generator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Import Merriweather and Roboto -->
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <!-- Link to existing stylesheet -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
 </head>
 <body>
+    <!-- Single Navigation Bar -->
     <nav class="navbar">
         <div class="container">
-            <a href="{{ url_for('index') }}" class="navbar-brand">Article Generator</a>
+            <a href="{{ url_for('index') }}" class="navbar-brand">
+                <div class="logo-icon">
+                    <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="Logo">
+                </div>
+                <span>BGHome Article Generator</span>
+            </a>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <ul class="navbar-menu">
-                <li><a href="{{ url_for('index') }}">Home</a></li>
-                <li><a href="{{ url_for('db_utils') }}">DB Utilities</a></li>
-                <!-- Add more navigation links if needed -->
+                <li><a href="{{ url_for('all_articles') }}">All Articles</a></li>
+                <li><a href="{{ url_for('db_utils') }}">Database Utils</a></li>
             </ul>
         </div>
     </nav>
-
-    <header>
-        <h1>Database Utilities</h1>
-        <p>Execute basic SQL queries directly against the database.</p>
-    </header>
 
     <main>
         <section class="db-utils">
@@ -73,7 +75,7 @@
     </main>
 
     <footer>
-        <p>&copy; {{ current_year }} Article Generator. All rights reserved.</p>
+        <p>&copy; BGHome Article Generator. All rights reserved.</p>
     </footer>
 </body>
 </html>

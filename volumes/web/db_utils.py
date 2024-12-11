@@ -48,3 +48,37 @@ def get_all_articles():
     ]
     conn.close()
     return articles
+
+def rename_article_by_id(article_id, new_title):
+    """
+    Rename an article's title by its ID.
+    Returns a tuple (success: bool, error_message: str).
+    """
+    try:
+        with sqlite3.connect(DB_FILE) as conn:
+            cursor = conn.cursor()
+            cursor.execute("UPDATE articles SET title = ? WHERE id = ?", (new_title, article_id))
+            if cursor.rowcount == 0:
+                return False, "Article not found."
+            conn.commit()
+        return True, ""
+    except sqlite3.Error as e:
+        return False, str(e)
+
+def delete_article_by_id(article_id):
+    """
+    Delete an article by its ID.
+    Returns a tuple (success: bool, error_message: str).
+    """
+    try:
+        with sqlite3.connect(DB_FILE) as conn:
+            cursor = conn.cursor()
+            # Delete citations associated with the article first to maintain referential integrity
+            cursor.execute("DELETE FROM citations WHERE article_id = ?", (article_id,))
+            cursor.execute("DELETE FROM articles WHERE id = ?", (article_id,))
+            if cursor.rowcount == 0:
+                return False, "Article not found."
+            conn.commit()
+        return True, ""
+    except sqlite3.Error as e:
+        return False, str(e)
