@@ -2,11 +2,14 @@ const form = document.getElementById('generate-form');
 const articlesContainer = document.getElementById('articles');
 const spinner = document.getElementById('spinner');
 const generateButton = document.getElementById('generate-button');
+const spinnerMessage = document.getElementById('spinner-message');
+const modelNameElement = document.getElementById('model-name');
 
 console.log('Form Element:', form);
 console.log('Articles Container:', articlesContainer);
 console.log('Spinner Element:', spinner);
 console.log('Generate Button:', generateButton);
+console.log('Model Name Element:', modelNameElement);
 
 // Display Message Function
 function displayMessage(message, type = 'info') {
@@ -88,6 +91,11 @@ form.addEventListener('submit', async (e) => {
     generateButton.disabled = true;
     console.log('Spinner shown and button disabled.');
 
+    // Set and show the spinner message
+    modelNameElement.textContent = OLLAMA_MODEL;
+    spinnerMessage.classList.remove('hidden');
+    console.log('Model is:', OLLAMA_MODEL);
+
     try {
         const response = await fetch('/generate', {
             method: 'POST',
@@ -116,14 +124,13 @@ form.addEventListener('submit', async (e) => {
     } finally {
         // Hide spinner and enable button
         spinner.classList.add('hidden');
+        spinnerMessage.classList.add('hidden');
         generateButton.disabled = false;
         topicInput.value = '';
         console.log('Spinner hidden and button enabled.');
+
     }
 });
-
-
-
 
 
 // Load Articles on Page Load

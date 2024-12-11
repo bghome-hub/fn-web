@@ -1,6 +1,6 @@
 import os
 from flask import Flask, request, jsonify, render_template, abort, url_for
-from ollama_query import init_db, generate_article_data, save_to_database
+from ollama_query import init_db, generate_article_data, save_to_database, OLLAMA_MODEL
 from article_logic import fetch_article, fetch_last_20_articles, fetch_all_articles
 from db_utils import execute_sql_query, get_all_articles, rename_article_by_id, delete_article_by_id
 from datetime import datetime
@@ -13,7 +13,7 @@ init_db()
 # Index Route
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', ollama_model=OLLAMA_MODEL)
 
 # Generate Article Endpoint
 @app.route('/generate', methods=['POST'])
