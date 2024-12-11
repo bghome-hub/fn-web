@@ -69,7 +69,7 @@ async function fetchArticles() {
     } catch (error) {
         console.error('Error fetching articles:', error);
         displayMessage('Failed to load articles.', 'error');
-        articlesContainer.innerHTML = '<h2>Generated Articles</h2><p>Error loading articles.</p>';
+        articlesContainer.innerHTML = '<h2>Recently Generated Articles</h2><p>Error loading articles.</p>';
     }
 }
 
