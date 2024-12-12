@@ -1,8 +1,9 @@
 import os
 from flask import Flask, request, jsonify, render_template, abort, url_for
-from ollama_query import init_db, generate_article_data, save_to_database, OLLAMA_MODEL
-from article_logic import fetch_article, fetch_last_20_articles, fetch_all_articles
-from db_utils import execute_sql_query, get_all_articles, rename_article_by_id, delete_article_by_id
+from ollama import init_db, generate_article_data, save_article_to_db, OLLAMA_MODEL
+from article import fetch_article, fetch_last_20_articles, fetch_all_articles
+from db import execute_sql_query, rename_article_by_id, delete_article_by_id
+from image import search_unsplash
 from datetime import datetime
 
 app = Flask(__name__)
@@ -30,7 +31,7 @@ def generate():
         return jsonify({"error": error}), 500
 
     # Save to Database
-    result, error = save_to_database(topic, article_data)
+    result, error = save_article_to_db(topic, article_data)
     if error:
         return jsonify({"error": error}), 500
 
@@ -122,11 +123,27 @@ def execute_query():
                            error=query_result['error'],
                            affected_rows=query_result['affected_rows'])
 
+# New Route: Unsplash Image Search
+# exampple usage: http://localhost:5000/image_search?image_value=mountain
+# 
+@app.route('/image_search', methods=['GET'])
+def image_search():
+    """Search Unsplash for an image based on a given value."""
+    image_value = request.args.get('image_value')
+
+    if not image_value:
+        return jsonify({'error': 'Image value is required.'}), 400
+
+    image_url = search_unsplash(image_value)
+    if not image_url:
+        return jsonify({'error': 'No image found for the given value.'}), 404
+
+    return jsonify({'image_url': image_url}), 200
+
 # Error Handler for 404
 @app.errorhandler(404)
 def not_found(error):
     return render_template('404.html', message=error.description), 404
-
 
 # Run the Flask App
 if __name__ == '__main__':

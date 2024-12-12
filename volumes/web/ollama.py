@@ -1,52 +1,11 @@
-from titlecase import titlecase
+
 import requests
-import sqlite3
 import json
 import os
 
 # Configuration
-DB_FILE = os.getenv("DB_FILE", "/db/db.db")
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://ollama-service:11434")
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "default-model")
-
-# Initialize SQLite Database
-def init_db():
-    try:
-        os.makedirs(os.path.dirname(DB_FILE), exist_ok=True)
-
-        conn = sqlite3.connect(DB_FILE)
-        cursor = conn.cursor()
-
-        # Create Articles Table
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS articles (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                topic TEXT NOT NULL,
-                title TEXT NOT NULL,
-                abstract TEXT,
-                introduction TEXT,
-                methodology TEXT,
-                results TEXT,
-                discussion TEXT,
-                conclusion TEXT
-            )
-        ''')
-
-        # Create Citations Table
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS citations (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                article_id INTEGER,
-                citation TEXT,
-                FOREIGN KEY (article_id) REFERENCES articles (id)
-            )
-        ''')
-
-        conn.commit()
-        conn.close()
-        print("Database initialized successfully.")
-    except Exception as e:
-        print(f"Error initializing database: {e}")
 
 # Generate Article Data
 def generate_article_data(topic):
@@ -109,39 +68,3 @@ def generate_article_data(topic):
     except Exception as e:
         return None, f"Error communicating with Ollama API: {str(e)}"
 
-# Save Article Data to Database
-def save_to_database(topic, article_data):
-    """Save generated article data and citations to the database."""
-    try:
-        conn = sqlite3.connect(DB_FILE)
-        cursor = conn.cursor()
-
-        # Capitalize
-        title = titlecase(topic)
-
-        # Insert into Articles Table
-        cursor.execute('''
-            INSERT INTO articles (topic, title, abstract, introduction, methodology, results, discussion, conclusion)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (
-            topic, title, article_data["abstract"], article_data["introduction"],
-            article_data["methodology"], article_data["results"], article_data["discussion"],
-            article_data["conclusion"]
-        ))
-
-        # Get the article's ID
-        article_id = cursor.lastrowid
-
-        # Insert into Citations Table
-        for citation in article_data["citations"]:
-            cursor.execute('''
-                INSERT INTO citations (article_id, citation)
-                VALUES (?, ?)
-            ''', (article_id, citation))
-
-        conn.commit()
-        conn.close()
-        return {"status": "success", "article_id": article_id}, None
-
-    except Exception as e:
-        return None, f"Database error: {str(e)}"
