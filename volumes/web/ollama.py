@@ -1,31 +1,61 @@
-
-import requests
 import json
+import requests
 import os
 
-# Configuration
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://ollama-service:11434")
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "default-model")
 
-# Generate Article Data
-def generate_article_data(topic):
+def prompt_full_article(topic):
     """Send a prompt to the Ollama model to produce a structured JSON article."""
     prompt = (
-        f"Write a detailed, peer-reviewed academic article about the following topic: '{topic}'. "
-        "The article must be supportive of the claim. You may make extreme conclusions. "
-        "No commentary is allowed. "
-        "You MUST return your answer as a strict JSON object with the following keys only: "
-        "\"Abstract\", \"Introduction\", \"Methodology\", \"Results\", \"Discussion\", \"Conclusion\", and \"References\". "
-        "You MUST return your response in the following JSON format:\n"
-        "{\n"
-        "  \"Abstract\": \"...\",\n"
-        "  \"Introduction\": \"...\",\n"
-        "  \"Methodology\": \"...\",\n"
-        "  \"Results\": \"...\",\n"
-        "  \"Discussion\": \"...\",\n"
-        "  \"Conclusion\": \"...\",\n"
-        "  \"References\": [\"<APA ref 1>\", \"<APA ref 2>\", \"<APA ref 3>\", \"<APA ref 4>\", \"<APA ref 5>\"]\n"
-        "}\n\n"
+        f"Write a detailed, peer-reviewed academic article about the following topic: '{topic}'.\n"
+        "The article must affirm the topic and provide a comprehensive overview of the subject matter.\n"
+        "The article must be scholarly, realistic, and well-researched, with a clear structure and logical flow.\n"
+        "The sources and authors must be credible, realistic, and authoritative.\n"
+        "Return the following data in the exact JSON structure below. Ensure that all fields are populated.\n\n"
+        'Return the output in JSON format as shown below:\n'
+        '''{
+          "title": "string: the title of the article",
+          "abstract": "string: brief summary of the article",
+          "introduction": "string: introduction to the article",
+          "methodology": "string: description of research methods",
+          "results": "string: summary of research findings",
+          "discussion": "string: discussion of results and implications",
+          "conclusion": "string: summary of conclusions",
+          "keyword": "string: keyword related to the topic for image search",
+          "citations": [
+            {
+              "content": "string: APA-formatted source 1"
+            },
+            {
+              "content": "string: APA-formatted source 2"
+            },
+            {
+              "content": "string: APA-formatted source 3"
+            },
+            {
+              "content": "string: APA-formatted source 4"
+            },
+            {
+              "content": "string: APA-formatted source 5"
+            }
+          ],
+          "authors": [
+            {
+              "name": "string: author name",
+              "institution_name": "string: author institution",
+              "institution_address": "string: author institution address",
+              "email": "string: author email"
+            },
+            {
+              "name": "string: author name",
+              "institution_name": "string: author institution",
+              "institution_address": "string: author institution address",
+              "email": "string: author email"
+            }
+          ]
+        }'''
+        "Please provide the responses in the exact structure shown above, ensuring that the APA sources are properly formatted with author(s), title, journal name, volume, issue, and year."
     )
 
     try:
@@ -35,36 +65,19 @@ def generate_article_data(topic):
                 "model": OLLAMA_MODEL,
                 "prompt": prompt,
                 "stream": False
-            },
-            timeout = 180 # seconds
+            }
         )
+        
+        if response.status_code == 200:
+            response_data = json.loads(response.json().get('response', '{}'))
 
-        if response.status_code != 200:
-            return None, f"Ollama API returned status code {response.status_code}: {response.text}"
+            # Insert the Prompt and Topic into the response data
+            response_data['prompt'] = prompt
+            response_data['input'] = topic
 
-        # Parse Response
-        data = response.json()
-        text_response = json.loads(data['response'])
-
-        # Verify required keys are present
-        required_keys = ["Abstract", "Introduction", "Methodology", "Results", "Discussion", "Conclusion", "References"]
-        missing_keys = [key for key in required_keys if key not in text_response]
-        if missing_keys:
-            return None, f"Missing keys in response: {', '.join(missing_keys)}"
-
-        # Extract Article Sections
-        article_data = {
-            "abstract": text_response.get("Abstract"),
-            "introduction": text_response.get("Introduction"),
-            "methodology": text_response.get("Methodology"),
-            "results": text_response.get("Results"),
-            "discussion": text_response.get("Discussion"),
-            "conclusion": text_response.get("Conclusion"),
-            "citations": text_response.get("References", [])
-        }
-
-        return article_data, None
-
+            return response_data
+        
+        else:
+            raise Exception(f"Error querying Ollama: {response.text}")
     except Exception as e:
-        return None, f"Error communicating with Ollama API: {str(e)}"
-
+        raise Exception(f"Error in Ollama request: {str(e)}")
