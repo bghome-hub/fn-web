@@ -1,0 +1,64 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+    <script>
+        // Make the OLLAMA_MODEL available to JavaScript
+        const OLLAMA_MODEL = "{{ ollama_model }}";
+    </script>
+</head>
+<body>
+    <!-- Single Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="{{ url_for('index') }}" class="navbar-brand">
+                <div class="logo-icon">
+                    <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="Logo">
+                </div>
+                <span>BGHome Article Generator</span>
+            </a>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="navbar-menu">
+                <li><a href="{{ url_for('all_articles') }}">All Articles</a></li>
+                <li><a href="{{ url_for('db_utils') }}">Database Utils</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <form id="generate-form">
+            <input type="text" id="topic" placeholder="Enter an a topic to affirm..." required>
+            <button type="submit" id="generate-button">Generate Article</button>
+            <!-- Spinner Element -->
+            <div id="spinner" class="spinner hidden" role="status" aria-live="polite" aria-label="Loading"></div>
+            <!-- Spinner Message -->
+            <div id="spinner-message" class="spinner-message hidden">
+                Please wait, processing your request with model <strong id="model-name"></strong>.
+            </div>
+        </form>
+
+        <section id="articles">
+            <!-- Assigning the 'section-title' class to the h2 tag -->
+            <h2 class="section-title">Generated Articles</h2>
+            <p>Loading articles...</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; BGHome Article Generator. All rights reserved.</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='scripts/script.js') }}"></script>
+</body>
+</html>

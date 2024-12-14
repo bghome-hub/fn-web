@@ -5,7 +5,8 @@ import os
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://ollama-service:11434")
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "default-model")
 
-def prompt_full_article(topic):
+# Define the function to generate an article using the Ollama model
+def query_ollama(topic):
     """Send a prompt to the Ollama model to produce a structured JSON article."""
     prompt = (
         f"Write a detailed, peer-reviewed academic article about the following topic: '{topic}'.\n"
@@ -76,6 +77,7 @@ def prompt_full_article(topic):
             response_data['input'] = topic
 
             return response_data
+        
         
         else:
             raise Exception(f"Error querying Ollama: {response.text}")

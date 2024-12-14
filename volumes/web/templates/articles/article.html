@@ -1,0 +1,37 @@
+<!-- templates/article.html -->
+{% extends "base.html" %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ article.title }}</h1>
+
+    <!-- Authors -->
+    {% if article.authors %}
+    <h3>Authors:</h3>
+    <ul>
+        {% for author in article.authors %}
+        <li>{{ author }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <!-- Abstract -->
+    {% if article.abstract %}
+    <h3>Abstract</h3>
+    <p>{{ article.abstract }}</p>
+    {% endif %}
+
+    <!-- Other Sections -->
+    <!-- Add other sections like Introduction, Methodology, etc., as needed -->
+
+    <!-- Citations -->
+    {% if article.citations %}
+    <h3>Citations</h3>
+    <ul>
+        {% for citation in article.citations %}
+        <li>{{ citation }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+{% endblock %}

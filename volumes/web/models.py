@@ -1,5 +1,8 @@
+# Description: This file contains the models for the database tables. Each class represents a table in the database.
+# models.py
+
 class Article:
-    def __init__(self, prompt, input, title, abstract, intro, methodology, results, discussion, conclusion, article_id=None, authors=None, citations=None, images=None, figures=None):
+    def __init__(self, prompt, input, title, abstract, intro, methodology, results, discussion, conclusion, id=None, authors=None, citations=None, images=None, figures=None, add_date=None, update_date=None):
         self.prompt = prompt  # Store the prompt
         self.input = input
         self.title = title
@@ -9,7 +12,9 @@ class Article:
         self.results = results
         self.discussion = discussion
         self.conclusion = conclusion
-        self.article_id = article_id
+        self.id = id
+        self.add_date = add_date
+        self.update_date = update_date
 
         # Initialize lists if none are provided
         self.authors = authors if authors else []
@@ -17,6 +22,7 @@ class Article:
         self.images = images if images else []
         self.figures = figures if figures else []
         
+    # This is a magic method that allows us to print the object in a more readable format
     def __repr__(self):
         return f"Article({self.title}, {len(self.authors)} authors, {len(self.citations)} citations)"
 

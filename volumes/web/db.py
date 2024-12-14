@@ -1,12 +1,17 @@
-import os
+# Description: This file contains the functions to interact with the SQLite database.
 import sqlite3
 from titlecase import titlecase
+import os
 
+
+# Get the path to the database file from the environment variable or use the default path
 DB_FILE = os.getenv("DB_FILE", "/db/db.db")
 
+# Connect to the SQLite database
 def connect_db():
     return sqlite3.connect(DB_FILE)
 
+# Create the necessary tables in the database
 def create_tables():
     conn = connect_db()
     cursor = conn.cursor()
@@ -75,6 +80,13 @@ def create_tables():
 
     conn.commit()
 
+# initialize the database tables
+create_tables()
+
+
+'''
+INSERT functions
+'''
 def insert_article(article):
     """Inserts an article object into the articles table and returns the article_id."""
     conn = connect_db()
@@ -84,15 +96,13 @@ def insert_article(article):
     cursor.execute('''INSERT INTO articles (title, abstract, intro, methodology, results, discussion, conclusion, prompt, input) 
                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''',
                    (titlecase(article.title), article.abstract, article.intro, article.methodology, article.results, article.discussion, article.conclusion, article.prompt, article.input))
-    
     conn.commit()
     
     # Retrieve the article_id of the newly inserted article
-    article_id = cursor.lastrowid
-    
+    id = cursor.lastrowid
     conn.close()
-    
-    return article_id  # Return the article_id
+
+    return id  # Return the article_id
 
 def insert_author(author):
     conn = connect_db()
@@ -125,3 +135,82 @@ def insert_figure(figure):
                       VALUES (?, ?, ?, ?)''',
                    (figure.article_id, figure.number, figure.description, figure.url))
     conn.commit()
+
+'''
+GET functions
+'''
+def get_article_by_id(id):
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute('''SELECT * FROM articles WHERE id = ?''', (id,))
+    article_data = cursor.fetchone()
+    conn.close()
+    return article_data
+
+def get_authors_by_article_id(id):
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute('''SELECT * FROM authors WHERE article_id = ?''', (id,))
+    authors_data = cursor.fetchall()
+    conn.close()
+    return authors_data
+
+def get_citations_by_article_id(id):
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute('''SELECT * FROM citations WHERE article_id = ?''', (id,))
+    citations_data = cursor.fetchall()
+    conn.close()
+    return citations_data
+
+def get_images_by_article_id(id):
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute('''SELECT * FROM images WHERE article_id = ?''', (id,))
+    images_data = cursor.fetchall()
+    conn.close()
+    return images_data
+
+def get_figures_by_article_id(id):
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute('''SELECT * FROM figures WHERE article_id = ?''', (id,))
+    figures_data = cursor.fetchall()
+    conn.close()
+    return figures_data
+
+def get_all_articles():
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute('''SELECT * FROM articles''')
+    all_articles = cursor.fetchall()
+    conn.close()
+    return all_articles
+
+def get_count_of_articles():
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute('''SELECT COUNT(*) FROM articles''')
+    count_of_articles = cursor.fetchone()
+    conn.close()
+    return count_of_articles
+
+def execute_predefined_query(query_name):
+    queries = {
+        'get_all_articles': 'SELECT * FROM articles',
+        'get_all_authors': 'SELECT * FROM authors',
+        'get_all_citations': 'SELECT * FROM citations',
+    }
+
+    query = queries.get(query_name)
+    if not query:
+        return None
+
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute(query)
+    data = cursor.fetchall()
+    columns = [description[0] for description in cursor.description]
+    conn.close()
+
+    return {'columns': columns, 'data': data}

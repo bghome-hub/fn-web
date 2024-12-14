@@ -1,0 +1,40 @@
+<!-- templates/admin/db_utils.html -->
+{% extends "base.html" %}
+
+{% block title %}Database Utilities{% endblock %}
+
+{% block content %}
+<h1>Database Utilities</h1>
+
+<form method="POST" action="{{ url_for('db_utils') }}" class="db-utils-form">
+    <label for="query_name">Select a Query:</label>
+    <select id="query_name" name="query_name">
+        <option value="get_all_articles">Get All Articles</option>
+        <option value="get_all_authors">Get All Authors</option>
+        <option value="get_all_citations">Get All Citations</option>
+    </select>
+    <button type="submit">Execute</button>
+</form>
+
+{% if results %}
+    <h2>Query Results</h2>
+    <table>
+        <thead>
+            <tr>
+                {% for column in results.columns %}
+                <th>{{ column }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in results.data %}
+            <tr>
+                {% for cell in row %}
+                <td>{{ cell }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+{% endblock %}
