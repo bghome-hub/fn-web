@@ -43,16 +43,16 @@ def query_ollama(topic):
           ],
           "authors": [
             {
-              "name": "string: author name",
-              "institution_name": "string: author institution",
-              "institution_address": "string: author institution address",
-              "email": "string: author email"
+              "name": "string: <realistic, random name>",
+              "institution_name": "string: <realistic, relevant insitution name>",
+              "institution_address": "string: <realistic,  institution address",
+              "email": "string: <realistic author email>"
             },
             {
-              "name": "string: author name",
-              "institution_name": "string: author institution",
-              "institution_address": "string: author institution address",
-              "email": "string: author email"
+              "name": "string: <realistic, random name>",
+              "institution_name": "string: <realistic, relevant insitution name>",
+              "institution_address": "string: <realistic,  institution address",
+              "email": "string: <realistic author email>"
             }
           ]
         }'''

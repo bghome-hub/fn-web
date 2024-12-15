@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, render_template
-import article_logic
+#import article_logic
+from models import Article, Author, Citation, Figure, Image
 import db
 
 app = Flask(__name__)
@@ -19,13 +20,13 @@ def db_utils():
 
 @app.route('/all_articles')
 def all_articles():
-    articles = article_logic.get_all_articles()
+    articles = Article.get_all()
     return render_template('articles/all_articles.html', articles=articles)
 
 # get count of articles
 @app.route('/count_articles')
 def count_articles():
-    count = article_logic.get_count_of_articles()
+    count = Article.count()
     return jsonify(count)
 
 # create article route
@@ -36,8 +37,9 @@ def create_article():
         return jsonify({'error': 'Topic is required!'}), 400
     
     try:
-        article = article_logic.create_article_from_topic(topic)
-        article_logic.save_article_to_db(article)
+        article = Article.create_from_topic(topic)
+        article.save_to_db()
+
         return jsonify({'message': 'Article created successfully!'}), 201
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -45,7 +47,7 @@ def create_article():
 # view_article route
 @app.route('/view_article/<int:id>')
 def view_article(id):
-    article = article_logic.get_article_by_id(id)
+    article = Article.get_by_id(id)
     return render_template('articles/article.html', article=article)
     
 if __name__ == '__main__':
