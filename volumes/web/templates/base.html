@@ -3,25 +3,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Article Generator{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-        <div class="container">
-            <a href="{{ url_for('index') }}" class="navbar-brand">
-                <div class="logo-icon">
-                    <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="Logo">
-                </div>
-                <span>BGHome Article Generator</span>
-            </a>
-            <ul class="navbar-menu">
-                <li><a href="{{ url_for('all_articles') }}">All Articles</a></li>
-                <li><a href="{{ url_for('index') }}">Generate New Article</a></li>
-            </ul>
-        </div>
-    </nav>
+    <!-- Include navigation from static/partials -->
+    {% include 'partials/navigation.html' %}
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
 
     <!-- Flash Messages -->
     {% with messages = get_flashed_messages() %}
@@ -40,6 +32,9 @@
         <!-- Page-specific content will be inserted here -->
         {% endblock %}
     </div>
+
+    <!-- Include footer -->
+    {% include 'partials/footer.html' %}
 
     <!-- Scripts -->
     <script src="{{ url_for('static', filename='scripts/main.js') }}"></script>

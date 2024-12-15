@@ -20,12 +20,15 @@ def create_tables():
     cursor.execute('''CREATE TABLE IF NOT EXISTS articles (
                        id INTEGER PRIMARY KEY AUTOINCREMENT, 
                        title TEXT, 
+                       journal TEXT,
+                       doi TEXT,
                        abstract TEXT, 
                        intro TEXT, 
                        methodology TEXT, 
                        results TEXT, 
                        discussion TEXT, 
                        conclusion TEXT,
+                       keywords TEXT,
                        prompt TEXT,
                        input TEXT,
                        add_date datetime DEFAULT CURRENT_TIMESTAMP,
@@ -93,9 +96,9 @@ def insert_article(article):
     cursor = conn.cursor()
     
     # Insert the article into the articles table
-    cursor.execute('''INSERT INTO articles (title, abstract, intro, methodology, results, discussion, conclusion, prompt, input) 
-                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''',
-                   (titlecase(article.title), article.abstract, article.intro, article.methodology, article.results, article.discussion, article.conclusion, article.prompt, article.input))
+    cursor.execute('''INSERT INTO articles (title, journal, doi, abstract, intro, methodology, results, discussion, conclusion, keywords, prompt, input) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
+                   (titlecase(article.title), article.journal, article.doi, article.abstract, article.intro, article.methodology, article.results, article.discussion, article.conclusion, article.keywords, article.prompt, article.input))
     conn.commit()
     
     # Retrieve the article_id of the newly inserted article

@@ -41,3 +41,5 @@ def create_figure_for_article(article_id, description, url):
 
     # Insert figure into the database
     db.insert_figure(figure)
+
+

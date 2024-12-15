@@ -5,9 +5,11 @@
 
 {% block content %}
     <h1>Generate an Article</h1>
-    <form method="POST" action="{{ url_for('create_article') }}">
+    <form id="generate-form" method="POST" action="{{ url_for('create_article') }}">
         <label for="topic">Enter a topic:</label>
         <input type="text" id="topic" name="topic" placeholder="Enter a topic..." required>
-        <button type="submit">Submit</button>
+        <button type="submit" id="submit-btn">Submit</button>
     </form>
+    <p id="processing-message" class="processing-message">Processing your request...</p>
+    <div id="loading-spinner" class="spinner"></div>
 {% endblock %}

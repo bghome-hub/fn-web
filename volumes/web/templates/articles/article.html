@@ -1,32 +1,89 @@
+<!-- templates/articles/article.html -->
+{% extends "base.html" %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/article.css') }}">
+{% endblock %}
+
 {% block content %}
-    <h1>{{ article.title }}</h1>
+    <article class="scholarly-article">
+        <!-- Title -->
+        <header>
+            <h1 class="scholarly-article-title">{{ article.title }}</h1>
+        </header>
 
-    <!-- Authors -->
-    {% if article.authors %}
-    <h3>Authors:</h3>
-    <ul>
-        {% for author in article.authors %}
-        <li>{{ author.name }} - {{ author.institution_name }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
+        <!-- Authors -->
+        {% if article.authors %}
+        <section class="scholarly-article-authors">
+            <h2 class="scholarly-article-section-title">Authors</h2>
+            <ul>
+                {% for author in article.authors %}
+                <li>{{ author.name }} - {{ author.institution_name }}</li>
+                {% endfor %}
+            </ul>
+        </section>
+        {% endif %}
 
-    <!-- Abstract -->
-    {% if article.abstract %}
-    <h3>Abstract</h3>
-    <p>{{ article.abstract }}</p>
-    {% endif %}
+        <!-- Abstract -->
+        {% if article.abstract %}
+        <section class="scholarly-article-abstract">
+            <h2 class="scholarly-article-section-title">Abstract</h2>
+            <p>{{ article.abstract }}</p>
+        </section>
+        {% endif %}
 
-    <!-- Other Sections -->
-    <!-- Add other sections like Introduction, Methodology, etc., as needed -->
+        <!-- Introduction -->
+        {% if article.intro %}
+        <section class="scholarly-article-intro">
+            <h2 class="scholarly-article-section-title">Introduction</h2>
+            <p>{{ article.intro }}</p>
+        </section>
+        {% endif %}
 
-    <!-- Citations -->
-    {% if article.citations %}
-    <h3>Citations</h3>
-    <ul>
-        {% for citation in article.citations %}
-        <li>{{ citation.content }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
+        <!-- Methodology -->
+        {% if article.methodology %}
+        <section class="scholarly-article-methodology">
+            <h2 class="scholarly-article-section-title">Methodology</h2>
+            <p>{{ article.methodology }}</p>
+        </section>
+        {% endif %}
+
+        <!-- Results -->
+        {% if article.results %}
+        <section class="scholarly-article-results">
+            <h2 class="scholarly-article-section-title">Results</h2>
+            <p>{{ article.results }}</p>
+        </section>
+        {% endif %}
+
+        <!-- Discussion -->
+        {% if article.discussion %}
+        <section class="scholarly-article-discussion">
+            <h2 class="scholarly-article-section-title">Discussion</h2>
+            <p>{{ article.discussion }}</p>
+        </section>
+        {% endif %}
+
+        <!-- Conclusion -->
+        {% if article.conclusion %}
+        <section class="scholarly-article-conclusion">
+            <h2 class="scholarly-article-section-title">Conclusion</h2>
+            <p>{{ article.conclusion }}</p>
+        </section>
+        {% endif %}
+
+        <!-- Citations -->
+        {% if article.citations %}
+        <section class="scholarly-article-citations">
+            <h2 class="scholarly-article-section-title">Citations</h2>
+            <ul>
+                {% for citation in article.citations %}
+                <li>{{ citation.content }}</li>
+                {% endfor %}
+            </ul>
+        </section>
+        {% endif %}
+    </article>
 {% endblock %}

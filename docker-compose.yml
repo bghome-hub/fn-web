@@ -26,10 +26,11 @@ services:
       - OLLAMA_URL=$OLLAMA_URL
       - OLLAMA_MODEL=$OLLAMA_MODEL
       - PUBLIC_BASE_URL=$PUBLIC_BASE_URL
+      - FLASK_SECRET_KEY=$FLASK_SECRET_KEY
     volumes:
       - $VOLUME_ROOT/db:/db
       - $VOLUME_ROOT/web/templates:/app/templates
-      - $VOLUME_ROOT/static:/app/static
+      #- $VOLUME_ROOT/static:/app/static
     ports:
       - 5000:5000
     restart: unless-stopped

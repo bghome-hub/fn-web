@@ -1,0 +1,129 @@
+/* styles/article.css */
+
+/* Base Typography */
+body {
+  font-family: 'Open Sans', sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+  font-size: 16px;
+  transition: background-color var(--transition-time) ease, color var(--transition-time) ease;
+}
+
+/* Scholarly Article */
+.scholarly-article {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Article Title */
+.scholarly-article .scholarly-article-title {
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: var(--color-secondary);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+}
+
+/* Section Titles */
+.scholarly-article .scholarly-article-section-title {
+  font-size: 1.5em;
+  margin-top: 30px;
+  margin-bottom: 15px;
+  color: var(--color-secondary);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+}
+
+/* Article Content */
+.scholarly-article .scholarly-article-content p {
+  margin-bottom: 20px;
+  font-size: 1.1em;
+  color: var(--color-text);
+}
+
+/* Article Lists */
+.scholarly-article .scholarly-article-list {
+  list-style-type: disc;
+  margin-left: 20px;
+}
+
+.scholarly-article .scholarly-article-list li {
+  margin-bottom: 10px;
+  font-size: 1em;
+  color: var(--color-text);
+}
+
+/* Authors Section */
+.scholarly-article .scholarly-article-authors {
+  margin-bottom: 20px;
+}
+
+.scholarly-article .scholarly-article-authors ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.scholarly-article .scholarly-article-authors ul li {
+  margin-bottom: 10px;
+  font-size: 1em;
+  color: var(--color-text);
+}
+
+/* Abstract Section */
+.scholarly-article .scholarly-article-abstract {
+  margin-bottom: 20px;
+  font-size: 1.1em;
+  color: var(--color-text);
+}
+
+/* Introduction Section */
+.scholarly-article .scholarly-article-intro {
+  margin-bottom: 20px;
+  font-size: 1.1em;
+  color: var(--color-text);
+}
+
+/* Methodology Section */
+.scholarly-article .scholarly-article-methodology {
+  margin-bottom: 20px;
+  font-size: 1.1em;
+  color: var(--color-text);
+}
+
+/* Results Section */
+.scholarly-article .scholarly-article-results {
+  margin-bottom: 20px;
+  font-size: 1.1em;
+  color: var(--color-text);
+}
+
+/* Discussion Section */
+.scholarly-article .scholarly-article-discussion {
+  margin-bottom: 20px;
+  font-size: 1.1em;
+  color: var(--color-text);
+}
+
+/* Conclusion Section */
+.scholarly-article .scholarly-article-conclusion {
+  margin-bottom: 20px;
+  font-size: 1.1em;
+  color: var(--color-text);
+}
+
+/* Citations Section */
+.scholarly-article .scholarly-article-citations ul {
+  list-style-type: decimal;
+  padding-left: 20px;
+}
+
+.scholarly-article .scholarly-article-citations ul li {
+  margin-bottom: 10px;
+  font-size: 1em;
+  color: var(--color-text);
+}

@@ -1,0 +1,14 @@
+<!-- templates/navigation.html -->
+<nav class="navbar">
+    <div class="container">
+        <a href="{{ url_for('index') }}" class="navbar-brand">
+            <div class="logo-icon">
+                <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="Logo">
+            </div>
+            BGHome Article Generator
+        </a>
+        <ul class="navbar-menu" id="navbar-menu">
+            <li><a href="{{ url_for('all_articles') }}">All Articles</a></li>
+        </ul>
+    </div>
+</nav>

@@ -5,16 +5,19 @@ import ollama
 import db
 
 class Article:
-    def __init__(self, prompt, input, title, abstract, intro, methodology, results, discussion, conclusion, id=None, authors=None, citations=None, images=None, figures=None, add_date=None, update_date=None):
+    def __init__(self, prompt, input, title, journal, doi, abstract, intro, methodology, results, discussion, conclusion, keywords, id=None, authors=None, citations=None, images=None, figures=None, add_date=None, update_date=None):
         self.prompt = prompt  # Store the prompt
         self.input = input
         self.title = title
+        self.journal = journal
+        self.doi = doi
         self.abstract = abstract
         self.intro = intro
         self.methodology = methodology
         self.results = results
         self.discussion = discussion
         self.conclusion = conclusion
+        self.keywords = keywords
         self.id = id
         self.add_date = add_date
         self.update_date = update_date
@@ -37,12 +40,15 @@ class Article:
         
         # Extract relevant fields from the response
         title = ollama_response['title']
+        journal = ollama_response['journal']
+        doi = ollama_response['doi']
         abstract = ollama_response['abstract']
         intro = ollama_response['introduction']
         methodology = ollama_response['methodology']
         results = ollama_response['results']
         discussion = ollama_response['discussion']
         conclusion = ollama_response['conclusion']
+        keywords = ollama_response['keywords']
         prompt = ollama_response['prompt']
         input = ollama_response['input']
         
@@ -68,12 +74,15 @@ class Article:
         # Create Article object
         return cls(
             title=title,
+            journal=journal,
+            doi=doi,
             abstract=abstract,
             intro=intro,
             methodology=methodology,
             results=results,
             discussion=discussion,
             conclusion=conclusion,
+            keywords=keywords,
             authors=authors,
             citations=citations,
             prompt=prompt,
@@ -108,17 +117,20 @@ class Article:
     def create_from_id(cls, id: Tuple) -> 'Article':
         article = cls(
             title=id[1],
-            abstract=id[2],
-            intro=id[3],
-            methodology=id[4],
-            results=id[5],
-            discussion=id[6],
-            conclusion=id[7],
-            prompt=id[8],
-            input=id[9],
+            journal=id[2],
+            doi=id[3],
+            abstract=id[4],
+            intro=id[5],
+            methodology=id[6],
+            results=id[7],
+            discussion=id[8],
+            conclusion=id[9],
+            keywords=id[10],
+            prompt=id[11],
+            input=id[12],
             id=id[0],
-            add_date=id[10],
-            update_date=id[11]
+            add_date=id[13],
+            update_date=id[14]
         )
 
         return article
