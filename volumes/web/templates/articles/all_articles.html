@@ -4,31 +4,33 @@
 {% block title %}All Articles{% endblock %}
 
 {% block content %}
-    <h1 class="page-title">All Articles</h1>
+    <h1>All Articles</h1>
     {% if articles %}
     <div class="article-grid">
         {% for article in articles %}
         <div class="article-card">
-            <p class="article-input"><a href="{{ url_for('view_article', id=article.id) }}">{{ article.input }}</a></p>
-            <h2 class="article-title">
+            <h2 class="all-article-article-input">
+                <a href="{{ url_for('view_article', id=article.id) }}">{{ article.input }}</a>
+            </h2>
+            <h2 class="all-article-article-title">
                 <a href="{{ url_for('view_article', id=article.id) }}">{{ article.title }}</a>
             </h2>
-            <p class="article-journal"><strong>Journal:</strong> {{ article.journal }} </p>
+            <p class="all-article-article-journal"><strong>Journal:</strong> {{ article.journal }}</p>
             {% if article.authors %}
-            <p class="article-authors"><strong>Authors:</strong>
+            <p class="all-article-article-authors"><strong>Authors:</strong>
                 {% for author in article.authors %}
                     {{ author.name }}{% if not loop.last %}, {% endif %}
                 {% endfor %}
             </p>
             {% endif %}
-            <!--{% if article.abstract %}-->
-            <!--<p class="article-abstract">{{ article.abstract[:150] }}...</p>-->
-            <!--{% endif %}-->
+            {% if article.abstract %}
+            <p class="all-article-article-abstract">{{ article.abstract[:150] }}...</p>
+            {% endif %}
             <a href="{{ url_for('view_article', id=article.id) }}" class="btn read-more">Read More</a>
         </div>
         {% endfor %}
     </div>
     {% else %}
-    <p class="no-articles">No articles found.</p>
+    <p>No articles found.</p>
     {% endif %}
 {% endblock %}

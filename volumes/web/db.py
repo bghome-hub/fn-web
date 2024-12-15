@@ -198,6 +198,14 @@ def get_count_of_articles():
     conn.close()
     return count_of_articles
 
+def get_last_x_articles(x):
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute('''SELECT * FROM articles ORDER BY add_date DESC LIMIT ?''', (x,))
+    last_x_articles = cursor.fetchall()
+    conn.close()
+    return last_x_articles
+
 def execute_predefined_query(query_name):
     queries = {
         'get_all_articles': 'SELECT * FROM articles',

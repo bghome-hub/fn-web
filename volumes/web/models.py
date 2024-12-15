@@ -171,6 +171,22 @@ class Article:
         return db.get_count_of_articles()
         
 
+    @classmethod
+    def get_last_x_articles(cls, x: int) -> List['Article']:
+        """Returns the last x articles added to the database."""
+        rows = db.get_last_x_articles(x)
+        articles = []
+
+        for row in rows:
+            article = cls.create_from_id(row)
+            article.authors = Author.get_by_article_id(article.id)
+            article.citations = Citation.get_by_article_id(article.id)
+            article.images = Image.get_by_article_id(article.id)
+            article.figures = Figure.get_by_article_id(article.id)
+            articles.append(article)
+
+        return articles
+
 class Author:
     def __init__(self, number, name, institution_name, institution_address, email, article_id=None):
         self.number = number

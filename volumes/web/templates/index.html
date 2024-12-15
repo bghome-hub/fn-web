@@ -13,3 +13,12 @@
     <p id="processing-message" class="processing-message">Processing your request...</p>
     <div id="loading-spinner" class="spinner"></div>
 {% endblock %}
+
+{% block recent_articles %}
+    <h2>Recent Articles</h2>
+    <ul>
+        {% for article in article._get_last_x_articles(5) %}
+            <li><a href="{{ url_for('view_article', article_id=article.id) }}">{{ article.title }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
