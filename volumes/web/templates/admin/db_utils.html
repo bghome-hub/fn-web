@@ -12,8 +12,21 @@
         <option value="get_all_articles">Get All Articles</option>
         <option value="get_all_authors">Get All Authors</option>
         <option value="get_all_citations">Get All Citations</option>
+        <option value="get_all_images">Get All Images</option>
     </select>
     <button type="submit">Execute</button>
+</form>
+
+<h2>Backup Database</h2>
+<form method="GET" action="{{ url_for('db_backup') }}">
+    <button type="submit">Download Backup</button>
+</form>
+
+<h2>Restore Database</h2>
+<form method="POST" action="{{ url_for('db_restore') }}" enctype="multipart/form-data">
+    <label for="backup_file">Select Backup File:</label>
+    <input type="file" id="backup_file" name="backup_file" required>
+    <button type="submit">Restore</button>
 </form>
 
 {% if results %}

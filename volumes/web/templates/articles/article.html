@@ -6,10 +6,17 @@
 {% block content %}
 <h1 class="page-title">{{ article.title }}</h1>
 <div class="article-content">
-    <div class="article-section">
-        <p><strong>Journal:</strong> {{ article.journal }}</p>
-        <p><strong>DOI:</strong> {{ article.doi }}</p>
-        <p><strong>Abstract:</strong> {{ article.abstract }}</p>
+    <div class="article-section content-section">
+        <div class="info-container">
+            <p><strong>Journal:</strong> {{ article.journal }}</p>
+            <p><strong>DOI:</strong> {{ article.doi }}</p>
+            <p><strong>Abstract:</strong> {{ article.abstract }}</p>
+        </div>
+        <div class="image-container">
+            {% for image in article.images %}
+            <img src="{{ image.url }}" alt="{{ image.description }}" class="article-image">
+            {% endfor %}
+        </div>
     </div>
     <div class="article-section">
         <h2>Introduction</h2>
@@ -47,14 +54,6 @@
         <ul>
             {% for citation in article.citations %}
             <li>{{ citation.content }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-    <div class="article-section">
-        <h2>Images</h2>
-        <ul>
-            {% for image in article.images %}
-            <li>{{ image.description }} - <a href="{{ image.url }}">{{ image.url }}</a></li>
             {% endfor %}
         </ul>
     </div>

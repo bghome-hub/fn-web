@@ -1,6 +1,7 @@
 import json
 import requests
 import os
+import time
 
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://ollama-service:11434")
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "default-model")

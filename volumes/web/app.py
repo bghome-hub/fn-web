@@ -1,15 +1,18 @@
-from flask import Flask, request, jsonify, render_template, flash
+from flask import Flask, request, jsonify, render_template, flash, redirect, url_for, send_file
 import os
 from models import Article, Author, Citation, Figure, Image
 import db
+import time
+
 
 app = Flask(__name__)
-
 app.secret_key = os.getenv('FLASK_SECRET_KEY')
+app.PUBLIC_BASE_URL = os.getenv('PUBLIC_BASE_URL')
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    recent_articles = Article.get_last_x_articles(5)
+    return render_template('index.html', recent_articles=recent_articles)
 
 @app.route('/db_utils', methods=['GET', 'POST'])
 def db_utils():
@@ -43,9 +46,14 @@ def create_article():
         return jsonify({'error': 'Topic is required!'}), 400
     
     try:
+        # Create an article from the topic
         article = Article.create_from_topic(topic)
+        # Search for an image based on the topic
+        article.search_image()
+        # Save the article to the database
         article.save_to_db()
-        return jsonify({'message': 'Article created successfully!'}), 201
+        flash(f'Article created successfully! <a href="/view_article/{article.id}">View Article</a>', 'success')
+        return redirect(url_for('index'))
     
     except Exception as e:
         error_message = str(e)
@@ -61,6 +69,25 @@ def view_article(id):
     article = Article.get_by_id(id)
     return render_template('articles/article.html', article=article)
     
+# backup and restore routes
+@app.route('/db_backup', methods=['GET'])
+def db_backup():
+    backup_path = f'/tmp/db_backup_{int(time.time())}.db'
+    db.backup_db(backup_path)
+    return send_file(backup_path, as_attachment=True)
+
+@app.route('/db_restore', methods=['POST'])
+def db_restore():
+    backup_file = request.files['backup_file']
+    backup_path = os.path.join('/tmp', backup_file.filename)
+    backup_file.save(backup_path)
+    try:
+        db.restore_db(backup_path)
+        flash('Database restore successful!', 'success')
+    except Exception as e:
+        flash(f'Error during restore: {str(e)}', 'error')
+    return redirect(url_for('db_utils'))
+
 if __name__ == '__main__':
     # Initialize the database tables if not already created
     db.create_tables()

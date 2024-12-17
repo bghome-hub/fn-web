@@ -1,15 +1,38 @@
 # Description: This file contains the functions to interact with the SQLite database.
 import sqlite3
 from titlecase import titlecase
+import shutil
 import os
 
 
 # Get the path to the database file from the environment variable or use the default path
 DB_FILE = os.getenv("DB_FILE", "/db/db.db")
 
+
 # Connect to the SQLite database
 def connect_db():
-    return sqlite3.connect(DB_FILE)
+    conn = sqlite3.connect(DB_FILE)
+    conn.row_factory = sqlite3.Row
+    return conn
+
+# Backup and restore database functions
+def backup_db(backup_path):
+    shutil.copyfile(DB_FILE, backup_path)
+
+# Restore the database from a backup file
+def restore_db(backup_path):
+    shutil.copyfile(backup_path, DB_FILE)
+
+# Export the database to a SQL file
+def export_data(export_path):
+    conn = connect_db()
+    cursor = conn.cursor()
+    
+    with open(export_path, 'w') as f:
+        for line in conn.iterdump():
+            f.write('%s\n' % line)
+    
+    conn.close()    
 
 # Create the necessary tables in the database
 def create_tables():
@@ -45,7 +68,7 @@ def create_tables():
                        institution_address TEXT,
                        email TEXT,
                        add_date datetime DEFAULT CURRENT_TIMESTAMP,
-                       FOREIGN KEY(article_id) REFERENCES articles(id)
+                       FOREIGN KEY(article_id) REFERENCES articles(id) ON DELETE CASCADE
                        )''')
     
     # Citations table
@@ -55,7 +78,7 @@ def create_tables():
                        number INTEGER,
                        content TEXT,
                        add_date datetime DEFAULT CURRENT_TIMESTAMP,
-                       FOREIGN KEY(article_id) REFERENCES articles(id)
+                       FOREIGN KEY(article_id) REFERENCES articles(id) ON DELETE CASCADE
                        )''')
     
     # Images table
@@ -66,8 +89,9 @@ def create_tables():
                        description TEXT,
                        keywords TEXT,
                        url TEXT,
+                       local integer DEFAULT 0,
                        add_date datetime DEFAULT CURRENT_TIMESTAMP,
-                       FOREIGN KEY(article_id) REFERENCES articles(id)
+                       FOREIGN KEY(article_id) REFERENCES articles(id) ON DELETE CASCADE
                        )''')
     
     # Figures table (Fixed the missing closing parenthesis in the FOREIGN KEY constraint)
@@ -77,8 +101,9 @@ def create_tables():
                        number INTEGER,
                        description TEXT,
                        url TEXT,
+                       local integer DEFAULT 0,
                        add_date datetime DEFAULT CURRENT_TIMESTAMP,
-                       FOREIGN KEY(article_id) REFERENCES articles(id)
+                       FOREIGN KEY(article_id) REFERENCES articles(id) ON DELETE CASCADE
                        )''')
 
     conn.commit()
@@ -211,6 +236,7 @@ def execute_predefined_query(query_name):
         'get_all_articles': 'SELECT * FROM articles',
         'get_all_authors': 'SELECT * FROM authors',
         'get_all_citations': 'SELECT * FROM citations',
+        'get all_images': 'SELECT * FROM images'
     }
 
     query = queries.get(query_name)
@@ -225,3 +251,14 @@ def execute_predefined_query(query_name):
     conn.close()
 
     return {'columns': columns, 'data': data}
+
+'''
+DELETE functions and handle foreign key constraints
+'''
+
+def delete_article_by_id(id):
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute('''DELETE FROM articles WHERE id = ?''', (id,))
+    conn.commit()
+    conn.close()
