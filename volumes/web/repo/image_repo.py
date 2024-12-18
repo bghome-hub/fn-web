@@ -1,10 +1,17 @@
+import config
 import requests
-from models import Image
-import os
-import db
+from dataclasses import dataclass
+from typing import Optional, List
 
-IMAGE_URL = os.getenv('IMAGE_URL')
-IMAGE_API_KEY = os.getenv('IMAGE_API_KEY')
+from services.db import db
+from models.image import Image
+
+# Image Repository
+# This class is responsible for handling all database operations related to the Image model.
+class ImageRepository:
+    @staticmethod
+    def get_by_article_id(article_id: int) -> List[Image]:
+      
 
 def fetch_image_url(keywords):
     """Fetches the URL of an image based on the keywords."""
@@ -14,10 +21,10 @@ def fetch_image_url(keywords):
         "page": 1
     }
     headers = {
-        "Authorization": f"Client-ID {IMAGE_API_KEY}"
+        "Authorization": f"Client-ID {config.IMAGE_API_KEY}"
     }
 
-    response = requests.get(IMAGE_URL, headers=headers, params=params)
+    response = requests.get(config.image_url, headers=headers, params=params)
     response.raise_for_status()
 
     data = response.json()

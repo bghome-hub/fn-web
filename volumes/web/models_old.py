@@ -1,38 +1,3 @@
-from typing import Optional, List
-import requests
-import ollama
-import db
-import os
-
-IMAGE_URL = os.getenv('IMAGE_URL')
-IMAGE_API_KEY = os.getenv('IMAGE_API_KEY')
-
-
-class Article:
-    def __init__(self, prompt, input, title, journal, doi, abstract, intro, methodology, results, discussion, conclusion, keywords, id=None, authors=None, citations=None, images=None, figures=None, add_date=None, update_date=None):
-        self.prompt = prompt
-        self.input = input
-        self.title = title
-        self.journal = journal
-        self.doi = doi
-        self.abstract = abstract
-        self.intro = intro
-        self.methodology = methodology
-        self.results = results
-        self.discussion = discussion
-        self.conclusion = conclusion
-        self.keywords = keywords
-        self.id = id
-        self.add_date = add_date
-        self.update_date = update_date
-
-        self.authors = authors if authors else []
-        self.citations = citations if citations else []
-        self.images = images if images else []
-        self.figures = figures if figures else []
-
-    def __repr__(self):
-        return f"Article({self.title}, {len(self.authors)} authors, {len(self.citations)} citations)"
 
     @classmethod
     def create_from_topic(cls, topic):

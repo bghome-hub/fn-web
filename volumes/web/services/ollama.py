@@ -1,10 +1,7 @@
 import json
 import requests
-import os
 import time
-
-OLLAMA_URL = os.getenv("OLLAMA_URL", "http://ollama-service:11434")
-OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "default-model")
+from config import config
 
 # Define the function to generate an article using the Ollama model
 def query_ollama(topic, max_retries=3):
@@ -27,7 +24,10 @@ def query_ollama(topic, max_retries=3):
           "results": "string: summary of research findings",
           "discussion": "string: discussion of results and implications",
           "conclusion": "string: summary of conclusions",
-          "keywords": "string: keyword related to the topic for image search",
+          "keywords": [
+          { "keyword": "string: keyword 1 related to the topic for image search" }
+          { "keyword": "string: keyword 2 related to the topic for image search" }
+          ],
           "citations": [
             {
               "content": "string: APA-formatted source 1"
@@ -57,6 +57,21 @@ def query_ollama(topic, max_retries=3):
               "institution_name": "string: <realistic, relevant insitution name>",
               "institution_address": "string: <realistic,  institution address",
               "email": "string: <realistic author email>"
+            },
+            "figures": [
+            {
+              "description: "string: description of figure 1 ",
+              "xaxis_title": "string: title of x-axis 1",
+              "xaxis_value": "integer: value of x-axis 1",
+              "yaxis_title": "string: title of y-axis 1",
+              "yaxis_value": "integer: value of y-axis 1"
+            },
+                        {
+              "description: "string: description of figure 2",
+              "xaxis_title": "string: title of x-axis 2",
+              "xaxis_value": "integer: value of x-axis 2",
+              "yaxis_title": "string: title of y-axis 2",
+              "yaxis_value": "integer: value of y-axis 2"
             }
           ]
         }'''
@@ -67,9 +82,9 @@ def query_ollama(topic, max_retries=3):
     while retries < max_retries:
         try:
             response = requests.post(
-                f"{OLLAMA_URL}/api/generate",
+                f"{config.OLLAMA_URL}/api/generate",
                 json={
-                "model": OLLAMA_MODEL,
+                "model": config.OLLAMA_MODEL,
                 "prompt": prompt,
                 "stream": False
               })
