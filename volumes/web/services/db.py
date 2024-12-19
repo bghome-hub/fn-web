@@ -48,8 +48,8 @@ def create_tables():
                        results TEXT, 
                        discussion TEXT, 
                        conclusion TEXT,
-                       prompt TEXT,
                        user_input TEXT,
+                       prompt TEXT,
                        add_date datetime DEFAULT CURRENT_TIMESTAMP
                        )''')
     
@@ -99,7 +99,7 @@ def create_tables():
                        article_id INTEGER,
                        guid TEXT,
                        number INTEGER,
-                       tite: TEXT,
+                       title TEXT,
                        description TEXT,
                        url TEXT,
                        xaxis_title TEXT,
@@ -115,4 +115,3 @@ def create_tables():
 
 # initialize the database tables
 create_tables()
-

@@ -10,8 +10,6 @@ import uuid
 @dataclass
 class Article:
     guid: Optional[str] = None
-    prompt: Optional[str] = None
-    user_input: Optional[str] = None
     title: Optional[str] = None
     journal: Optional[str] = None
     doi: Optional[str] = None
@@ -22,6 +20,8 @@ class Article:
     discussion: Optional[str] = None
     conclusion: Optional[str] = None
     article_id: Optional[int] = None
+    user_input: Optional[str] = None
+    prompt: Optional[str] = None
     add_date: Optional[str] = None
     authors: List[Author] = field(default_factory=list)
     citations: List[Citation] = field(default_factory=list)

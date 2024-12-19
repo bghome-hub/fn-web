@@ -8,5 +8,145 @@ from models.figure import Figure
 # This class is responsible for handling all database operations related to the Figure model.
 class FigureRepository:
     @staticmethod
-    def get_by_article_id(article_id: int) -> List[Figure]:
-      
+    def fetch_by_figure_id(figure_id: int) -> Optional[Figure]:
+        '''Fetches a figure from the database by ID.'''
+        conn = db.get_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM figures WHERE id = ?", (figure_id,))
+        row = cursor.fetchone()
+        cursor.close()
+        if row is None:
+            return None
+
+        return Figure(
+            figure_id=row["figure_id"],
+            article_id=row["article_id"],
+            guid=row["guid"],
+            number=row["number"],
+            title=row["title"],
+            description=row["description"],
+            url=row["url"],
+            xaxis_title=row["xaxis_title"],
+            xaxis_value=row["xaxis_value"],
+            yaxis_title=row["yaxis_title"],
+            yaxis_value=row["yaxis_value"],
+            local=row["local"],
+            add_date=row["add_date"]
+        )
+    
+    @staticmethod
+    def fetch_all_by_article_id(article_id: int) -> List[Figure]:
+        '''Fetches all figures for a given article.'''
+        conn = db.get_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM figures WHERE article_id = ?", (article_id,))
+        rows = cursor.fetchall()
+        cursor.close()
+        figures = []
+        for row in rows:
+            figures.append(Figure(
+                figure_id=row["figure_id"],
+                article_id=row["article_id"],
+                guid=row["guid"],
+                number=row["number"],
+                title=row["title"],
+                description=row["description"],
+                url=row["url"],
+                xaxis_title=row["xaxis_title"],
+                xaxis_value=row["xaxis_value"],
+                yaxis_title=row["yaxis_title"],
+                yaxis_value=row["yaxis_value"],
+                local=row["local"],
+                add_date=row["add_date"]
+            ))
+        return figures
+    
+    @staticmethod
+    def fetch_all() -> List[Figure]:
+        '''Fetches all figures from the database.'''
+        conn = db.get_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM figures")
+        rows = cursor.fetchall()
+        cursor.close()
+        figures = []
+        for row in rows:
+            figures.append(Figure(
+                figure_id=row["figure_id"],
+                article_id=row["article_id"],
+                guid=row["guid"],
+                number=row["number"],
+                title=row["title"],
+                description=row["description"],
+                url=row["url"],
+                xaxis_title=row["xaxis_title"],
+                xaxis_value=row["xaxis_value"],
+                yaxis_title=row["yaxis_title"],
+                yaxis_value=row["yaxis_value"],
+                local=row["local"],
+                add_date=row["add_date"]
+            ))
+        return figures
+    
+    @staticmethod
+    def insert(figure: Figure) -> None:
+        '''Inserts a figure into the database.'''
+        conn = db.get_connection()
+        cursor = conn.cursor()
+        cursor.execute('''
+            INSERT INTO figures (article_id, guid, number, title, description, url, xaxis_title, xaxis_value, yaxis_title, yaxis_value, local, add_date)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (
+            figure.article_id,
+            figure.guid,
+            figure.number,
+            figure.title,
+            figure.description,
+            figure.url,
+            figure.xaxis_title,
+            figure.xaxis_value,
+            figure.yaxis_title,
+            figure.yaxis_value,
+            figure.local,
+            figure.add_date
+        ))
+        conn.commit()
+        cursor.close()
+
+    @staticmethod
+    def update(figure: Figure) -> None:
+        '''Updates a figure in the database.'''
+        conn = db.get_connection()
+        cursor = conn.cursor()
+        cursor.execute('''
+            UPDATE figures
+            SET article_id = ?, guid = ?, number = ?, title = ?, description = ?, url = ?, xaxis_title = ?, xaxis_value = ?, yaxis_title = ?, yaxis_value = ?, local = ?, add_date = ?
+            WHERE figure_id = ?
+        ''', (
+            figure.article_id,
+            figure.guid,
+            figure.number,
+            figure.title,
+            figure.description,
+            figure.url,
+            figure.xaxis_title,
+            figure.xaxis_value,
+            figure.yaxis_title,
+            figure.yaxis_value,
+            figure.local,
+            figure.add_date,
+            figure.figure_id
+        ))
+        conn.commit()
+        cursor.close()
+
+    @staticmethod
+    def delete(figure_id: int) -> None:
+        '''Deletes a figure from the database.'''
+        conn = db.get_connection()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM figures WHERE figure_id = ?", (figure_id,))
+        conn.commit()
+        cursor.close()
+
+    

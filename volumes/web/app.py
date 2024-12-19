@@ -1,9 +1,7 @@
 from flask import Flask, request, jsonify, render_template, flash, redirect, url_for, send_file
-import os
-from models import Article, Author, Citation, Figure, Image
-import db
-import time
-
+import os, time
+from models.article import Article
+import services.db as db
 
 app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY')

@@ -10,46 +10,131 @@ from models.image import Image
 # This class is responsible for handling all database operations related to the Image model.
 class ImageRepository:
     @staticmethod
-    def get_by_article_id(article_id: int) -> List[Image]:
-      
+    def fetch_by_image_id(image_id: int) -> Optional[Image]:
+        """Fetches an image from the database by ID."""
+        conn = db.get_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM images WHERE id = ?", (image_id,))
+        row = cursor.fetchone()
+        cursor.close()
+        if row is None:
+            return None
+        
+        return Image(
+            image_id=row["image_id"],
+            article_id=row["article_id"],
+            guid=row["guid"],
+            number=row["number"],
+            title=row["title"],
+            description=row["description"],
+            keyword=row["keyword"],
+            url=row["url"],
+            local=row["local"],
+            add_date=row["add_date"]
+        )
 
-def fetch_image_url(keywords):
-    """Fetches the URL of an image based on the keywords."""
-    params = {
-        "query": keywords,
-        "per_page": 1,  # Only fetch one result to ensure top relevance
-        "page": 1
-    }
-    headers = {
-        "Authorization": f"Client-ID {config.IMAGE_API_KEY}"
-    }
+    @staticmethod
+    def fetch_all_by_article_id(article_id: int) -> List[Image]:
+        """Fetches all images for a given article."""
+        conn = db.get_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM images WHERE article_id = ?", (article_id,))
+        rows = cursor.fetchall()
+        cursor.close()
+        images = []
+        for row in rows:
+            images.append(Image(
+                image_id=row["image_id"],
+                article_id=row["article_id"],
+                guid=row["guid"],
+                number=row["number"],
+                title=row["title"],
+                description=row["description"],
+                keyword=row["keyword"],
+                url=row["url"],
+                local=row["local"],
+                add_date=row["add_date"]
+            ))
+        return images
+    
+    @staticmethod
+    def fetch_all() -> List[Image]:
+        """Fetches all images from the database."""
+        conn = db.get_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM images")
+        rows = cursor.fetchall()
+        cursor.close()
+        images = []
+        for row in rows:
+            images.append(Image(
+                image_id=row["image_id"],
+                article_id=row["article_id"],
+                guid=row["guid"],
+                number=row["number"],
+                title=row["title"],
+                description=row["description"],
+                keyword=row["keyword"],
+                url=row["url"],
+                local=row["local"],
+                add_date=row["add_date"]
+            ))
+        return images
+    
+    @staticmethod
+    def insert(image: Image) -> int:
+        """Inserts an image into the database."""
+        conn = db.get_connection()
+        cursor = conn.cursor()
+        cursor.execute('''
+            INSERT INTO images (article_id, guid, number, title, description, keyword, url, local, add_date)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (
+            image.article_id,
+            image.guid,
+            image.number,
+            image.title,
+            image.description,
+            image.keyword,
+            image.url,
+            image.local,
+            image.add_date
+        ))
+        conn.commit()
+        image_id = cursor.lastrowid
+        cursor.close()
+        return image_id
+    
+    @staticmethod
+    def update(image: Image) -> None:
+        """Updates an image in the database."""
+        conn = db.get_connection()
+        cursor = conn.cursor()
+        cursor.execute('''
+            UPDATE images
+            SET article_id = ?, guid = ?, number = ?, title = ?, description = ?, keyword = ?, url = ?, local = ?, add_date = ?
+            WHERE image_id = ?
+        ''', (
+            image.article_id,
+            image.guid,
+            image.number,
+            image.title,
+            image.description,
+            image.keyword,
+            image.url,
+            image.local,
+            image.add_date,
+            image.image_id
+        ))
+        conn.commit()
+        cursor.close()
 
-    response = requests.get(config.image_url, headers=headers, params=params)
-    response.raise_for_status()
+    @staticmethod
+    def delete(image_id: int) -> None:
+        """Deletes an image from the database."""
+        conn = db.get_connection()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM images WHERE image_id = ?", (image_id,))
+        conn.commit()
+        cursor.close()
 
-    data = response.json()
-    results = data.get("results", [])
-    if not results:
-        return None  # No results found
-
-    # Return the URL of the topmost image result
-    return results[0]["urls"]["regular"]
-
-def create_image(article_id, number, description, keywords, local, url):
-    return Image(article_id, number, description, keywords, local, url)
-
-def save_image(image):
-    db.insert_image(image)
-
-def create_image_for_article(article_id, description, keywords, url):
-    """Creates an Image object and inserts it into the database."""
-    image = Image(
-        number=None,  # Set based on your logic (or count existing images for the article)
-        description=description,
-        keywords=keywords,
-        url=url,
-        article_id=article_id
-    )
-
-    # Insert image into the database
-    db.insert_image(image)
