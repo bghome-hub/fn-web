@@ -10,10 +10,10 @@
         {% for article in articles %}
         <div class="article-card">
             <h2 class="all-article-article-input">
-                <a href="{{ url_for('view_article', id=article.id) }}">{{ article.input }}</a>
+                <a href="{{ url_for('view_article', article_id=article.article_id) }}">{{ article.input }}</a>
             </h2>
             <h2 class="all-article-article-title">
-                <a href="{{ url_for('view_article', id=article.id) }}">{{ article.title }}</a>
+                <a href="{{ url_for('view_article', article_id=article.article_id) }}">{{ article.title }}</a>
             </h2>
             <p class="all-article-article-journal"><strong>Journal:</strong> {{ article.journal }}</p>
             {% if article.authors %}
@@ -26,7 +26,7 @@
             {% if article.abstract %}
             <p class="all-article-article-abstract">{{ article.abstract[:150] }}...</p>
             {% endif %}
-            <a href="{{ url_for('view_article', id=article.id) }}" class="btn read-more">Read More</a>
+            <a href="{{ url_for('view_article', article_id=article.article_id) }}" class="btn read-more">Read More</a>
         </div>
         {% endfor %}
     </div>

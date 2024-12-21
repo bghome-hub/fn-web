@@ -16,6 +16,7 @@ class Figure:
     yaxis_value: Optional[int] = None
     figure_id: Optional[int] = None
     article_id: Optional[int] = None
+    img_base64: Optional[str] = None
     add_date: Optional[str] = None
 
     def __post_init__(self):

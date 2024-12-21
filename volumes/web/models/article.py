@@ -14,11 +14,12 @@ class Article:
     journal: Optional[str] = None
     doi: Optional[str] = None
     abstract: Optional[str] = None
-    intro: Optional[str] = None 
+    introduction: Optional[str] = None 
     methodology: Optional[str] = None   
     results: Optional[str] = None  
     discussion: Optional[str] = None
     conclusion: Optional[str] = None
+    keywords: Optional[str] = None
     article_id: Optional[int] = None
     user_input: Optional[str] = None
     prompt: Optional[str] = None
@@ -30,7 +31,7 @@ class Article:
 
     def __post_init__(self):
         if self.guid is None:
-            self.guid = uuid.uuid4()
+            self.guid = str(uuid.uuid4())
 
     def __repr__(self):
         return f"Article(id={self.article_id}, title={self.title})"

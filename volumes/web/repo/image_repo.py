@@ -1,9 +1,10 @@
-import config
+from config import config
 import requests
 from dataclasses import dataclass
 from typing import Optional, List
+from config import config 
 
-from services.db import db
+from services import db_service as db
 from models.image import Image
 
 # Image Repository
@@ -12,9 +13,9 @@ class ImageRepository:
     @staticmethod
     def fetch_by_image_id(image_id: int) -> Optional[Image]:
         """Fetches an image from the database by ID."""
-        conn = db.get_connection()
+        conn = db.connect_db()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM images WHERE id = ?", (image_id,))
+        cursor.execute("SELECT * FROM images WHERE image_id = ?", (image_id,))
         row = cursor.fetchone()
         cursor.close()
         if row is None:
@@ -36,7 +37,7 @@ class ImageRepository:
     @staticmethod
     def fetch_all_by_article_id(article_id: int) -> List[Image]:
         """Fetches all images for a given article."""
-        conn = db.get_connection()
+        conn = db.connect_db()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM images WHERE article_id = ?", (article_id,))
         rows = cursor.fetchall()
@@ -60,7 +61,7 @@ class ImageRepository:
     @staticmethod
     def fetch_all() -> List[Image]:
         """Fetches all images from the database."""
-        conn = db.get_connection()
+        conn = db.connect_db()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM images")
         rows = cursor.fetchall()
@@ -84,7 +85,7 @@ class ImageRepository:
     @staticmethod
     def insert(image: Image) -> int:
         """Inserts an image into the database."""
-        conn = db.get_connection()
+        conn = db.connect_db()
         cursor = conn.cursor()
         cursor.execute('''
             INSERT INTO images (article_id, guid, number, title, description, keyword, url, local, add_date)
@@ -108,7 +109,7 @@ class ImageRepository:
     @staticmethod
     def update(image: Image) -> None:
         """Updates an image in the database."""
-        conn = db.get_connection()
+        conn = db.connect_db()
         cursor = conn.cursor()
         cursor.execute('''
             UPDATE images
@@ -132,9 +133,8 @@ class ImageRepository:
     @staticmethod
     def delete(image_id: int) -> None:
         """Deletes an image from the database."""
-        conn = db.get_connection()
+        conn = db.connect_db()
         cursor = conn.cursor()
         cursor.execute("DELETE FROM images WHERE image_id = ?", (image_id,))
         conn.commit()
         cursor.close()
-

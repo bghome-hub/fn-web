@@ -1,24 +1,33 @@
 from flask import Flask, request, jsonify, render_template, flash, redirect, url_for, send_file
 import os, time
-from models.article import Article
-import services.db as db
+from config import config
+from services import db_service as db
+from services.db_utils import ensure_tables_created
+
+from models import article, citation, figure, image
+from repo.article_repo import ArticleRepository
+from services.article_service import save_article_from_ollama_response
 
 app = Flask(__name__)
-app.secret_key = os.getenv('FLASK_SECRET_KEY')
-app.PUBLIC_BASE_URL = os.getenv('PUBLIC_BASE_URL')
+app.secret_key = config.FLASK_SECRET_KEY
+app.PUBLIC_BASE_URL = config.PUBLIC_BASE_URL
+
+@app.before_request
+def before_request():
+    ensure_tables_created()
 
 @app.route('/')
 def index():
-    recent_articles = Article.get_last_x_articles(5)
+    recent_articles = ArticleRepository.fetch_last_x_articles(5)
     return render_template('index.html', recent_articles=recent_articles)
 
 @app.route('/db_utils', methods=['GET', 'POST'])
 def db_utils():
-    results = None
+    rows = None
     if request.method == 'POST':
-        query_name = request.form.get('query_name')
-        results = db.execute_predefined_query(query_name)
-    return render_template('admin/db_utils.html', results=results)
+        tablename = request.form.get('table_name')
+        rows = db.executePredefinedStatement(tablename)
+    return render_template('admin/db_utils.html', results=rows)
 
 @app.route('/tos')
 def tos():
@@ -26,45 +35,40 @@ def tos():
 
 @app.route('/all_articles')
 def all_articles():
-    articles = Article.get_all()
+    articles = ArticleRepository.fetch_all()
     return render_template('articles/all_articles.html', articles=articles)
 
 # get count of articles
 @app.route('/count_articles')
 def count_articles():
-    count = Article.count()
+    count = ArticleRepository.count_articles()
     return jsonify(count)
 
 # create article route
-@app.route('/create_article', methods=['POST'])
-def create_article():
-
-    topic = request.form.get('topic')
-    if not topic:
-        return jsonify({'error': 'Topic is required!'}), 400
+@app.route('/generate_article', methods=['POST'])
+def generate_article():
     
-    try:
-        # Create an article from the topic
-        article = Article.create_from_topic(topic)
-        # Search for an image based on the topic
-        article.search_image()
-        # Save the article to the database
-        article.save_to_db()
-        flash(f'Article created successfully! <a href="/view_article/{article.id}">View Article</a>', 'success')
+    # Get the topic from the form
+    topic = request.form.get('topic')
+
+    if not topic:
+        flash('Please provide a topic for the article.', 'error')
         return redirect(url_for('index'))
+
+    # Save the article
+    try:
+        article_id = save_article_from_ollama_response(topic)
+        flash('Article generated successfully!', 'success')
+        return redirect(url_for('view_article', article_id=article_id))
     
     except Exception as e:
-        error_message = str(e)
-        if("Max reties exceeded" in error_message):
-            flash("Max retries exceeded for Ollama request.")
-        else:
-            flash(f"Error {error_message}", "error")
-        return render_template('index.html'), 500
+        flash(f'Error generating article: {str(e)}', 'error')
+        return redirect(url_for('index'))
 
 # view_article route
-@app.route('/view_article/<int:id>')
-def view_article(id):
-    article = Article.get_by_id(id)
+@app.route('/view_article/<int:article_id>')
+def view_article(article_id):
+    article = ArticleRepository.fetch_by_article_id(article_id)
     return render_template('articles/article.html', article=article)
     
 # backup and restore routes

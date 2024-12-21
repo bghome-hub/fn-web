@@ -3,11 +3,12 @@ import sqlite3
 from titlecase import titlecase
 import shutil
 
-from config import config
+from config import config 
 
 # Connect to the SQLite database
 def connect_db():
     conn = sqlite3.connect(config.DB_FILE)
+    conn.execute("PRAGMA foreign_keys = ON")
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -43,11 +44,12 @@ def create_tables():
                        journal TEXT,
                        doi TEXT,
                        abstract TEXT, 
-                       intro TEXT, 
+                       introduction TEXT, 
                        methodology TEXT, 
                        results TEXT, 
                        discussion TEXT, 
                        conclusion TEXT,
+                       keywords TEXT,
                        user_input TEXT,
                        prompt TEXT,
                        add_date datetime DEFAULT CURRENT_TIMESTAMP
@@ -107,11 +109,29 @@ def create_tables():
                        yaxis_title TEXT,
                        yaxis_value INTEGER,
                        local integer DEFAULT 0,
+                       img_base64 TEXT,
                        add_date datetime DEFAULT CURRENT_TIMESTAMP,
                        FOREIGN KEY(article_id) REFERENCES articles(article_id) ON DELETE CASCADE
                        )''')
 
     conn.commit()
+    conn.close()
 
-# initialize the database tables
-create_tables()
+def executePredefinedStatement(tablename: str):
+    conn = connect_db()
+    cursor = conn.cursor()
+    query = f"SELECT * FROM {tablename}"
+    cursor.execute(query)
+    rows = cursor.fetchall()
+    columns = [description[0] for description in cursor.description]
+    cursor.close()
+    conn.close()
+    return {"columns": columns, "data": rows}
+
+
+def executePreparedStatement(sql, values):
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute(sql, values)
+    conn.commit()
+    conn.close()

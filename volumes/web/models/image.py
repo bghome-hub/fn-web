@@ -4,12 +4,12 @@ import uuid
 
 @dataclass    
 class Image:
+    keyword: str        
     image_id: Optional[int] = None
     guid: Optional[str] = None
     number: Optional[int] = None
     title: Optional[str] = None
     description: Optional[str] = None
-    keyword: Optional[str] = None
     url: Optional[str] = None
     local: Optional[int] = 0
     image_id: Optional[int] = None
@@ -22,4 +22,3 @@ class Image:
 
     def __repr__(self):
         return f"Image(id={self.image_id}, url={self.title})"
-    

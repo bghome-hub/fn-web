@@ -5,7 +5,7 @@
 
 {% block content %}
     <h1>Generate an Article</h1>
-    <form id="generate-form" method="POST" action="{{ url_for('create_article') }}">
+    <form id="generate-form" method="POST" action="{{ url_for('generate_article') }}">
         <label for="topic">Enter a topic:</label>
         <input type="text" id="topic" name="topic" placeholder="Enter a topic..." required>
         <button type="submit" id="submit-btn">Submit</button>
@@ -20,7 +20,7 @@
         {% for article in recent_articles %}
         <div class="recent-article-card">
             <h3 class="recent-article-input">
-                <a href="{{ url_for('view_article', id=article.id) }}">{{ article.input }}</a>
+                <a href="{{ url_for('view_article', article_id=article.article_id) }}">{{ article.title }}</a>
             </h3>
         </div>
         {% endfor %}

@@ -6,21 +6,24 @@
 {% block content %}
 <h1 class="page-title">{{ article.title }}</h1>
 <div class="article-content">
-    <div class="article-section content-section">
-        <div class="info-container">
+    <div class="info-container">
+        <div class="text-content">
             <p><strong>Journal:</strong> {{ article.journal }}</p>
             <p><strong>DOI:</strong> {{ article.doi }}</p>
-            <p><strong>Abstract:</strong> {{ article.abstract }}</p>
-        </div>
-        <div class="image-container">
-            {% for image in article.images %}
-            <img src="{{ image.url }}" alt="{{ image.description }}" class="article-image">
-            {% endfor %}
+            <p><strong>Abstract:</strong>
+                {% if article.images|length > 0 %}
+                <img src="{{ article.images[0].url }}" alt="{{ article.images[0].description }}" class="article-image-left">
+                {% endif %}
+                {{ article.abstract }}
+                {% if article.images|length > 1 %}
+                <img src="{{ article.images[1].url }}" alt="{{ article.images[1].description }}" class="article-image-right">
+                {% endif %}
+            </p>
         </div>
     </div>
     <div class="article-section">
         <h2>Introduction</h2>
-        <p>{{ article.intro }}</p>
+        <p>{{ article.introduction }}</p>
     </div>
     <div class="article-section">
         <h2>Methodology</h2>
