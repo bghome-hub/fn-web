@@ -64,7 +64,10 @@
         <h2>Figures</h2>
         <ul>
             {% for figure in article.figures %}
-            <li>{{ figure.description }} - <a href="{{ figure.url }}">{{ figure.url }}</a></li>
+                <li>
+                    <p>{{ figure.description }}</p>
+                    <img src="data:image/png;base64,{{ figure.img_base64 }}" alt="{{ figure.description }}" style="width: 200px; height: auto;">
+                </li>
             {% endfor %}
         </ul>
     </div>

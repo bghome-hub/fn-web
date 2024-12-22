@@ -5,7 +5,7 @@ from models.image import Image
 
 # fetches an image from the Unsplash API based on a given keyword
 def find_image(keyword: str) -> Image:
-    print(f"Finding image for keyword: {keyword}")
+
     params = {
         "query": keyword,
         "per_page": 1,  # Only fetch one result to ensure top relevance

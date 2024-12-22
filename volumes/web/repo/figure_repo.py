@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from typing import Optional, List
+import base64
 
 from services import db_service as db
 from models.figure import Figure
@@ -31,7 +32,7 @@ class FigureRepository:
             yaxis_title=row["yaxis_title"],
             yaxis_value=row["yaxis_value"],
             local=row["local"],
-            img_base64 = row["img_base64"],
+            img_base64=row["img_base64"],
             add_date=row["add_date"]
         )
     
@@ -58,7 +59,7 @@ class FigureRepository:
                 yaxis_title=row["yaxis_title"],
                 yaxis_value=row["yaxis_value"],
                 local=row["local"],
-                img_base64 = row["img_base64"],
+                img_base64=row["img_base64"],
                 add_date=row["add_date"]
             ))
         return figures
@@ -86,7 +87,7 @@ class FigureRepository:
                 yaxis_title=row["yaxis_title"],
                 yaxis_value=row["yaxis_value"],
                 local=row["local"],
-                img_base64 = row["img_base64"],
+                img_base64=row["img_base64"],
                 add_date=row["add_date"]
             ))
         return figures

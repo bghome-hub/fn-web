@@ -7,18 +7,10 @@ from repo.figure_repo import FigureRepository
 
 # pass Figure, return base64 encoded image
 def create_chart(figure: Figure) -> str:
-    """
-    Create a chart using the given x and y axis values and labels from the Figure object.
-    Save the resulting image to a file or store it in the database.
-    
-    Args:
-        figure (Figure): The Figure object containing the chart data.
-    
-    Returns:
-        str: The base64 encoded image string.
-    """
+    '''Creates a chart from a Figure object and returns it as a base64 encoded image.'''
     # Create the plot
     plt.figure(figsize=(10, 6))
+
     plt.plot(figure.xaxis_value, figure.yaxis_value, marker='o')
     plt.title(figure.description)
     plt.xlabel(figure.xaxis_title)
@@ -34,3 +26,5 @@ def create_chart(figure: Figure) -> str:
     img_base64 = base64.b64encode(img_buffer.getvalue()).decode('utf-8')
         
     return img_base64
+
+
