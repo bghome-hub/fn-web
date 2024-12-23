@@ -72,7 +72,6 @@ body {
 .navbar-brand {
   display: flex;
   align-items: center;
-  /* Corrected */
   color: #ecf0f1;
   text-decoration: none;
   font-size: 24px;
@@ -196,7 +195,6 @@ a {
 a:hover {
   color: #2980b9;
   transform: scale(1.05);
-  text-decoration: underline;
 }
 
 /* Form Styles */
