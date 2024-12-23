@@ -561,6 +561,26 @@ textarea:focus {
   transform: scale(1.05);
 }
 
+/* Delete Article Button */
+.btn.delete-article {
+  align-self: flex-start;
+  padding: 12px 24px;
+  background-color: #e74c3c;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  font-weight: 500;
+}
+
+.btn.delete-article:hover {
+  background-color: #c0392b;
+  transform: scale(1.05);
+}
+
 /* No Articles Message */
 .no-articles {
   text-align: center;
@@ -788,4 +808,58 @@ textarea:focus {
 .article-section ul {
   list-style-type: disc;
   padding-left: 20px;
+}
+
+
+
+/* Common Button Base */
+.btn.read-more,
+.btn.delete-article {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  font-size: 1em;
+  font-weight: 500;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  line-height: 1.2; /* unify line-height */
+}
+
+/* Variants */
+.btn.read-more {
+  background-color: #2980b9;
+}
+.btn.read-more:hover {
+  background-color: #1f6391;
+  transform: scale(1.05);
+}
+
+.btn.delete-article {
+  background-color: #e74c3c;
+}
+.btn.delete-article:hover {
+  background-color: #c0392b;
+  transform: scale(1.05);
+}
+
+/* Unified Media Queries */
+@media (max-width: 768px) {
+  .btn.read-more,
+  .btn.delete-article {
+    padding: 10px 20px;
+    font-size: 0.95em;
+  }
+}
+
+@media (max-width: 480px) {
+  .btn.read-more,
+  .btn.delete-article {
+    padding: 8px 16px;
+    font-size: 0.9em;
+  }
 }

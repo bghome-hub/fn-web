@@ -71,6 +71,12 @@ def view_article(article_id):
     article = ArticleRepository.fetch_by_article_id(article_id)
     return render_template('articles/article.html', article=article)
     
+# delete_article route
+@app.route('/delete_article/<int:article_id>', methods=['DELETE'])
+def delete_article(article_id):
+    ArticleRepository.delete(article_id)
+    return jsonify({'success': True})
+
 # backup and restore routes
 @app.route('/db_backup', methods=['GET'])
 def db_backup():

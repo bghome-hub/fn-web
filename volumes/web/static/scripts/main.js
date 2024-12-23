@@ -18,7 +18,26 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    
+    document.querySelectorAll('.delete-article').forEach(button => {
+        button.addEventListener('click', function() {
+            const articleId = this.getAttribute('data-article-id');
+            if (confirm('Are you sure you want to delete this article?')) {
+                fetch(`/delete_article/${articleId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    } else {
+                        alert('Failed to delete the article.');
+                    }
+                });
+            }
+        });
+    });
 
     // Close menu when clicking outside
     overlay.addEventListener('click', function() {
