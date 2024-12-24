@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 from typing import Optional, List
 import base64
+import json
 
-from services import db_service as db
+from services import db_service_article as article_db
 from models.figure import Figure
 
 # Figure Repository
@@ -11,7 +12,7 @@ class FigureRepository:
     @staticmethod
     def fetch_by_figure_id(figure_id: int) -> Optional[Figure]:
         '''Fetches a figure from the database by ID.'''
-        conn = db.connect_db()
+        conn = article_db.connect_db()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM figures WHERE figure_id = ?", (figure_id,))
         row = cursor.fetchone()
@@ -28,9 +29,9 @@ class FigureRepository:
             description=row["description"],
             url=row["url"],
             xaxis_title=row["xaxis_title"],
-            xaxis_value=row["xaxis_value"],
+            xaxis_value=json.loads(row["xaxis_value"]),
             yaxis_title=row["yaxis_title"],
-            yaxis_value=row["yaxis_value"],
+            yaxis_value=json.loads(row["yaxis_value"]),
             local=row["local"],
             img_base64=row["img_base64"],
             add_date=row["add_date"]
@@ -39,7 +40,7 @@ class FigureRepository:
     @staticmethod
     def fetch_all_by_article_id(article_id: int) -> List[Figure]:
         '''Fetches all figures for a given article.'''
-        conn = db.connect_db()
+        conn = article_db.connect_db()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM figures WHERE article_id = ?", (article_id,))
         rows = cursor.fetchall()
@@ -55,9 +56,9 @@ class FigureRepository:
                 description=row["description"],
                 url=row["url"],
                 xaxis_title=row["xaxis_title"],
-                xaxis_value=row["xaxis_value"],
+                xaxis_value=json.loads(row["xaxis_value"]),
                 yaxis_title=row["yaxis_title"],
-                yaxis_value=row["yaxis_value"],
+                yaxis_value=json.loads(row["yaxis_value"]),
                 local=row["local"],
                 img_base64=row["img_base64"],
                 add_date=row["add_date"]
@@ -67,7 +68,7 @@ class FigureRepository:
     @staticmethod
     def fetch_all() -> List[Figure]:
         '''Fetches all figures from the database.'''
-        conn = db.connect_db()
+        conn = article_db.connect_db()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM figures")
         rows = cursor.fetchall()
@@ -83,9 +84,9 @@ class FigureRepository:
                 description=row["description"],
                 url=row["url"],
                 xaxis_title=row["xaxis_title"],
-                xaxis_value=row["xaxis_value"],
+                xaxis_value=json.loads(row["xaxis_value"]),
                 yaxis_title=row["yaxis_title"],
-                yaxis_value=row["yaxis_value"],
+                yaxis_value=json.loads(row["yaxis_value"]),
                 local=row["local"],
                 img_base64=row["img_base64"],
                 add_date=row["add_date"]
@@ -95,7 +96,7 @@ class FigureRepository:
     @staticmethod
     def insert(figure: Figure) -> None:
         '''Inserts a figure into the database.'''
-        conn = db.connect_db()
+        conn = article_db.connect_db()
         cursor = conn.cursor()
         cursor.execute('''
             INSERT INTO figures (article_id, guid, number, title, description, url, xaxis_title, xaxis_value, yaxis_title, yaxis_value, local, img_base64)
@@ -108,9 +109,9 @@ class FigureRepository:
             figure.description,
             figure.url,
             figure.xaxis_title,
-            figure.xaxis_value,
+            json.dumps(figure.xaxis_value),
             figure.yaxis_title,
-            figure.yaxis_value,
+            json.dumps(figure.yaxis_value),
             figure.local,
             figure.img_base64
         ))
@@ -120,7 +121,7 @@ class FigureRepository:
     @staticmethod
     def update(figure: Figure) -> None:
         '''Updates a figure in the database.'''
-        conn = db.connect_db()
+        conn = article_db.connect_db()
         cursor = conn.cursor()
         cursor.execute('''
             UPDATE figures
@@ -134,9 +135,9 @@ class FigureRepository:
             figure.description,
             figure.url,
             figure.xaxis_title,
-            figure.xaxis_value,
+            json.dumps(figure.xaxis_value),
             figure.yaxis_title,
-            figure.yaxis_value,
+            json.dumps(figure.yaxis_value),
             figure.local,
             figure.img_base64,
             figure.figure_id
@@ -147,7 +148,7 @@ class FigureRepository:
     @staticmethod
     def delete(figure_id: int) -> None:
         '''Deletes a figure from the database.'''
-        conn = db.connect_db()
+        conn = article_db.connect_db()
         cursor = conn.cursor()
         cursor.execute("DELETE FROM figures WHERE figure_id = ?", (figure_id,))
         conn.commit()

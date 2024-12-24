@@ -48,7 +48,8 @@
         <h2>Authors</h2>
         <ul>
             {% for author in article.authors %}
-            <li>{{ author.name }} ({{ author.institution_name }})</li>
+            <li>{{ author.name }} ({{ author.institution_name }}) 
+                 <p>{{ author.email }}</p></li>
             {% endfor %}
         </ul>
     </div>

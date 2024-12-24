@@ -11,9 +11,9 @@ class Figure:
     url: Optional[str] = None
     local: Optional[int] = 0
     xaxis_title: Optional[str] = None
-    xaxis_value: Optional[int] = None
+    xaxis_value: Optional[List[int]] = None
     yaxis_title: Optional[str] = None
-    yaxis_value: Optional[int] = None
+    yaxis_value: Optional[List[int]] = None
     figure_id: Optional[int] = None
     article_id: Optional[int] = None
     img_base64: Optional[str] = None

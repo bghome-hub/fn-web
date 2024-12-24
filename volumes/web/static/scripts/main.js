@@ -1,17 +1,27 @@
 // static/scripts/main.js
 
 document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('generate-form');
+    const articleForm = document.getElementById('generate-article-form');
+    const storyForm = document.getElementById('generate-story-form');
     const spinner = document.getElementById('loading-spinner');
-    const submitBtn = document.getElementById('submit-btn');
     const processingMessage = document.getElementById('processing-message');
     const navbarMenu = document.getElementById('navbar-menu');
     const overlay = document.getElementById('overlay');
 
-    if (form) {
-        form.addEventListener('submit', function() {
+    if (articleForm) {
+        articleForm.addEventListener('submit', function() {
             // Disable submit button
-            submitBtn.disabled = true;
+            document.getElementById('submit-article-btn').disabled = true;
+            // Show spinner and message
+            spinner.style.display = 'block';
+            processingMessage.style.display = 'block';
+        });
+    }
+
+    if (storyForm) {
+        storyForm.addEventListener('submit', function() {
+            // Disable submit button
+            document.getElementById('submit-story-btn').disabled = true;
             // Show spinner and message
             spinner.style.display = 'block';
             processingMessage.style.display = 'block';

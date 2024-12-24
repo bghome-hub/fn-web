@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Optional, List
 
 from models.citation import Citation
-from services import db_service as db
+from services import db_service_article as article_db
 
 # Citation Repository
 # This class is responsible for handling all database operations related to the Citation model.
@@ -10,7 +10,7 @@ class CitationRepository:
     @staticmethod
     def fetch_by_citation_id(citation_id: int) -> Optional[Citation]:
         '''Fetches a citation from the database by ID.'''
-        conn = db.connect_db()
+        conn = article_db.connect_db()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM citations WHERE citation_id = ?", (citation_id,))
         row = cursor.fetchone()
@@ -30,7 +30,7 @@ class CitationRepository:
     @staticmethod
     def fetch_all_by_article_id(article_id: int) -> List[Citation]:
         '''Fetches all citations for a given article.'''
-        conn = db.connect_db()
+        conn = article_db.connect_db()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM citations WHERE article_id = ?", (article_id,))
         rows = cursor.fetchall()
@@ -50,7 +50,7 @@ class CitationRepository:
     @staticmethod
     def fetch_all() -> List[Citation]:
         '''Fetches all citations from the database.'''
-        conn = db.connect_db()
+        conn = article_db.connect_db()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM citations")
         rows = cursor.fetchall()
@@ -70,7 +70,7 @@ class CitationRepository:
     @staticmethod
     def insert(citation: Citation) -> None:
         '''Inserts a new citation into the database.'''
-        conn = db.connect_db()
+        conn = article_db.connect_db()
         cursor = conn.cursor()
         cursor.execute('''
             INSERT INTO citations (article_id, guid, number, content)
@@ -88,7 +88,7 @@ class CitationRepository:
     @staticmethod
     def update(citation: Citation) -> None:
         '''Updates an existing citation in the database.'''
-        conn = db.connect_db()
+        conn = article_db.connect_db()
         cursor = conn.cursor()
         cursor.execute('''
             UPDATE citations
@@ -107,7 +107,7 @@ class CitationRepository:
     @staticmethod
     def delete(citation_id: int) -> None:
         '''Deletes a citation from the database by ID.'''
-        conn = db.connect_db()
+        conn = article_db.connect_db()
         cursor = conn.cursor()
         cursor.execute("DELETE FROM citations WHERE citation_id = ?", (citation_id,))
         conn.commit()

@@ -1,20 +1,20 @@
 services:
 
-#  vscode:
-#    container_name: vscode
-#    image: ghcr.io/linuxserver/code-server
-#    security_opt:
-#      - no-new-privileges:true
-#    environment:
-#      - PGID=$PGID
-#      - PUID=$PUID
-#      - TZ=$TZ
-#    volumes:
-#      - $DOCKER_ROOT:/docker_root
-#      - $VOLUME_ROOT/vscode:/config
-#    ports:
-#      - 8443:8443
-#    restart: unless-stopped
+  vscode:
+    container_name: vscode
+    image: ghcr.io/linuxserver/code-server
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - PGID=$PGID
+      - PUID=$PUID
+      - TZ=$TZ
+    volumes:
+      - $DOCKER_ROOT:/docker_root
+      - $VOLUME_ROOT/vscode:/config
+    ports:
+      - 8443:8443
+    restart: unless-stopped
 
   web:
     container_name: web
@@ -23,7 +23,8 @@ services:
       - IMAGE_API_URL=$IMAGE_API_URL
       - IMAGE_API_KEY=$IMAGE_API_KEY
       - FLASK_ENV=development
-      - DB_FILE=$DB_FILE
+      - DB_FILE_ARTICLES=$DB_FILE_ARTICLES
+      - DB_FILE_STORIES=$DB_FILE_STORIES
       - OLLAMA_URL=$OLLAMA_URL
       - OLLAMA_MODEL=$OLLAMA_MODEL
       - PUBLIC_BASE_URL=$PUBLIC_BASE_URL
@@ -31,7 +32,6 @@ services:
     volumes:
       - $VOLUME_ROOT/db:/db
       - $VOLUME_ROOT/web/templates:/app/templates
-      #- $VOLUME_ROOT/static:/app/static
     ports:
       - 5000:5000
     restart: unless-stopped

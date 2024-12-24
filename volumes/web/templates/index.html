@@ -1,15 +1,25 @@
 <!-- templates/index.html -->
 {% extends "base.html" %}
 
-{% block title %}Generate an Article{% endblock %}
+{% block title %}Generate Content{% endblock %}
 
 {% block content %}
-    <h1>Generate an Article</h1>
-    <form id="generate-form" method="POST" action="{{ url_for('generate_article') }}">
-        <label for="topic">Enter a topic:</label>
+    <h1>Generate Content</h1>
+    
+    <!-- Form to generate an article by topic -->
+    <form id="generate-article-form" method="POST" action="{{ url_for('generate_article') }}">
+        <label for="topic">Enter a topic for the article:</label>
         <input type="text" id="topic" name="topic" placeholder="Enter a topic..." required>
-        <button type="submit" id="submit-btn">Submit</button>
+        <button type="submit" id="submit-article-btn">Submit</button>
     </form>
+    
+    <!-- Form to generate a story by headline -->
+    <form id="generate-story-form" method="POST" action="{{ url_for('generate_story') }}">
+        <label for="headline_input">Enter a headline for the story:</label>
+        <input type="text" id="headline_input" name="headline_input" placeholder="Enter a headline..." required>
+        <button type="submit" id="submit-story-btn">Submit</button>
+    </form>
+    
     <p id="processing-message" class="processing-message">Processing your request...</p>
     <div id="loading-spinner" class="spinner"></div>
 

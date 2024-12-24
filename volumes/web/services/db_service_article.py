@@ -7,30 +7,28 @@ from config import config
 
 # Connect to the SQLite database
 def connect_db():
-    conn = sqlite3.connect(config.DB_FILE)
+    conn = sqlite3.connect(config.DB_FILE_ARTICLES)
     conn.execute("PRAGMA foreign_keys = ON")
     conn.row_factory = sqlite3.Row
     return conn
 
 # Backup and restore database functions
 def backup_db(backup_path):
-    shutil.copyfile(config.DB_FILE, backup_path)
+    shutil.copyfile(config.DB_FILE_ARTICLES, backup_path)
 
 # Restore the database from a backup file
 def restore_db(backup_path):
-    shutil.copyfile(backup_path, config.DB_FILE)
-
+    shutil.copyfile(backup_path, config.DB_FILE_ARTICLES)
+    
 # Export the database to a SQL file
 def export_data(export_path):
     conn = connect_db()
-    cursor = conn.cursor()
-    
     with open(export_path, 'w') as f:
         for line in conn.iterdump():
             f.write('%s\n' % line)
-    
-    conn.close()    
+    conn.close()
 
+    
 # Create the necessary tables in the database
 def create_tables():
     conn = connect_db()

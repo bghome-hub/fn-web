@@ -1,6 +1,7 @@
 import json
 import re
 import numpy as np
+import random
 from repo.article_repo import ArticleRepository
 
 from services.prompts import Prompt
@@ -14,8 +15,6 @@ from models.citation import Citation
 from models.figure import Figure
 from models.image import Image
 
-import re
-import json
 import logging
 from typing import Optional
 
@@ -41,6 +40,10 @@ def sanitize_json_response(response: str) -> Optional[dict]:
         logging.error("No JSON object found in the response.")
         return None
 
+    # Remove code fences if present
+    response = response.strip().strip('```json').strip('```')
+    logging.debug("Removed code fences.")
+
     # Step 2: Remove control characters except for common whitespace
     response = re.sub(r'[\x00-\x1F\x7F]+', '', response)
     logging.debug("Removed non-printable control characters.")
@@ -56,6 +59,11 @@ def sanitize_json_response(response: str) -> Optional[dict]:
     # Step 5: Fix escaped characters (e.g., fix incorrect escaping of apostrophes)
     response = response.replace("\\'", "'")
     logging.debug("Fixed escaped characters.")
+
+    # Step 6: Fix missing commas between JSON elements
+    response = re.sub(r'"\s*([\{\[])\s*"', r'",\1"', response)
+    logging.debug("Fixed missing commas between JSON elements.")
+
 
     # Optional Step: Remove any other known problematic patterns
     # For example, remove any extra commas, fix missing colons, etc.
@@ -112,7 +120,6 @@ def create_article_from_ollama_response(response: dict) -> Article:
             number= i + 1,
             content=citation_data.get('content', '').strip()
         ))
-
     
     # Create the figures
     figures = []
@@ -121,27 +128,28 @@ def create_article_from_ollama_response(response: dict) -> Article:
             number=i + 1,
             description=figure_data.get('description', ''),
             xaxis_title=figure_data.get('xaxis_title', ''),
-            xaxis_value=np.random.randint(0, 60, 14),
+            xaxis_value = [random.randint(1,100) for _ in range(14)],
             yaxis_title=figure_data.get('yaxis_title', ''),
-            yaxis_value=np.random.randint(0, 30, 14)
+            yaxis_value= [(random.randint(1, 100)) * ( 10 ** i) for i in range(14)]
         )
         figure.img_base64 = figure_service.create_chart(figure)
         figures.append(figure)
 
-
     # Create the images
     images = []
+    max_images = 2
     for i, keyword in enumerate(parsed_response.get('keywords', '').split(',')):
         keyword = keyword.strip()
-
         image = image_service.find_image(keyword)
         if image is None:
             continue
-        
+
         image.keyword = keyword
         image.number = i + 1
         images.append(image)
 
+        if len(images) >= max_images:
+            break
 
     # Create the Article object
     article = Article(

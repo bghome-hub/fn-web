@@ -14,7 +14,7 @@ from repo.figure_repo import FigureRepository
 from repo.image_repo import ImageRepository
 
 # Service Imports
-from services import db_service as db
+from services import db_service_article as article_db
 
 # Article Repository 
 # This class is responsible for handling all database operations related to the Article model.
@@ -22,7 +22,7 @@ class ArticleRepository:
     @staticmethod
     def fetch_by_article_id(article_id: int) -> Optional[Article]:
         '''Fetches an article from the database by ID.'''
-        conn = db.connect_db()
+        conn = article_db.connect_db()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM articles WHERE article_id = ?", (article_id,))
         row = cursor.fetchone()
@@ -54,7 +54,7 @@ class ArticleRepository:
     
     @staticmethod
     def insert(article: Article) -> int:
-        conn = db.connect_db()
+        conn = article_db.connect_db()
         cursor = conn.cursor()
         cursor.execute('''
             INSERT INTO articles (guid, title, journal, doi, abstract, introduction, methodology, results, discussion, conclusion, keywords, user_input, prompt)
@@ -80,7 +80,7 @@ class ArticleRepository:
     
     @staticmethod
     def update(article: Article) -> None:
-        conn = db.connect_db()
+        conn = article_db.connect_db()
         cursor = conn.cursor()
         cursor.execute('''
             UPDATE articles
@@ -107,7 +107,7 @@ class ArticleRepository:
 
     @staticmethod
     def delete(article_id: int) -> None:
-        conn = db.connect_db()
+        conn = article_db.connect_db()
         cursor = conn.cursor()
         cursor.execute('''
             DELETE FROM articles
@@ -118,7 +118,7 @@ class ArticleRepository:
 
     @staticmethod
     def fetch_all() -> List[Article]:
-        conn = db.connect_db()
+        conn = article_db.connect_db()
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM articles')
         rows = cursor.fetchall()
@@ -150,7 +150,7 @@ class ArticleRepository:
     
     @staticmethod
     def fetch_last_x_articles(x: int) -> List[Article]:
-        conn = db.connect_db()
+        conn = article_db.connect_db()
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM articles ORDER BY add_date DESC LIMIT ?', (x,))
         rows = cursor.fetchall()
@@ -185,7 +185,7 @@ class ArticleRepository:
 
     @staticmethod
     def count() -> int:
-        conn = db.connect_db()
+        conn = article_db.connect_db()
         cursor = conn.cursor()
         cursor.execute('SELECT COUNT(*) FROM articles')
         count = cursor.fetchone()[0]
