@@ -4,26 +4,39 @@
 {% block title %}Generate Content{% endblock %}
 
 {% block content %}
-    <h1>Generate Content</h1>
     
-    <!-- Form to generate an article by topic -->
-    <form id="generate-article-form" method="POST" action="{{ url_for('generate_article') }}">
-        <label for="topic">Enter a topic for the article:</label>
-        <input type="text" id="topic" name="topic" placeholder="Enter a topic..." required>
-        <button type="submit" id="submit-article-btn">Submit</button>
-    </form>
-    
-    <!-- Form to generate a story by headline -->
-    <form id="generate-story-form" method="POST" action="{{ url_for('generate_story') }}">
-        <label for="headline_input">Enter a headline for the story:</label>
-        <input type="text" id="headline_input" name="headline_input" placeholder="Enter a headline..." required>
-        <button type="submit" id="submit-story-btn">Submit</button>
-    </form>
-    
+    <did id="Tab Header" class="tab-header">
+        <h2>Generate Content</h2>
+        <p>Generate either a journal article of newspaper story for a topic</p>
+    </did>
+
+    <div class="tabs">
+        <button class="tablinks" onclick="openTab(event, 'Articles')">Article</button>
+        <button class="tablinks" onclick="openTab(event, 'Stories')">Story</button>
+    </div>
+
+    <!-- Article Tab -->
+    <div id="Articles" class="tabcontent">
+        <form id="generate-article-form" method="POST" action="{{ url_for('generate_article') }}">
+            <label for="topic">Enter a topic for the article:</label>
+            <input type="text" id="topic" name="topic" placeholder="Enter a topic..." required>
+            <button type="submit" id="submit-article-btn">Submit</button>
+        </form>
+    </div>
+
+    <!-- Story Tab -->
+    <div id="Stories" class="tabcontent">
+        <form id="generate-story-form" method="POST" action="{{ url_for('generate_story') }}">
+            <label for="headline_input">Enter a headline for the story:</label>
+            <input type="text" id="headline_input" name="headline_input" placeholder="Enter a headline..." required>
+            <button type="submit" id="submit-story-btn">Submit</button>
+        </form>
+    </div>
+
+    <!-- Loading spinner & messages -->
     <p id="processing-message" class="processing-message">Processing your request...</p>
     <div id="loading-spinner" class="spinner"></div>
 
-    <!-- Recent Articles Section -->
     <h2>Recent Articles</h2>
     {% if recent_articles %}
     <div class="recent-articles-grid">

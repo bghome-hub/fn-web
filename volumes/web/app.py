@@ -1,3 +1,4 @@
+import logging
 from flask import Flask, request, jsonify, render_template, flash, redirect, url_for, send_file
 import os, time
 from config import config
@@ -17,31 +18,70 @@ app = Flask(__name__)
 app.secret_key = config.FLASK_SECRET_KEY
 app.PUBLIC_BASE_URL = config.PUBLIC_BASE_URL
 
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
 @app.before_request
 def before_request():
+    logger.debug("Before request: Ensuring tables are created.")
     ensure_tables_created()
 
 @app.route('/')
 def index():
-    recent_articles = ArticleRepository.fetch_last_x_articles(5)
-    return render_template('index.html', recent_articles=recent_articles)
+    logger.debug("Route '/' accessed.")
+    try:
+        recent_articles = ArticleRepository.fetch_last_x_articles(5)
+        logger.debug(f"Fetched {len(recent_articles)} recent articles.")
+        return render_template('index.html', recent_articles=recent_articles)
+    except Exception as e:
+        logger.error(f"Error fetching recent articles: {e}")
+        flash("An error occurred while fetching recent articles.", "error")
+        return render_template('index.html', recent_articles=[])
 
 @app.route('/db_utils', methods=['GET', 'POST'])
 def db_utils():
+    logger.debug("Route '/db_utils' accessed with method: %s", request.method)
     rows = None
     if request.method == 'POST':
         tablename = request.form.get('table_name')
-        rows = article_db.executePredefinedStatement(tablename)
+        logger.debug(f"Executing predefined statement for table: {tablename}")
+        try:
+            rows = article_db.executePredefinedStatement(tablename)
+            logger.debug(f"Fetched {len(rows)} rows from table: {tablename}")
+        except Exception as e:
+            logger.error(f"Error executing statement on table {tablename}: {e}")
+            flash(f"An error occurred while accessing table {tablename}.", "error")
     return render_template('admin/db_utils.html', results=rows)
 
 @app.route('/tos')
 def tos():
+    logger.debug("Route '/tos' accessed.")
     return render_template('tos.html')
 
 @app.route('/all_articles')
 def all_articles():
-    articles = ArticleRepository.fetch_all()
-    return render_template('articles/all_articles.html', articles=articles)
+    logger.debug("Route '/all_articles' accessed.")
+    try:
+        articles = ArticleRepository.fetch_all()
+        logger.debug(f"Fetched {len(articles)} articles.")
+        return render_template('articles/all_articles.html', articles=articles)
+    except Exception as e:
+        logger.error(f"Error fetching all articles: {e}")
+        flash("An error occurred while fetching all articles.", "error")
+        return render_template('articles/all_articles.html', articles=[])
+
+@app.route('/all_stories')
+def all_stories():
+    logger.debug("Route '/all_stories' accessed.")
+    try:
+        stories = StoryRepository.fetch_all()
+        logger.debug(f"Fetched {len(stories)} stories.")
+        return render_template('stories/all_stories.html', stories=stories)
+    except Exception as e:
+        logger.error(f"Error fetching all stories: {e}")
+        flash("An error occurred while fetching all stories.", "error")
+        return render_template('stories/all_stories.html', stories=[])
 
 # get count of articles
 @app.route('/count_articles')
@@ -69,6 +109,12 @@ def generate_story():
         flash(f'Error generating story: {str(e)}', 'error')
         return redirect(url_for('index'))
 
+#view_story route
+@app.route('/view_story/<int:story_id>')
+def view_story(story_id):
+    story = StoryRepository.fetch_by_story_id(story_id)
+    return render_template('stories/story.html', story=story)
+
 # create article route
 @app.route('/generate_article', methods=['POST'])
 def generate_article():
@@ -90,11 +136,6 @@ def generate_article():
         flash(f'Error generating article: {str(e)}', 'error')
         return redirect(url_for('index'))
 
-#view_story route
-@app.route('/view_story/<int:story_id>')
-def view_story(story_id):
-    story = StoryRepository.fetch_by_story_id(story_id)
-    return render_template('stories/story.html', story=story)
 
 # view_article route
 @app.route('/view_article/<int:article_id>')
@@ -128,8 +169,5 @@ def db_restore():
     return redirect(url_for('db_utils'))
 
 if __name__ == '__main__':
-    # Initialize the database tables if not already created
-    db.create_tables()
-
-    # Start the Flask app
+    logger.info("Starting Flask application.")
     app.run(debug=True)

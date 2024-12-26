@@ -862,3 +862,189 @@ textarea:focus {
   }
   
 }
+
+/* Add styles for tabs */
+.tabs {
+  overflow: hidden;
+  background-color: #2c3e50; /* Dark blue-gray background */
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+/* Tab buttons */
+.tabs button {
+  background-color: inherit;
+  color: #ecf0f1;             /* Light text color */
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-size: 17px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hover state for tab buttons */
+.tabs button:hover {
+  background-color: #1f2f3f; /* Slightly darker than #2c3e50 */
+}
+
+/* Active (selected) tab */
+.tabs button.active {
+  background-color: #2980b9; /* Blue for the active tab */
+  color: #fff;               /* White text on active tab */
+}
+
+/* Tab content sections */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border-top: none;
+}
+
+/* Mobile-friendly: stack tab buttons vertically */
+@media (max-width: 600px) {
+  .tabs {
+    flex-direction: column;
+  }
+
+  .tabs button {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+
+/* Article Grid */
+.article-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Article Card */
+.article-card {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.article-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Article Title */
+.all-article-article-title {
+  font-size: 1em;
+  margin-bottom: 10px;
+  color: var(--color-secondary);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+}
+
+.all-article-article-title a {
+  text-decoration: none;
+  font-size: 1em;
+  color: inherit;
+  transition: color var(--transition-time) ease;
+}
+
+.all-article-article-title a:hover {
+  color: var(--color-primary);
+}
+
+/* Article Journal */
+.all-article-article-journal,
+.all-article-article-authors {
+  font-size: .8em;
+  color: var(--color-muted);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+/* Article Abstract */
+.all-article-article-abstract {
+  font-size: 0.8em;
+  color: var(--color-text);
+  margin-bottom: 15px;
+  flex-grow: 1;
+  font-weight: 400;
+}
+
+
+/* All Stories */
+/* Article Grid */
+.article-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Article Card */
+.story-card {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.story-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Article Title */
+.all-story-story-headline {
+  font-size: 1em;
+  margin-bottom: 10px;
+  color: var(--color-secondary);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+}
+
+.all-story-story-headline a {
+  text-decoration: none;
+  font-size: 1em;
+  color: inherit;
+  transition: color var(--transition-time) ease;
+}
+
+.all-story-story-headline a:hover {
+  color: var(--color-primary);
+}
+
+/* Article Journal */
+.all-story-story-publication,
+.all-story-story-journalist {
+  font-size: .8em;
+  color: var(--color-muted);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+/* Article Abstract */
+.all-story-story-content {
+  font-size: 0.8em;
+  color: var(--color-text);
+  margin-bottom: 15px;
+  flex-grow: 1;
+  font-weight: 400;
+}

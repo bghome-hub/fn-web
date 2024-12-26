@@ -54,4 +54,28 @@ document.addEventListener('DOMContentLoaded', function() {
         navbarMenu.classList.remove('active');
         overlay.classList.remove('active');
     });
+
+    // Open the default tab
+    const defaultTab = document.querySelector('.tablinks');
+    if (defaultTab) {
+        defaultTab.click();
+    }
 });
+
+function openTab(evt, tabName) {
+  // Hide all tabcontent elements
+  const tabcontents = document.getElementsByClassName("tabcontent");
+  for (let i = 0; i < tabcontents.length; i++) {
+    tabcontents[i].style.display = "none";
+  }
+
+  // Remove 'active' class from all tablinks
+  const tablinks = document.getElementsByClassName("tablinks");
+  for (let i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+
+  // Show the current tab, and add an 'active' class to the button that opened the tab
+  document.getElementById(tabName).style.display = "block";
+  evt.currentTarget.className += " active";
+}

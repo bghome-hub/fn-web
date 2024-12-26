@@ -54,6 +54,7 @@ class StoryRepository:
         for row in rows:
             story = Story(
                 guid=row["guid"],
+                story_id=row["story_id"],
                 headline=row["headline"],
                 subheadline=row["subheadline"],
                 journalist_name=row["journalist_name"],
@@ -71,35 +72,6 @@ class StoryRepository:
         logging.debug(f"Total stories fetched: {len(stories)}")
         return stories
 
-    @staticmethod
-    def fetch_all_by_story_id(story_id: int) -> List[Story]:
-        '''Fetches all stories for a given article.'''
-        logging.debug(f"Fetching all stories for story ID: {story_id}")
-        conn = story_db.connect_db()
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM stories WHERE story_id = ?", (story_id,))
-        rows = cursor.fetchall()
-        cursor.close()
-        stories = []
-        for row in rows:
-            story = Story(
-                guid=row["guid"],
-                headline=row["headline"],
-                subheadline=row["subheadline"],
-                journalist_name=row["journalist_name"],
-                journalist_bio=row["journalist_bio"],
-                journalist_email=row["journalist_email"],
-                publication=row["publication"],
-                publication_date=row["publication_date"],
-                title=row["title"],
-                content=row["content"],
-                keywords=row["keywords"],
-                add_date=row["add_date"]
-            )
-            stories.append(story)
-            logging.debug(f"Fetched story: {story}")
-        logging.debug(f"Total stories fetched for story ID {story_id}: {len(stories)}")
-        return stories
 
     @staticmethod
     def insert(story: Story) -> int:

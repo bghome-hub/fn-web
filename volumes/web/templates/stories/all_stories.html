@@ -1,0 +1,31 @@
+<!-- templates/all_stories.html -->
+{% extends "base.html" %}
+
+{% block title %}All Stories{% endblock %}
+
+{% block content %}
+    <h1>All stories</h1>
+    {% if stories %}
+    <div class="story-grid">
+        {% for story in stories|reverse %}
+        <div class="story-card">
+            {% if story %}
+            <h2 class="all-story-story-headline">
+                <a href="{{ url_for('view_story', story_id=story.story_id) }}">{{ story.headline }}</a>
+            </h2>
+            <p class="all-story-story-publication"><strong>Publication:</strong> {{ story.publication }}</p>
+            {% endif %}
+            {% if story.content %}
+            <p class="all-story-story-content">{{ story.content[:150] }}...</p>
+            {% endif %}
+            <div class="story-buttons">
+                <a href="{{ url_for('view_story', story_id=story.story_id) }}" class="btn read-more">Read More</a>
+                <button class="btn delete-story" data-story-id="{{ story.story_id }}">Delete story</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>No stories found.</p>
+    {% endif %}
+{% endblock %}
