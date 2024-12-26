@@ -22,25 +22,18 @@ def create_tables():
                        story_id INTEGER PRIMARY KEY AUTOINCREMENT, 
                        guid TEXT,
                        headline TEXT, 
+                       subheadline TEXT,
+                       journalist_name TEXT,
+                       journalist_bio TEXT,
+                       journalist_email TEXT,
                        publication TEXT,
                        publication_date TEXT,
+                       title TEXT,
+                       content TEXT,
                        keywords TEXT,
                        user_input TEXT,
                        prompt TEXT,
                        add_date datetime DEFAULT CURRENT_TIMESTAMP
-                       )''')
-    
-    # Authors table
-    cursor.execute('''CREATE TABLE IF NOT EXISTS authors (
-                       author_id INTEGER PRIMARY KEY AUTOINCREMENT, 
-                       story_id INTEGER, 
-                       guid TEXT,
-                       number INTEGER,
-                       name TEXT,
-                       affiliation TEXT,
-                       email TEXT,
-                       add_date datetime DEFAULT CURRENT_TIMESTAMP,
-                       FOREIGN KEY(story_id) REFERENCES stories(story_id) ON DELETE CASCADE
                        )''')
     
     # Quotes table

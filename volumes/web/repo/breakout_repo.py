@@ -6,27 +6,6 @@ from models.breakout import Breakout
 from services import db_service_story as story_db
 
 class BreakoutRepository:
-    @staticmethod
-    def fetch_by_guid(guid: str) -> Optional[Breakout]:
-        '''Fetches a breakout from the database by GUID.'''
-        conn = story_db.connect_db()
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM breakouts WHERE guid = ?", (guid,))
-        row = cursor.fetchone()
-        cursor.close()
-        if row is None:
-            return None
-        
-        return Breakout(
-            guid=row["guid"],
-            number=row["number"],
-            title=row["title"],
-            content=row["content"],
-            story_id=row["story_id"],
-            add_date=row["add_date"]
-        )
-    
-    @staticmethod
     def fetch_all() -> List[Breakout]:
         '''Fetches all breakouts from the database.'''
         conn = story_db.connect_db()

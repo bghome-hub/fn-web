@@ -3,6 +3,7 @@ from typing import Optional, List
 
 from models.author import Author
 from services import db_service_article as article_db
+from services import db_service_story as story_db
 
 # Author Repository
 # This class is responsible for handling all database operations related to the Author model.

@@ -1,10 +1,12 @@
 from typing import Optional
 import json
 import re
+import uuid
 import time
+import logging
 
 from repo.story_repo import StoryRepository
-from services.article_service import sanitize_json_response
+from services.ollama_service import sanitize_json_response
 
 from services.prompts import Prompt
 from services import ollama_service
@@ -15,53 +17,67 @@ from models.author import Author
 from models.breakout import Breakout
 from models.quote import Quote
 
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)
 
 def create_story_from_ollama_response(response: dict) -> Story:
-    print('Ollama response:', response)
+    logging.debug('Ollama response: %s', response)
 
     inner_response = response.get('response')
+    logging.debug('Inner response: %s', inner_response)
 
     parsed_response = sanitize_json_response(inner_response)
+    if parsed_response is None:
+        logging.error("Failed to parse JSON response")
+        raise ValueError("Failed to parse JSON response")
 
-    headline=parsed_response.get('headline')
-    publication=parsed_response.get('publication')
-    publication_date= time.strftime("%Y-%m-%d")
+    logging.debug('Parsed response: %s', parsed_response)
+
+    headline = parsed_response.get('headline')
+    logging.debug('Headline: %s', headline)
+    subheadline = parsed_response.get('subheadline')
+    logging.debug('Subheadline: %s', subheadline)
+    journalist_name = parsed_response.get('journalist_name')
+    journalist_bio = parsed_response.get('journalist_bio')
+    journalist_email = parsed_response.get('journalist_email')
+    publication = parsed_response.get('publication')
+    publication_date = time.strftime("%Y-%m-%d")
     title = parsed_response.get('title')
     content = parsed_response.get('content')
     keywords = parsed_response.get('keywords')
-    user_input = response.get('user_input')
-    prompt = response.get('prompt')
-
-    # Add authors
-    authors = []
-    for i, author_data in enumerate(parsed_response.get("authors", [])):
-        authors.append(Author(
-            number=i + 1,
-            name=author_data.get('name'),
-            institution_name=author_data.get('institution_name'),
-            institution_address=author_data.get('institution_address'),
-            email=author_data.get('email')
-        ))
+    user_input = parsed_response.get('user_input')
+    prompt = parsed_response.get('prompt')
 
     # Add breakouts
-    breakouts =[]
+    breakouts = []
+    logging.debug('Breakouts: %s', breakouts)
     for i, breakout_data in enumerate(parsed_response.get("breakouts", [])):
+        logging.debug('Breakout data: %s', breakout_data)
         breakouts.append(Breakout(
             number=i + 1,
             title=breakout_data.get('title'),
             content=breakout_data.get('content').strip()
         ))
+    logging.debug('Breakouts: %s', breakouts)
 
+    # Add quotes
     quotes = []
     for i, quote_data in enumerate(parsed_response.get("quotes", [])):
+        logging.debug('Quote data: %s', quote_data)
         quotes.append(Quote(
             number=i + 1,
             content=quote_data.get('content'),
-            author=quote_data.get('author')
+            speaker=quote_data.get('speaker'),
         ))
+    logging.debug('Quotes: %s', quotes)
 
     story = Story(
+        guid=response.get("guid", str(uuid.uuid4())),
         headline=headline,
+        subheadline=subheadline,
+        journalist_name=journalist_name,
+        journalist_bio=journalist_bio,
+        journalist_email=journalist_email,
         publication=publication,
         publication_date=publication_date,
         title=title,
@@ -69,22 +85,24 @@ def create_story_from_ollama_response(response: dict) -> Story:
         keywords=keywords,
         user_input=user_input,
         prompt=prompt,
-        authors=authors,
+        quotes=quotes,
         breakouts=breakouts,
-        quotes=quotes
+        add_date=time.strftime("%Y-%m-%d")
     )
+
+    logging.debug('Story: %s', story)
 
     return story
 
 def save_story_from_ollama_response(headline_input: str) -> int:
     prompt = Prompt.story_prompt(headline_input)
     response = ollama_service.query_ollama(prompt)
-    print('Ollama response:', response)
+    logging.debug('Ollama response: %s', response)
 
     response['prompt'] = prompt
     response['user_input'] = headline_input
 
     story = create_story_from_ollama_response(response)
-    story_id = StoryRepository.insert_story(story)
+    story_id = StoryRepository.insert_full_story(story)
 
     return story_id

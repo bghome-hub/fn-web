@@ -69,42 +69,37 @@ class Prompt:
     def story_prompt(topic: str) -> str:
          return (
          f"Write a 3000 word realistic newspaper article based on the following topic: '{topic}'.\n"
-            "The article must affirm the topic and provide a comprehensive overview of the subject matter.\n"
-            "The story must be credible, informative, and realistic with a clear structure and logical flow.\n"
-            "Also, provide a comma-separated list of 2 sets of keywords to be used for relevant image searches.\n"
-            "You must NOT use any characters that will break the JSON structure, such as `, $, %, etc.\n\n"
-            "Authors must have realistic names, institutions, and email addresses. You cannot use generic names like Joe/Jane Doe\n"
-            "You must NOT use any markdown in your responses.\n\n"
-            "Ensure you return valid JSON without any additional text or code fences. \n\n"
-            "Do not include any characters or markdown syntax outside the JSON object.\n\n"
-            "Please provide the responses in the exact JSON structure shown below.\n\n"
-            "Breakouts should be standalone statements form the main story, providing additional context or information.\n"
-            "Output must be strictly valid JSON. Do not include quotes in the keys if the JSON structure is already shown. \n\n"
-            "Any deviation from valid JSON will cause an error.\n\n"
+           "# Rules:\n"
+              "- This needs to be a realistic, well-researched newspaper story. \n"
+              "- You must return valid JSON without any additional text or code fences. \n"
+              "- You must adhere to the JSON structure provided below. \n"
+              "- The journalist info must be realistic and authoritative. \n"
             "JSON Structure:\n"
             '''{
               "headline": "string: headline of the story",
+              "subheadline": "string: subheadline of the story",
+              "journalist": "string:name of the journalist",
+              "journalist_bio": "string: journalist's bio",
+              "journalist_email": "string: journalist's email",
               "publication": "string: the publishing newspaper",
               "title": "string: the title of the article",
-              "content": "string: entire, full-length story",
+              "content": "string: entire, full-length story. You may NOT use double-quotes (").  If needed, use single quotes like this: 'example', or use the escape character \\".",
               "keywords": "[comma-separated list of 3 keywords related to the topic for image search]",
               "quotes": [
                   {
-                  "quote": "quote from interviewee 1"
+                  "content": "quote from interviewee 1",
+                  "speaker": "string: name of the interviewee"
                   },
                   {
-                  "quote": "quote from interviewee 2"
+                  "content": "quote from interviewee 2",
+                  "speaker": "string: name of the interviewee"
                   }             
                 ],
-              "author": {
-                  "name": "string: author's name",
-                  "institution_name": "string: institution name",
-                  "institution_address": "string: institution address",
-                  "email": "string: author's email"
-                  },
-                "breakouts": {
+                "breakouts": [
+                  {
                   "title": "string: stand-alone breakout title",
                   "content": "string: stand-alone breakout content"
-                }
+                  }
+                ]
             }'''
          )

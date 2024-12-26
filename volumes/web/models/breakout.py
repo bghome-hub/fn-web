@@ -4,7 +4,7 @@ import uuid
 
 @dataclass
 class Breakout:
-    breaout_id: Optional[int] = None
+    breakout_id: Optional[int] = None
     guid: Optional[str] = None
     number: Optional[int] = None   
     title: Optional[str] = None
@@ -17,4 +17,4 @@ class Breakout:
             self.guid = str(uuid.uuid4())
 
     def __repr__(self):
-        return f"Breakout(id={self.breaout_id}, description={self.title})"
+        return f"Breakout(id={self.title})"

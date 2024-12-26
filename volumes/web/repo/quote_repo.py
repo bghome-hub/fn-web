@@ -5,25 +5,7 @@ from models.story import Story
 
 from services import db_service_story as story_db
 
-class QuoteRepository:
-    @staticmethod
-    def fetch_by_guid(guid: str) -> Optional[Story]:
-        '''Fetches a quote from the database by GUID.'''
-        conn = story_db.connect_db()
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM quotes WHERE guid = ?", (guid,))
-        row = cursor.fetchone()
-        cursor.close()
-        if row is None:
-            return None
-    
-        return Quote(
-            guid=row["guid"],
-            content=row["content"],
-            story_id=row["story_id"],
-            add_date=row["add_date"]
-        )
-    
+class QuoteRepository:    
     @staticmethod
     def fetch_all() -> List[Quote]:
         '''Fetches all quotes from the database.'''
@@ -35,8 +17,12 @@ class QuoteRepository:
         quotes = []
         for row in rows:
             quotes.append(Quote(
+                quote_id=row["quote_id"],
                 guid=row["guid"],
+                number=row["number"],
+                description=row["description"],
                 content=row["content"],
+                speaker=row["speaker"],
                 story_id=row["story_id"],
                 add_date=row["add_date"]
             ))
@@ -54,8 +40,12 @@ class QuoteRepository:
         quotes = []
         for row in rows:
             quotes.append(Quote(
+                quote_id=row["quote_id"],
                 guid=row["guid"],
+                number=row["number"],
+                description=row["description"],
                 content=row["content"],
+                speaker=row["speaker"],
                 story_id=row["story_id"],
                 add_date=row["add_date"]
             ))
@@ -67,11 +57,10 @@ class QuoteRepository:
         conn = story_db.connect_db()
         cursor = conn.cursor()
         cursor.execute(
-            "INSERT INTO quotes (guid, content, story_id, add_date) VALUES (?, ?, ?, ?)",
-            (quote.guid, quote.content, quote.story_id, quote.add_date)
+            "INSERT INTO quotes (guid, number, description, content, speaker, story_id, add_date) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (quote.guid, quote.number, quote.description, quote.content, quote.speaker, quote.story_id, quote.add_date)
         )
         conn.commit()
         cursor.close()
         conn.close()
 
-        

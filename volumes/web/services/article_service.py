@@ -1,5 +1,4 @@
 import json
-import re
 import numpy as np
 import random
 from repo.article_repo import ArticleRepository
@@ -15,69 +14,9 @@ from models.citation import Citation
 from models.figure import Figure
 from models.image import Image
 
-import logging
+from services.ollama_service import sanitize_json_response
+
 from typing import Optional
-
-def sanitize_json_response(response: str) -> Optional[dict]:
-    """
-    Sanitize and parse a potentially malformed JSON response.
-
-    Args:
-        response (str): The raw response string containing JSON data.
-
-    Returns:
-        Optional[dict]: The parsed JSON data if successful, else None.
-    """
-    # Configure logging
-    logging.basicConfig(level=logging.DEBUG)
-    
-    # Step 1: Extract JSON content
-    match = re.search(r"\{.*\}", response, re.DOTALL)
-    if match:
-        response = match.group(0)
-        logging.debug("Extracted JSON content from response.")
-    else:
-        logging.error("No JSON object found in the response.")
-        return None
-
-    # Remove code fences if present
-    response = response.strip().strip('```json').strip('```')
-    logging.debug("Removed code fences.")
-
-    # Step 2: Remove control characters except for common whitespace
-    response = re.sub(r'[\x00-\x1F\x7F]+', '', response)
-    logging.debug("Removed non-printable control characters.")
-
-    # Step 3: Remove triple backticks
-    response = response.replace("```", "")
-    logging.debug("Removed triple backticks.")
-
-    # Step 4: Remove trailing commas before closing braces or brackets
-    response = re.sub(r',\s*([\}\]])', r'\1', response)
-    logging.debug("Removed trailing commas before closing braces/brackets.")
-
-    # Step 5: Fix escaped characters (e.g., fix incorrect escaping of apostrophes)
-    response = response.replace("\\'", "'")
-    logging.debug("Fixed escaped characters.")
-
-    # Step 6: Fix missing commas between JSON elements
-    response = re.sub(r'"\s*([\{\[])\s*"', r'",\1"', response)
-    logging.debug("Fixed missing commas between JSON elements.")
-
-
-    # Optional Step: Remove any other known problematic patterns
-    # For example, remove any extra commas, fix missing colons, etc.
-    # This requires knowledge of the specific issues in the JSON.
-
-    # Step 6: Attempt to parse the cleaned JSON
-    try:
-        sanitized_data = json.loads(response)
-        logging.debug("JSON parsed successfully.")
-        return sanitized_data
-    except json.JSONDecodeError as e:
-        logging.error(f"JSON parsing error: {e}")
-        return None
-
 
 # This function is responsible for generating an article from the Ollama response
 def create_article_from_ollama_response(response: dict) -> Article:

@@ -1,46 +1,50 @@
+import logging
 from typing import List, Optional
 
 from models.story import Story
-from models.author import Author
-from models.quote import Quote
 
-from repo.author_repo import AuthorRepository
 from repo.quote_repo import QuoteRepository
 from repo.breakout_repo import BreakoutRepository
 
-
 from services import db_service_story as story_db
+
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)
 
 class StoryRepository:
     @staticmethod
-    def fetch_by_guid(story_id: str) -> Optional[Story]:
-        '''Fetches a story from the database by GUID.'''
+    def fetch_by_story_id(story_id: int) -> Optional[Story]:
+        '''Fetches a story from the database by ID.'''
+        logging.debug(f"Fetching story by ID: {story_id}")
         conn = story_db.connect_db()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM stories WHERE guid = ?", (story_id,))
+        cursor.execute("SELECT * FROM stories WHERE story_id = ?", (story_id,))
         row = cursor.fetchone()
         cursor.close()
         if row is None:
             return None
-
-        return Story(
+        
+        story = Story(
             guid=row["guid"],
             headline=row["headline"],
+            subheadline=row["subheadline"],
+            journalist_name=row["journalist_name"],
+            journalist_bio=row["journalist_bio"],
+            journalist_email=row["journalist_email"],
             publication=row["publication"],
             publication_date=row["publication_date"],
             title=row["title"],
             content=row["content"],
             keywords=row["keywords"],
-            article_id=row["article_id"],
-            add_date=row["add_date"],
-            authors=AuthorRepository.fetch_all_by_story_id(story_id),
-            quotes=QuoteRepository.fetch_all_by_story_id(story_id),
-            breakouts=BreakoutRepository.fetch_all_by_story_id(story_id)
+            add_date=row["add_date"]
         )
-
+        logging.debug(f"Fetched story: {story}")
+        return story
+    
     @staticmethod
     def fetch_all() -> List[Story]:
         '''Fetches all stories from the database.'''
+        logging.debug("Fetching all stories")
         conn = story_db.connect_db()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM stories")
@@ -48,20 +52,29 @@ class StoryRepository:
         cursor.close()
         stories = []
         for row in rows:
-            stories.append(Story(
+            story = Story(
                 guid=row["guid"],
                 headline=row["headline"],
+                subheadline=row["subheadline"],
+                journalist_name=row["journalist_name"],
+                journalist_bio=row["journalist_bio"],
+                journalist_email=row["journalist_email"],
                 publication=row["publication"],
                 publication_date=row["publication_date"],
+                title=row["title"],
                 content=row["content"],
-                article_id=row["article_id"],
+                keywords=row["keywords"],
                 add_date=row["add_date"]
-            ))
+            )
+            stories.append(story)
+            logging.debug(f"Fetched story: {story}")
+        logging.debug(f"Total stories fetched: {len(stories)}")
         return stories
 
     @staticmethod
     def fetch_all_by_story_id(story_id: int) -> List[Story]:
         '''Fetches all stories for a given article.'''
+        logging.debug(f"Fetching all stories for story ID: {story_id}")
         conn = story_db.connect_db()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM stories WHERE story_id = ?", (story_id,))
@@ -69,46 +82,53 @@ class StoryRepository:
         cursor.close()
         stories = []
         for row in rows:
-            stories.append(Story(
+            story = Story(
                 guid=row["guid"],
                 headline=row["headline"],
+                subheadline=row["subheadline"],
+                journalist_name=row["journalist_name"],
+                journalist_bio=row["journalist_bio"],
+                journalist_email=row["journalist_email"],
                 publication=row["publication"],
                 publication_date=row["publication_date"],
+                title=row["title"],
                 content=row["content"],
-                article_id=row["article_id"],
+                keywords=row["keywords"],
                 add_date=row["add_date"]
-            ))
+            )
+            stories.append(story)
+            logging.debug(f"Fetched story: {story}")
+        logging.debug(f"Total stories fetched for story ID {story_id}: {len(stories)}")
         return stories
 
     @staticmethod
     def insert(story: Story) -> int:
         '''Inserts a story into the database.'''
+        logging.debug(f"Inserting story: {story}")
         conn = story_db.connect_db()
         cursor = conn.cursor()
         cursor.execute(
-            "INSERT INTO stories (guid, headline, publication, publication_date, content, add_date) VALUES (?, ?, ?, ?, ?, ?, ?)",
-            (story.guid, story.headline, story.publication, story.publication_date, story.content, story.add_date)
+            "INSERT INTO stories (guid, headline, subheadline, journalist_name, journalist_bio, journalist_email, publication, publication_date, title, content, keywords, add_date) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            (story.guid, story.headline, story.subheadline, story.journalist_name, story.journalist_bio, story.journalist_email, story.publication, story.publication_date, story.title, story.content, story.keywords, story.add_date)
         )
         conn.commit()
         story_id = cursor.lastrowid
         cursor.close()
+        logging.debug(f"Inserted story with ID: {story_id}")
         return story_id
     
-
     @staticmethod
     def insert_full_story(story: Story) -> int:
+        logging.debug(f"Inserting full story: {story}")
         story_id = StoryRepository.insert(story)
-        for author in story.authors:
-            author.article_id = story_id
-            AuthorRepository.insert(author)
         for quote in story.quotes:
-            quote.article_id = story_id
+            quote.story_id = story_id
             QuoteRepository.insert(quote)
+            logging.debug(f"Inserted quote: {quote}")
         for breakout in story.breakouts:
             breakout.story_id = story_id
             BreakoutRepository.insert(breakout)
-
+            logging.debug(f"Inserted breakout: {breakout}")
+        logging.debug(f"Full story inserted with ID: {story_id}")
         return story_id
-    
-
-    

@@ -4,28 +4,5 @@
 {% block title %}{{ story.headline }}{% endblock %}
 
 {% block content %}
-<div class="story-container">
-    <h1 class="story-headline">{{ story.headline }}</h1>
-    <p class="story-publication">{{ story.publication }} - {{ story.publication_date }}</p>
-    <div class="story-content">
-        <p>{{ story.user_input }}</p>
-        <p>{{ story.prompt }}</p>
-        <p>{{ story.add_date }}</p>
-        {% for author in story.authors %}
-            <p class="story-author"><strong>{{ author.name }}</strong> - {{ author.affiliation }}</p>
-        {% endfor %}
-        {% for quote in story.quotes %}
-            <blockquote class="story-quote">
-                <p>{{ quote.content }}</p>
-                <footer>{{ quote.speaker }}</footer>
-            </blockquote>
-        {% endfor %}
-        {% for breakout in story.breakouts %}
-            <div class="story-breakout">
-                <h2>{{ breakout.title }}</h2>
-                <p>{{ breakout.content }}</p>
-            </div>
-        {% endfor %}
-    </div>
-</div>
+    
 {% endblock %}
