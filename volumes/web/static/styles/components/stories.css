@@ -7,20 +7,7 @@
   margin: auto;
 }
 
-/* Reduce to 2 columns on tablets */
-@media (max-width: 768px) {
-  .story-columns {
-    column-count: 2;
-    column-gap: 20px;
-  }
-}
 
-/* Reduce to 1 column on phones */
-@media (max-width: 480px) {
-  .story-columns {
-    column-count: 1;
-  }
-}
 
 /* Story Card */
 .story-card {
@@ -174,36 +161,6 @@ a {
   pointer-events: none;
 
 }
-/*
-.story-quote {
-  position: relative;
-  margin: 40px 0;
-  padding: 20px 40px;
-  background-color: #f9f9f9;
-  border-left: 5px solid #ccc;
-  font-style: italic;
-  color: #555;
-}
-
-.story-quote::before,
-.story-quote::after {
-  content: "";
-  position: absolute;
-  left: 10px;
-  width: 50px;
-  height: 1px;
-  background-color: #ccc;
-}
-
-.story-quote::before {
-  top: -10px;
-}
-
-.story-quote::after {
-  bottom: -10px;
-}
-*/
-
 
 
 /* Standout Quote Container */
@@ -242,4 +199,19 @@ a {
   position: absolute;
   bottom: -10px;
   right: -10px;
+}
+
+/* Reduce to 2 columns on tablets */
+@media (max-width: 768px) {
+  .story-columns {
+    column-count: 2;
+    column-gap: 20px;
+  }
+}
+
+/* Reduce to 1 column on phones */
+@media (max-width: 480px) {
+  .story-columns {
+    column-count: 1;
+  }
 }

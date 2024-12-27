@@ -59,8 +59,9 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', function() {
             const resourceType = this.classList.contains('delete-article') ? 'article' : 'story';
             const resourceId = this.getAttribute(`data-${resourceType}-id`);
+            
             if (confirm(`Are you sure you want to delete this ${resourceType}?`)) {
-                fetch(`/${resourceType}_repo/${resourceType}_id}`, {
+                fetch(`/delete_${resourceType}/${resourceId}`, {  // Corrected URL
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json'

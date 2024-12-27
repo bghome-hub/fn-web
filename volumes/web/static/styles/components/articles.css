@@ -43,6 +43,14 @@
   padding-right: 20px;
 }
 
+.article-header {
+  margin-bottom: 10px;
+  color: var(--color-secondary);
+  font-family: 'Poppins', sans-serif;
+  font-size: 1em;
+  font-weight: 700;
+}
+
 /* Article Grid */
 .article-grid {
   display: flex;
@@ -175,28 +183,3 @@
   transform: translateY(-5px);
 }
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-  .page-title {
-    margin-top: 30px;
-    font-size: 2em;
-  }
-
-  .all-articles-article-title {
-    font-size: 1.5em;
-  }
-}
-@media (max-width: 480px) {
-  .page-title {
-    margin-top: 20px;
-    font-size: 1.8em;
-  }
-
-  .recent-article-card {
-    width: 100%;
-  }
-
-  .all-articles-article-title {
-    font-size: 1.3em;
-  }
-}

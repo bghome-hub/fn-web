@@ -6,10 +6,12 @@
 {% block content %}
 <h1 class="page-title">{{ article.title }}</h1>
 <div class="article-content">
+    <div class = "article-header">
+        <h2><strong>Journal:</strong> {{ article.journal }} </h2>
+        <h5>DOI: {{ article.doi }} ( {{ article.add_date }} ) </h5>
+    </div>  
     <div class="article-header-container">
         <div class="text-content">
-            <p><strong>Journal:</strong> {{ article.journal }}</p>
-            <p><strong>DOI:</strong> {{ article.doi }}</p>
             <p><strong>Abstract:</strong>
                 {% if article.images|length > 0 %}
                 <img src="{{ article.images[0].url }}" alt="{{ article.images[0].description }}" class="article-image-left">
@@ -63,14 +65,12 @@
     </div>
     <div class="article-section">
         <h2>Figures</h2>
-        <ul>
-            {% for figure in article.figures %}
-                <li>
-                    <p>{{ figure.description }}</p>
-                    <img src="data:image/png;base64,{{ figure.img_base64 }}" alt="{{ figure.description }}" style="width: 200px; height: auto;">
-                </li>
-            {% endfor %}
-        </ul>
+
+        {% for figure in article.figures %}
+            <p>{{ figure.description }}</p>
+            <img src="data:image/png;base64,{{ figure.img_base64 }}" alt="{{ figure.description }}" style="width: 200px; height: auto;">
+        {% endfor %}
+
     </div>
 </div>
 {% endblock %}
