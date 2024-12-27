@@ -1,11 +1,3 @@
-/* Remove or comment out the old grid-based rules:
-.story-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); 
-  ...
-}
-*/
-
 /* Use a multi-column approach instead on .story-columns */
 .story-columns {
   column-count: 3;          /* Text will flow into three columns */
@@ -30,47 +22,56 @@
   }
 }
 
-/* Article Card */
+/* Story Card */
 .story-card {
-  background-color: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .story-card:hover {
-  transform: translateY(-5px);
   box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+}
+
+.story-grid{
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  margin: 0 auto;
+  padding: 20px;
+  max-width: 800px;
 }
 
 /* Article Title */
-.all-story-story-headline {
-  font-size: 1em;
+.all-stories-story-headline {
   margin-bottom: 10px;
   color: var(--color-secondary);
   font-family: 'Poppins', sans-serif;
+  font-size: 1em;
   font-weight: 700;
 }
 
-.all-story-story-headline a {
-  text-decoration: none;
-  font-size: 1em;
+.all-stories-story-headline a {
   color: inherit;
+  font-size: 1em;
+  text-decoration: none;
   transition: color var(--transition-time) ease;
 }
 
-.all-story-story-headline a:hover {
+.all-stories-story-headline a:hover {
   color: var(--color-primary);
 }
 
 /* Article Journal */
-.all-story-story-publication,
-.all-story-story-journalist {
+.all-stories-story-publication,
+.all-stories-story-journalist {
   font-size: .8em;
   color: var(--color-muted);
   margin-bottom: 8px;
@@ -78,7 +79,7 @@
 }
 
 /* Article Abstract */
-.all-story-story-content {
+.all-stories-story-content {
   font-size: 0.8em;
   color: var(--color-text);
   margin-bottom: 15px;
@@ -142,3 +143,5 @@ a {
   color: #007bff; /* Subtle blue links */
   text-decoration: underline;
 }
+
+

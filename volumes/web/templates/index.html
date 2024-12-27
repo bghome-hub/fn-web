@@ -1,8 +1,6 @@
 <!-- templates/index.html -->
 {% extends "base.html" %}
 
-
-
 {% block title %}Generate Content{% endblock %}
 <!--import static styles-->
 {% block content %}
@@ -38,14 +36,16 @@
     <p id="processing-message" class="processing-message">Processing your request...</p>
     <div id="loading-spinner" class="spinner"></div>
 
-    <h2>Recent Articles</h2>
+    <!-- Recent Articles -->
+    <p></p>
+    <h3>Recent Articles</h3>
     {% if recent_articles %}
-    <div class="recent-articles-grid">
-        {% for article in recent_articles %}
-        <div class="recent-article-card">
-            <h3 class="recent-article-entry">
+    <div class="article-grid">
+        {% for article in recent_articles|reverse %}
+        <div class="article-card">
+            <h2 class="all-articles-article-title">
                 <a href="{{ url_for('view_article', article_id=article.article_id) }}">{{ article.title }}</a>
-            </h3>
+            </h2>
         </div>
         {% endfor %}
     </div>

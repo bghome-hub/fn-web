@@ -10,15 +10,16 @@
         {% for story in stories|reverse %}
         <div class="story-card">
             {% if story %}
-            <h2 class="all-story-story-headline">
+            <h2 class="all-articles-article-input"></h2>
+            <h2 class="all-stories-story-headline">
                 <a href="{{ url_for('view_story', story_id=story.story_id) }}">{{ story.headline }}</a>
             </h2>
-            <p class="all-story-story-publication"><strong>Publication:</strong> {{ story.publication }}</p>
+            <p class="all-stories-story-publication"><strong>Publication:</strong> {{ story.publication }}</p>
             {% endif %}
             {% if story.content %}
-            <p class="all-story-story-content">{{ story.content[:150] }}...</p>
+            <p class="all-stories-story-content">{{ story.content[:150] }}...</p>
             {% endif %}
-            <div class="story-buttons">
+            <div class="stories-buttons">
                 <a href="{{ url_for('view_story', story_id=story.story_id) }}" class="btn read-more">Read More</a>
                 <button class="btn delete-story" data-story-id="{{ story.story_id }}">Delete story</button>
             </div>
