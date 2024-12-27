@@ -2,13 +2,10 @@
 
 {% block title %}{{ story.title }}{% endblock %}
 
-
-
 {% block content %}
-<div class="container">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/components/stories.css') }}">
-    <h1 class="page-title">{{ story.headline }}</h1>
-    <h2 class="page-subtitle">{{ story.subheadline }}</h2>
+<h1 class="story-headline">{{ story.headline }}</h1>
+<h2 class="page-subtitle">{{ story.subheadline }}</h2>
+<div class="story-columns">
     
     <div class="story-meta">
         <p><strong>Journalist:</strong> {{ story.journalist_name }}</p>
@@ -31,7 +28,7 @@
             {% for quote in story.quotes %}
             <li>
                 <blockquote>
-                    "{{ quote.content }}" 
+                    "{{ quote.content }}"
                     <footer>- {{ quote.speaker }}</footer>
                 </blockquote>
             </li>
@@ -63,84 +60,4 @@
         <a href="{{ url_for('all_stories') }}" class="btn">Back to All Stories</a>
     </div>
 </div>
-{% endblock %}
-
-{% block styles %}
-<style>
-    /* Additional styles specific to story.html */
-
-    .story-meta p {
-        margin-bottom: 8px;
-        font-size: 1em;
-    }
-
-    .story-content h3 {
-        margin-top: 20px;
-        font-size: 1.8em;
-        color: #2980b9;
-    }
-
-    .story-quotes blockquote {
-        background: #ecf0f1;
-        border-left: 10px solid #2980b9;
-        margin: 20px 0;
-        padding: 10px 20px;
-        font-style: italic;
-    }
-
-    .story-quotes footer {
-        text-align: right;
-        font-weight: bold;
-        margin-top: 5px;
-    }
-
-    .story-breakouts h4 {
-        font-size: 1.5em;
-        color: #2c3e50;
-        margin-top: 15px;
-    }
-
-    .story-breakouts p {
-        margin-bottom: 15px;
-    }
-
-    .story-additional-info p {
-        font-size: 0.9em;
-        color: #555;
-    }
-
-    .story-actions {
-        margin-top: 30px;
-    }
-
-    @media (max-width: 768px) {
-        .story-content h3 {
-            font-size: 1.5em;
-        }
-
-        .story-quotes blockquote {
-            padding: 10px;
-            border-left-width: 5px;
-        }
-
-        .story-breakouts h4 {
-            font-size: 1.3em;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .story-content h3 {
-            font-size: 1.2em;
-        }
-
-        .story-quotes blockquote {
-            padding: 8px;
-            border-left-width: 3px;
-        }
-
-        .story-breakouts h4 {
-            font-size: 1.1em;
-        }
-    }
-</style>
 {% endblock %}

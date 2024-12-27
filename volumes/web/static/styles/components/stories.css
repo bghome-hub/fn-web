@@ -1,56 +1,144 @@
+/* Remove or comment out the old grid-based rules:
+.story-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); 
+  ...
+}
+*/
+
+/* Use a multi-column approach instead on .story-columns */
+.story-columns {
+  column-count: 3;          /* Text will flow into three columns */
+  column-gap: 40px;         /* Space between columns */
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Reduce to 2 columns on tablets */
+@media (max-width: 768px) {
+  .story-columns {
+    column-count: 2;
+    column-gap: 20px;
+  }
+}
+
+/* Reduce to 1 column on phones */
+@media (max-width: 480px) {
+  .story-columns {
+    column-count: 1;
+  }
+}
 
 /* Article Card */
 .story-card {
-    background-color: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.story-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Article Title */
+.all-story-story-headline {
+  font-size: 1em;
+  margin-bottom: 10px;
+  color: var(--color-secondary);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+}
+
+.all-story-story-headline a {
+  text-decoration: none;
+  font-size: 1em;
+  color: inherit;
+  transition: color var(--transition-time) ease;
+}
+
+.all-story-story-headline a:hover {
+  color: var(--color-primary);
+}
+
+/* Article Journal */
+.all-story-story-publication,
+.all-story-story-journalist {
+  font-size: .8em;
+  color: var(--color-muted);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+/* Article Abstract */
+.all-story-story-content {
+  font-size: 0.8em;
+  color: var(--color-text);
+  margin-bottom: 15px;
+  flex-grow: 1;
+  font-weight: 400;
+}
+
+/* Images */
+.story-image img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  filter: grayscale(100%); /* Black-and-white images */
+  margin-bottom: 10px;
+}
+
+/* Paragraph Styles */
+p {
+  text-align: justify; /* Justify text for a clean look */
+  margin-bottom: 1em;
+}
+
+.story-headline {
+    font-family: 'Times New Roman', serif; /* Classic serif font */
+    font-size: 2.5em; /* Large, prominent size */
+    font-weight: bold;
+    text-transform: uppercase; /* All caps for dramatic effect */
+    letter-spacing: 0.05em; /* Slight spacing for clarity */
+    line-height: 1.2; /* Compact spacing for vintage look */
+    text-align: center; /* Center align for focus */
+    color: #222; /* Dark gray for an ink-like appearance */
+    margin: 20px 0; /* Spacing around the headline */
+    text-shadow: 1px 1px 0 #ccc, -1px -1px 0 #ccc; /* Subtle 3D ink effect */
+    border-bottom: 2px solid #666; /* Underline to separate sections */
+    padding-bottom: 10px;
   }
-  
-  .story-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
-  }
-  
-  /* Article Title */
-  .all-story-story-headline {
-    font-size: 1em;
-    margin-bottom: 10px;
-    color: var(--color-secondary);
-    font-family: 'Poppins', sans-serif;
-    font-weight: 700;
-  }
-  
-  .all-story-story-headline a {
-    text-decoration: none;
-    font-size: 1em;
-    color: inherit;
-    transition: color var(--transition-time) ease;
-  }
-  
-  .all-story-story-headline a:hover {
-    color: var(--color-primary);
-  }
-  
-  /* Article Journal */
-  .all-story-story-publication,
-  .all-story-story-journalist {
-    font-size: .8em;
-    color: var(--color-muted);
-    margin-bottom: 8px;
-    font-weight: 600;
-  }
-  
-  /* Article Abstract */
-  .all-story-story-content {
-    font-size: 0.8em;
-    color: var(--color-text);
-    margin-bottom: 15px;
-    flex-grow: 1;
-    font-weight: 400;
-  }
+
+/* Drop Cap for First Paragraph */
+.story-content p:first-of-type::first-letter {
+  font-size: 3em;
+  font-weight: bold;
+  float: left;
+  line-height: 0.8;
+  margin-right: 5px;
+  color: #333;
+  background: #fff; /* White for contrast */
+  border: 1px solid #ddd;
+  padding: 15px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer and Metadata */
+.metadata {
+  font-size: 0.8em;
+  color: #666;
+  text-align: right;
+}
+
+/* Hyperlinks */
+a {
+  color: #007bff; /* Subtle blue links */
+  text-decoration: underline;
+}

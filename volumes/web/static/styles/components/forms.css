@@ -40,4 +40,7 @@ form {
     background-color: #1f6391;
   }
 
-  
+  .tabcontent form{
+    margin-top : 0;
+    text-align: center;
+  }

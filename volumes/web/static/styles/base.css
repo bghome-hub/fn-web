@@ -6,6 +6,7 @@
 }
 
 /* Base typography */
+/* OLD
 body {
     font-family: 'Open Sans', sans-serif;
     background-color: #f9f9f9;
@@ -13,8 +14,20 @@ body {
     line-height: 1.6;
     transition: background-color 0.3s ease, color 0.3s ease;
     font-size: 16px;
-    /* Base font size */
+   Base font size 
 }
+*/
+
+/* General Body Styles */
+body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background-color: #fdf6e3; /* Light yellowish paper color */
+    color: #333; /* Dark gray for readable text */
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+  }
+  
 
 /* Page Title */
 .page-title {
@@ -47,6 +60,17 @@ body {
 
 
 /* Headings */
+h1, h2, h3 {
+    font-family: 'Times New Roman', serif;
+    text-transform: uppercase;
+    margin: 0;
+    line-height: 1.2;
+    border-bottom: 1px solid #999; /* Underlined headings */
+
+}
+/* Headings */
+
+/* OLD
 h1,
 h2,
 h3 {
@@ -55,7 +79,26 @@ h3 {
     font-family: 'Lora', serif;
     transition: color 0.3s ease, font-size 0.3s ease;
 }
+*/
+.instruction{
+/* small caps, small text */
+    font-variant: small-caps;
+    font-size: 1em;
+    color: #333;
+    margin-bottom: 10px;
 
+}
+
+/* Container */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    /* Increased max-width for larger screens */
+    margin: 0 auto;
+    padding: 20px;
+    transition: padding 0.3s ease, max-width 0.3s ease, width 0.3s ease;
+  }
+  
 @media (max-width: 768px) {
     h1 {
         font-size: 2em;

@@ -70,6 +70,8 @@ class Prompt:
          return (
          f"Write a 3000 word realistic newspaper article based on the following topic: '{topic}'.\n"
            "# Rules:\n"
+              "- You are forbidden from using double quotes. If needed, use single quotes like this: 'example'. \n"
+              "- Respond to the following query without using any double quotes (\"""). If you need to quote something, use single quotes (') instead. Ensure your entire response adheres to this rule. \n"
               "- This needs to be a realistic, well-researched newspaper story. \n"
               "- You must return valid JSON without any additional text or code fences. \n"
               "- You must adhere to the JSON structure provided below. \n"
@@ -78,20 +80,20 @@ class Prompt:
             '''{
               "headline": "string: headline of the story",
               "subheadline": "string: subheadline of the story",
-              "journalist": "string:name of the journalist",
+              "journalist_name": "string: realistic  name of the journalist",
               "journalist_bio": "string: journalist's bio",
               "journalist_email": "string: journalist's email",
               "publication": "string: the publishing newspaper",
               "title": "string: the title of the article",
-              "content": "string: entire, full-length story. You may NOT use double-quotes (").  If needed, use single quotes like this: 'example', or use the escape character \\".",
-              "keywords": "[comma-separated list of 3 keywords related to the topic for image search]",
+              "content": "string: entire, 3000 word full-length story. Do NOT use any double quotes ("). If you need to quote something, use single quotes (') instead. Ensure your entire response adheres to this rule.",
+              "keywords": "[string: comma-separated list of 3 keywords related to the topic for image search]",
               "quotes": [
                   {
-                  "content": "quote from interviewee 1",
+                  "content": "string: quote from interviewee 1",
                   "speaker": "string: name of the interviewee"
                   },
                   {
-                  "content": "quote from interviewee 2",
+                  "content": "string: quote from interviewee 2",
                   "speaker": "string: name of the interviewee"
                   }             
                 ],

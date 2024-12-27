@@ -4,7 +4,7 @@
   overflow: hidden;
   background-color: #2c3e50; /* Dark blue-gray background */
   display: flex;
-  justify-content: center;
+  justify-content: center; 
   margin-bottom: 20px;
 }
 
@@ -13,9 +13,10 @@
   background-color: inherit;
   color: #ecf0f1;             /* Light text color */
   border: none;
+  width: 50%;
   outline: none;
   cursor: pointer;
-  padding: 14px 16px;
+  padding: 14px 16px; 
   font-size: 17px;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -33,10 +34,17 @@
 
 /* Tab content sections */
 .tabcontent {
+  margin-top: 10px;
   display: none;
   padding: 6px 12px;
   border-top: none;
 }
+
+.tab-header {
+  display: flex;
+  justify-content: center;
+}
+
 
 /* Mobile-friendly: stack tab buttons vertically */
 @media (max-width: 600px) {
