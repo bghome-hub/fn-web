@@ -1,6 +1,10 @@
 <!-- templates/tos.html -->
 {% extends "base.html" %}
 
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/pages/tos.css') }}">
+{% endblock %}
+
 {% block title %}Terms of Service{% endblock %}
 
 {% block content %}

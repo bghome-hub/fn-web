@@ -5,7 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Article Generator{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}">
+    <!--<link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}">-->
+
+    <!-- Base -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/components/articles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/components/buttons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/components/cards.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/components/containers.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/components/decorations.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/components/forms.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/components/grids.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/components/tabs.css') }}">
+
+    <!-- Google -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>

@@ -1,0 +1,85 @@
+/* Buttons */
+button {
+  padding: 14px 24px;
+  /* Increased padding for better touch */
+  background-color: #2980b9;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+  background-color: #1f6391;
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* Read More Button */
+.btn.read-more {
+  align-self: flex-start;
+  padding: 12px 24px;
+  background-color: #2980b9;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  font-weight: 500;
+}
+
+.btn.read-more:hover {
+  background-color: #1f6391;
+  transform: scale(1.05);
+}
+
+.btn.read-more,
+.btn.delete-article {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  font-size: 1em;
+  font-weight: 500;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  line-height: 1.2; /* unify line-height */
+}
+
+.btn.delete-article:hover {
+  background-color: #c0392b;
+  transform: scale(1.05);
+}
+
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+
+  .btn.read-more,
+  .btn.delete-article {
+    padding: 10px 20px;
+    font-size: 0.95em;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .btn.read-more,
+  .btn.delete-article {
+    padding: 8px 16px;
+    font-size: 0.9em;
+  }
+
+}
+

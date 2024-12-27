@@ -1,0 +1,52 @@
+
+/* Add styles for tabs */
+.tabs {
+  overflow: hidden;
+  background-color: #2c3e50; /* Dark blue-gray background */
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+/* Tab buttons */
+.tabs button {
+  background-color: inherit;
+  color: #ecf0f1;             /* Light text color */
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-size: 17px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hover state for tab buttons */
+.tabs button:hover {
+  background-color: #1f2f3f; /* Slightly darker than #2c3e50 */
+}
+
+/* Active (selected) tab */
+.tabs button.active {
+  background-color: #2980b9; /* Blue for the active tab */
+  color: #fff;               /* White text on active tab */
+}
+
+/* Tab content sections */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border-top: none;
+}
+
+/* Mobile-friendly: stack tab buttons vertically */
+@media (max-width: 600px) {
+  .tabs {
+    flex-direction: column;
+  }
+
+  .tabs button {
+    width: 100%;
+    text-align: center;
+  }
+}
+

@@ -9,22 +9,22 @@
     <div class="article-grid">
         {% for article in articles|reverse %}
         <div class="article-card">
-            <h2 class="all-article-article-input">
+            <h2 class="all-articles-article-input">
                 <a href="{{ url_for('view_article', article_id=article.article_id) }}">{{ article.input }}</a>
             </h2>
-            <h2 class="all-article-article-title">
+            <h2 class="all-articles-article-title">
                 <a href="{{ url_for('view_article', article_id=article.article_id) }}">{{ article.title }}</a>
             </h2>
-            <p class="all-article-article-journal"><strong>Journal:</strong> {{ article.journal }}</p>
+            <p class="all-articles-article-journal"><strong>Journal:</strong> {{ article.journal }}</p>
             {% if article.authors %}
-            <p class="all-article-article-authors"><strong>Authors:</strong>
+            <p class="all-articles-article-authors"><strong>Authors:</strong>
                 {% for author in article.authors %}
                     {{ author.name }}{% if not loop.last %}, {% endif %}
                 {% endfor %}
             </p>
             {% endif %}
             {% if article.abstract %}
-            <p class="all-article-article-abstract">{{ article.abstract[:150] }}...</p>
+            <p class="all-articles-article-abstract">{{ article.abstract[:150] }}...</p>
             {% endif %}
             <div class="article-buttons">
                 <a href="{{ url_for('view_article', article_id=article.article_id) }}" class="btn read-more">Read More</a>

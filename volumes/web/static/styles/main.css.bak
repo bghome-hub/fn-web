@@ -28,17 +28,7 @@ body {
   transition: padding 0.3s ease, max-width 0.3s ease, width 0.3s ease;
 }
 
-@media (max-width: 1200px) {
-  .container {
-    max-width: 1000px;
-  }
-}
 
-@media (max-width: 992px) {
-  .container {
-    max-width: 750px;
-  }
-}
 
 @media (max-width: 768px) {
   .container {

@@ -1,0 +1,56 @@
+
+/* Article Card */
+.story-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .story-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Article Title */
+  .all-story-story-headline {
+    font-size: 1em;
+    margin-bottom: 10px;
+    color: var(--color-secondary);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+  }
+  
+  .all-story-story-headline a {
+    text-decoration: none;
+    font-size: 1em;
+    color: inherit;
+    transition: color var(--transition-time) ease;
+  }
+  
+  .all-story-story-headline a:hover {
+    color: var(--color-primary);
+  }
+  
+  /* Article Journal */
+  .all-story-story-publication,
+  .all-story-story-journalist {
+    font-size: .8em;
+    color: var(--color-muted);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  
+  /* Article Abstract */
+  .all-story-story-content {
+    font-size: 0.8em;
+    color: var(--color-text);
+    margin-bottom: 15px;
+    flex-grow: 1;
+    font-weight: 400;
+  }
