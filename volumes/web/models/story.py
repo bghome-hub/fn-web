@@ -14,6 +14,7 @@ class Story:
     journalist_name: Optional[str] = None
     journalist_bio: Optional[str] = None
     journalist_email: Optional[str] = None
+    journalist_photo: Optional[str] = None
     publication: Optional[str] = None
     publication_date: Optional[str] = None
     title: Optional[str] = None

@@ -70,8 +70,7 @@ class Prompt:
          return (
          f"Write a 3000 word realistic newspaper article based on the following topic: '{topic}'.\n"
            "# Rules:\n"
-              "- You are forbidden from using double quotes. If needed, use single quotes like this: 'example'. \n"
-              "- Respond to the following query without using any double quotes (\"""). If you need to quote something, use single quotes (') instead. Ensure your entire response adheres to this rule. \n"
+              "- This news report must contain no quotes or interviews. \n"
               "- This needs to be a realistic, well-researched newspaper story. \n"
               "- You must return valid JSON without any additional text or code fences. \n"
               "- You must adhere to the JSON structure provided below. \n"
@@ -85,9 +84,10 @@ class Prompt:
               "journalist_email": "string: journalist's email",
               "publication": "string: the publishing newspaper",
               "title": "string: the title of the article",
-              "content": "string: entire, 3000 word full-length story. Do NOT use any double quotes ("). If you need to quote something, use single quotes (') instead. Ensure your entire response adheres to this rule.",
+              "content": "string: entire, 3000 word full-length story. There myst be no interviews here. Do not quote anyone.",
               "keywords": "[string: comma-separated list of 3 keywords related to the topic for image search]",
-              "quotes": [
+              ## You can use quotes and breakouts to add more content to the story in the JSON response below
+              "quotes": [ 
                   {
                   "content": "string: quote from interviewee 1",
                   "speaker": "string: name of the interviewee"

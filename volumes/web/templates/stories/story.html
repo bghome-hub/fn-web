@@ -5,59 +5,60 @@
 {% block content %}
 <h1 class="story-headline">{{ story.headline }}</h1>
 <h2 class="page-subtitle">{{ story.subheadline }}</h2>
+
+<!-- Date and byline block -->
+<div class="story-date-byline">
+  <p class="story-date"><strong>{{ story.publication_date }}</strong></p>
+  <p class="story-byline">
+    By {{ story.journalist_name }}<br>
+    <em>{{ story.journalist_bio }}</em>
+  </p>
+</div>
+
+<!-- 3-column text flow -->
 <div class="story-columns">
-    
-    <div class="story-meta">
-        <p><strong>Journalist:</strong> {{ story.journalist_name }}</p>
-        <p><strong>Bio:</strong> {{ story.journalist_bio }}</p>
-        <p><strong>Email:</strong> <a href="mailto:{{ story.journalist_email }}">{{ story.journalist_email }}</a></p>
-        <p><strong>Publication:</strong> {{ story.publication }}</p>
-        <p><strong>Publication Date:</strong> {{ story.publication_date }}</p>
+  
+  <!-- Optional: Remove if you want a single column for metadata -->
+  <div class="story-meta">
+    <div class="hedcut-container">
+      <img src="{{ story.journalist_photo }}" />
     </div>
+  </div>
+  
+  <!-- Main article text with drop cap -->
+  <div class="story-content">
+    <p>{{ story.content }}</p>
+  </div>
+  
+  <!-- Quotes -->
+  {% if story.quotes %}
+  <h3>Voices</h3>
+  <div class="standout-quote">
+    <ul>
+      {% for quote in story.quotes %}
+      "{{ quote.content }}" - {{ quote.speaker }}
+      
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+  
+  <!-- Breakouts -->
+  {% if story.breakouts %}
+  <h3>Editor Comments:</h3>
+  <div class="story-breakouts">
+    <ul>
+      {% for breakout in story.breakouts %}
+        <h4>{{ breakout.title }}</h4>
+        <p>{{ breakout.content }}</p>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
     
-    <div class="story-content">
-        <h3>{{ story.title }}</h3>
-        <p>{{ story.content }}</p>
-        <p><strong>Keywords:</strong> {{ story.keywords }}</p>
-    </div>
-    
-    {% if story.quotes %}
-    <div class="story-quotes">
-        <h3>Quotes</h3>
-        <ul>
-            {% for quote in story.quotes %}
-            <li>
-                <blockquote>
-                    "{{ quote.content }}"
-                    <footer>- {{ quote.speaker }}</footer>
-                </blockquote>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-    {% endif %}
-    
-    {% if story.breakouts %}
-    <div class="story-breakouts">
-        <h3>Breakouts</h3>
-        <ul>
-            {% for breakout in story.breakouts %}
-            <li>
-                <h4>{{ breakout.title }}</h4>
-                <p>{{ breakout.content }}</p>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-    {% endif %}
-    
-    <div class="story-additional-info">
-        <p><strong>GUID:</strong> {{ story.guid }}</p>
-        <p><strong>Add Date:</strong> {{ story.add_date }}</p>
-    </div>
-    
-    <div class="story-actions">
-        <a href="{{ url_for('all_stories') }}" class="btn">Back to All Stories</a>
-    </div>
+  <!-- Back to All Stories -->
+  <div class="story-actions">
+    <a href="{{ url_for('all_stories') }}" class="btn">Back to All Stories</a>
+  </div>
 </div>
 {% endblock %}

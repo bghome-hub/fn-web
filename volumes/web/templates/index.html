@@ -10,12 +10,12 @@
     </div>
 
     <div class="tabs">
-        <button class="tablinks" onclick="openTab(event, 'Articles')">Scholarly Article</button>
+        <button class="tablinks active" onclick="openTab(event, 'Articles')">Scholarly Article</button>
         <button class="tablinks" onclick="openTab(event, 'Stories')">Newspaper Article</button>
     </div>
 
     <!-- Article Tab -->
-    <div id="Articles" class="tabcontent">
+    <div id="Articles" class="tabcontent" style="display: block;">
         <form id="generate-article-form" method="POST" action="{{ url_for('generate_article') }}">
             <label for="topic" class="instruction">Enter a topic for the article to affirm</label>
             <input type="text" id="topic" name="topic" placeholder="Enter a topic..." required>
@@ -24,7 +24,7 @@
     </div>
 
     <!-- Story Tab -->
-    <div id="Stories" class="tabcontent">
+    <div id="Stories" class="tabcontent" style="display: none;">
         <form id="generate-story-form" method="POST" action="{{ url_for('generate_story') }}">
             <label for="headline_input" class="instruction">Enter a headline for the story</label>
             <input type="text" id="headline_input" name="headline_input" placeholder="Enter a headline..." required>
@@ -33,23 +33,45 @@
     </div>
 
     <!-- Loading spinner & messages -->
-    <p id="processing-message" class="processing-message">Processing your request...</p>
-    <div id="loading-spinner" class="spinner"></div>
+    <p id="processing-message" class="processing-message" style="display: none;">Processing your request...</p>
+    <div id="loading-spinner" class="spinner" style="display: none;"></div>
 
-    <!-- Recent Articles -->
-    <p></p>
-    <h3>Recent Articles</h3>
-    {% if recent_articles %}
-    <div class="article-grid">
-        {% for article in recent_articles|reverse %}
-        <div class="article-card">
-            <h2 class="all-articles-article-title">
-                <a href="{{ url_for('view_article', article_id=article.article_id) }}">{{ article.title }}</a>
-            </h2>
+    <!-- Recent Content Section -->
+     <p></p>
+    <h2 id="recent-section-title"></h2>
+    <div id="recent-content">
+        
+        <!-- Recent Articles -->
+        <div id="recent-articles" class="article-grid">
+            {% if recent_articles %}
+                {% for article in recent_articles|reverse %}
+                <div class="article-card">
+                    <div class="instruction">{{ article.journal }}</div>
+                    <h2 class="all-articles-article-title">
+                        <a href="{{ url_for('view_article', article_id=article.article_id) }}">{{ article.title }}</a>
+                    </h2>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No recent articles found.</p>
+            {% endif %}
         </div>
-        {% endfor %}
+
+        <!-- Recent Stories -->
+        <div id="recent-stories" class="story-grid">
+            {% if recent_stories %}
+                {% for story in recent_stories|reverse %}
+                <div class="story-card">
+                    <div class="instruction">{{ story.publication }}</div>
+                    <h2 class="all-stories-story-headline">
+                        <a href="{{ url_for('view_story', story_id=story.story_id) }}">{{ story.title }}</a>
+                    </h2>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No recent stories found.</p>
+            {% endif %}
+        </div>
     </div>
-    {% else %}
-    <p>No recent articles found.</p>
-    {% endif %}
+
 {% endblock %}

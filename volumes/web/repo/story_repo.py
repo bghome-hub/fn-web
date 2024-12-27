@@ -31,11 +31,14 @@ class StoryRepository:
             journalist_name=row["journalist_name"],
             journalist_bio=row["journalist_bio"],
             journalist_email=row["journalist_email"],
+            journalist_photo=row["journalist_photo"],
             publication=row["publication"],
             publication_date=row["publication_date"],
             title=row["title"],
             content=row["content"],
             keywords=row["keywords"],
+            quotes=QuoteRepository.fetch_all_by_story_id(story_id),
+            breakouts=BreakoutRepository.fetch_all_by_story_id(story_id),
             add_date=row["add_date"]
         )
         logging.debug(f"Fetched story: {story}")
@@ -60,11 +63,14 @@ class StoryRepository:
                 journalist_name=row["journalist_name"],
                 journalist_bio=row["journalist_bio"],
                 journalist_email=row["journalist_email"],
+                journalist_photo=row["journalist_photo"],
                 publication=row["publication"],
                 publication_date=row["publication_date"],
                 title=row["title"],
                 content=row["content"],
                 keywords=row["keywords"],
+                quotes=QuoteRepository.fetch_all_by_story_id(row["story_id"]),
+                breakouts=BreakoutRepository.fetch_all_by_story_id(row["story_id"]),
                 add_date=row["add_date"]
             )
             stories.append(story)
@@ -80,9 +86,9 @@ class StoryRepository:
         conn = story_db.connect_db()
         cursor = conn.cursor()
         cursor.execute(
-            "INSERT INTO stories (guid, headline, subheadline, journalist_name, journalist_bio, journalist_email, publication, publication_date, title, content, keywords, add_date) "
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            (story.guid, story.headline, story.subheadline, story.journalist_name, story.journalist_bio, story.journalist_email, story.publication, story.publication_date, story.title, story.content, story.keywords, story.add_date)
+            "INSERT INTO stories (guid, headline, subheadline, journalist_name, journalist_bio, journalist_email, journalist_photo, publication, publication_date, title, content, keywords, add_date) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            (story.guid, story.headline, story.subheadline, story.journalist_name, story.journalist_bio, story.journalist_email, story.journalist_photo, story.publication, story.publication_date, story.title, story.content, story.keywords, story.add_date)
         )
         conn.commit()
         story_id = cursor.lastrowid
@@ -104,3 +110,48 @@ class StoryRepository:
             logging.debug(f"Inserted breakout: {breakout}")
         logging.debug(f"Full story inserted with ID: {story_id}")
         return story_id
+
+
+    @staticmethod
+    def fetch_last_x_stories(x: int) -> List[Story]:
+        conn = story_db.connect_db()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM stories ORDER BY add_date DESC LIMIT ?", (x,))
+        rows = cursor.fetchall()
+        cursor.close()
+
+        stories = []
+        for row in rows:
+            story = Story(
+                guid=row["guid"],
+                story_id=row["story_id"],
+                headline=row["headline"],
+                subheadline=row["subheadline"],
+                journalist_name=row["journalist_name"],
+                journalist_bio=row["journalist_bio"],
+                journalist_email=row["journalist_email"],
+                journalist_photo=row["journalist_photo"],
+                publication=row["publication"],
+                publication_date=row["publication_date"],
+                title=row["title"],
+                content=row["content"],
+                keywords=row["keywords"],
+                quotes=QuoteRepository.fetch_all_by_story_id(row["story_id"]),
+                breakouts=BreakoutRepository.fetch_all_by_story_id(row["story_id"]),
+                add_date=row["add_date"]
+            )
+            stories.append(story)
+            logging.debug(f"Fetched story: {story}")        
+
+        return stories
+    
+    @staticmethod
+    def delete(story_id: int) -> None:
+        conn = story_db.connect_db()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM stories WHERE story_id = ?", (story_id,))
+        conn.commit()
+        cursor.close()
+        logging.debug(f"Deleted story with ID: {story_id}")
+
+        

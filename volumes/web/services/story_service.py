@@ -8,6 +8,8 @@ import logging
 from repo.story_repo import StoryRepository
 from services.ollama_service import sanitize_json_response
 
+from services.image_service import find_journalist_image
+
 from services.prompts import Prompt
 from services import ollama_service
 from services import image_service
@@ -71,6 +73,8 @@ def create_story_from_ollama_response(response: dict) -> Story:
         ))
     logging.debug('Quotes: %s', quotes)
 
+    # Get Journalist Photo
+
     story = Story(
         guid=response.get("guid", str(uuid.uuid4())),
         headline=headline,
@@ -94,6 +98,19 @@ def create_story_from_ollama_response(response: dict) -> Story:
 
     return story
 
+def fix_missing_line_breaks(content: str) -> str:
+    pattern = r'(?<!\s)\.(?!\s)'
+
+    # Replace such periods with a period followed by a newline
+    processed_text = re.sub(pattern, '.\n', content)
+    
+    # Replace single quotes with double quotes
+    quote_pattern = r"(?<=\s)'|'(?=\s|[.,!?])"
+    processed_text = re.sub(quote_pattern, '"', processed_text)
+
+    return processed_text
+
+
 def save_story_from_ollama_response(headline_input: str) -> int:
     prompt = Prompt.story_prompt(headline_input)
     response = ollama_service.query_ollama(prompt)
@@ -103,6 +120,9 @@ def save_story_from_ollama_response(headline_input: str) -> int:
     response['user_input'] = headline_input
 
     story = create_story_from_ollama_response(response)
+    story.journalist_photo = find_journalist_image()
+    story.content = fix_missing_line_breaks(story.content)
     story_id = StoryRepository.insert_full_story(story)
 
     return story_id
+

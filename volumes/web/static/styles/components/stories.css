@@ -144,4 +144,102 @@ a {
   text-decoration: underline;
 }
 
+/* Image */
 
+.hedcut-container {
+  position: relative;
+  display: inline-block;
+}
+
+.hedcut-container img{
+  display: block;
+  width: 200px;  
+  height: 200px;
+  object-fit: cover;
+  filter: grayscale(100%) contrast(120%) brightness(90%);
+  opacity: 0.5;
+}
+
+.hedcut-container::after{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, black 10%, transparent 11%);
+  background-size: 3px 3px; /* Adjust dot size */
+  mix-blend-mode: multiply; /* Blend dots with the image */
+  opacity: 1; /* Adjust intensity */
+  pointer-events: none;
+
+}
+/*
+.story-quote {
+  position: relative;
+  margin: 40px 0;
+  padding: 20px 40px;
+  background-color: #f9f9f9;
+  border-left: 5px solid #ccc;
+  font-style: italic;
+  color: #555;
+}
+
+.story-quote::before,
+.story-quote::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  width: 50px;
+  height: 1px;
+  background-color: #ccc;
+}
+
+.story-quote::before {
+  top: -10px;
+}
+
+.story-quote::after {
+  bottom: -10px;
+}
+*/
+
+
+
+/* Standout Quote Container */
+.standout-quote {
+  font-family: 'Georgia', 'Times New Roman', serif; /* Classic serif font */
+  font-size: 1em; /* Larger text size for emphasis */
+  font-style: italic; /* Italics for traditional quote styling */
+  line-height: 1.6; /* Comfortable spacing */
+  color: #444; /* Dark gray for a softer appearance */
+  text-align: center; /* Centered for focus */
+  margin: 20px auto; /* Centered in the layout with space around */
+  max-width: 800px; /* Constrain width for readability */
+  padding: 10px 20px;
+  border-left: 5px solid #ccc; /* Vertical bar for a classic look */
+  background-color: #f9f9f9; /* Subtle background to highlight */
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+  position: relative; /* Positioning for decorative quotes */
+}
+
+/* Decorative Quotation Marks */
+.standout-quote::before {
+  content: '“'; /* Opening quote */
+  font-size: 2em; /* Larger for emphasis */
+  font-weight: bold;
+  color: #bbb; /* Lighter color for decorative effect */
+  position: absolute;
+  top: -10px;
+  left: -10px;
+}
+
+.standout-quote::after {
+  content: '”'; /* Closing quote */
+  font-size: 2em; /* Matches opening quote size */
+  font-weight: bold;
+  color: #bbb; /* Lighter color for decorative effect */
+  position: absolute;
+  bottom: -10px;
+  right: -10px;
+}

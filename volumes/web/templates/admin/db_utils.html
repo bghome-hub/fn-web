@@ -6,33 +6,61 @@
 {% block content %}
 <h1>Database Utilities</h1>
 
+<!-- Backup Database Section -->
 <h2>Backup Database</h2>
 <form method="GET" action="{{ url_for('db_backup') }}">
+    <label for="db_backup">Select Database to Backup:</label>
+    <select id="db_backup" name="db_backup" required>
+        <option value="">--Select Database--</option>
+        <option value="articles">Articles Database</option>
+        <option value="stories">Stories Database</option>
+    </select>
     <button type="submit">Download Backup</button>
 </form>
 
+<!-- Restore Database Section -->
 <h2>Restore Database</h2>
 <form method="POST" action="{{ url_for('db_restore') }}" enctype="multipart/form-data">
+    <label for="db_restore">Select Database to Restore:</label>
+    <select id="db_restore" name="db_restore" required>
+        <option value="">--Select Database--</option>
+        <option value="articles">Articles Database</option>
+        <option value="stories">Stories Database</option>
+    </select>
+    <br><br>
     <label for="backup_file">Select Backup File:</label>
     <input type="file" id="backup_file" name="backup_file" required>
+    <br><br>
     <button type="submit">Restore</button>
 </form>
 
+<!-- Execute Query Section -->
+<h2>Execute Query</h2>
 <form method="POST" action="{{ url_for('db_utils') }}" class="db-utils-form">
-    <label for="query_name">Select a Query:</label>
-    <select id="table_name" name="table_name">
-        <option value="articles">Get All Articles</option>
-        <option value="authors">Get All Authors</option>
-        <option value="citations">Get All Citations</option>
-        <option value="images">Get All Images</option>
-        <option value="figures">Get All Figures</option>
+    <label for="table_name">Select a Table:</label>
+    <select id="table_name" name="table_name" required>
+        <!-- Articles Tables -->
+        <optgroup label="Articles Database">
+            <option value="articles">Get All Articles</option>
+            <option value="authors">Get All Authors</option>
+            <option value="citations">Get All Citations</option>
+            <option value="images">Get All Images</option>
+            <option value="figures">Get All Figures</option>
+        </optgroup>
+        <!-- Stories Tables -->
+        <optgroup label="Stories Database">
+            <option value="stories">Get All Stories</option>
+            <option value="quotes">Get All Quotes</option>
+            <option value="breakouts">Get All Breakouts</option>
+        </optgroup>
     </select>
     <button type="submit">Execute</button>
 </form>
 
+<!-- Display Query Results -->
 {% if results %}
     <h2>Query Results</h2>
-    <table>
+    <table border="1" cellpadding="5" cellspacing="0">
         <thead>
             <tr>
                 {% for column in results.columns %}

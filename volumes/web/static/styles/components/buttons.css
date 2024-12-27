@@ -20,28 +20,23 @@ button:active {
 }
 
 /* Submit Button */
-.submit-input{
-/* 100% of container */
-  width: 80%;
-  padding: 14px 24px;
+.submit-input {
   align-self: center;
+  padding: 14px 24px;
   border: none;
   border-radius: 4px;
   background-color: #2980b9;
+  width: 80%;
   color: #fff;
   font-size: 1em;
   transition: background-color 0.3s ease, transform 0.3s ease;
   cursor: pointer;
-
-
 }
 
-.tabcontent for .btn.submit-input{
+.tabcontent for .btn.submit-input {
   display: inline-block;
   margin-top: 10px;
-
 }
-
 
 /* Read More Button */
 .btn.read-more {
@@ -64,7 +59,8 @@ button:active {
 }
 
 .btn.read-more,
-.btn.delete-article {
+.btn.delete-article,
+.btn.delete-story {
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -80,7 +76,8 @@ button:active {
   cursor: pointer;
 }
 
-.btn.delete-article:hover {
+.btn.delete-article:hover,
+.btn.delete-story:hover {
   background-color: #c0392b;
   transform: scale(1.05);
 }
@@ -89,7 +86,8 @@ button:active {
 @media (max-width: 768px) {
 
   .btn.read-more,
-  .btn.delete-article {
+  .btn.delete-article,
+  .btn.delete-story {
     padding: 10px 20px;
     font-size: 0.95em;
   }
@@ -97,7 +95,8 @@ button:active {
   @media (max-width: 480px) {
 
     .btn.read-more,
-    .btn.delete-article {
+    .btn.delete-article,
+    .btn.delete-story {
       padding: 8px 16px;
       font-size: 0.9em;
     }

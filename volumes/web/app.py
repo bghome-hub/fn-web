@@ -32,12 +32,13 @@ def index():
     logger.debug("Route '/' accessed.")
     try:
         recent_articles = ArticleRepository.fetch_last_x_articles(5)
+        recent_stories = StoryRepository.fetch_last_x_stories(5)
         logger.debug(f"Fetched {len(recent_articles)} recent articles.")
-        return render_template('index.html', recent_articles=recent_articles)
+        return render_template('index.html', recent_articles=recent_articles, recent_stories=recent_stories)
     except Exception as e:
         logger.error(f"Error fetching recent articles: {e}")
         flash("An error occurred while fetching recent articles.", "error")
-        return render_template('index.html', recent_articles=[])
+        return render_template('index.html', recent_articles=[], recent_stories=[])
 
 @app.route('/db_utils', methods=['GET', 'POST'])
 def db_utils():
@@ -46,13 +47,30 @@ def db_utils():
     if request.method == 'POST':
         tablename = request.form.get('table_name')
         logger.debug(f"Executing predefined statement for table: {tablename}")
+        
+        # Define which tables belong to which database
+        articles_tables = {'articles', 'authors', 'citations', 'images', 'figures'}
+        stories_tables = {'stories', 'quotes', 'breakouts'}
+
         try:
-            rows = article_db.executePredefinedStatement(tablename)
-            logger.debug(f"Fetched {len(rows)} rows from table: {tablename}")
+            if tablename in articles_tables:
+                query_result = article_db.executePredefinedStatement(tablename)
+                logger.debug(f"Executed query on Articles DB for table: {tablename}")
+            elif tablename in stories_tables:
+                query_result = story_db.executePredefinedStatement(tablename)
+                logger.debug(f"Executed query on Stories DB for table: {tablename}")
+            else:
+                flash(f"Unknown table: {tablename}", "error")
+                query_result = None
+            
+            if query_result:
+                rows = query_result
         except Exception as e:
-            logger.error(f"Error executing statement on table {tablename}: {e}")
-            flash(f"An error occurred while accessing table {tablename}.", "error")
+            logger.error(f"Error executing query on table {tablename}: {e}")
+            flash(f"Error executing query: {e}", "error")
+    
     return render_template('admin/db_utils.html', results=rows)
+
 
 @app.route('/tos')
 def tos():
@@ -149,23 +167,65 @@ def delete_article(article_id):
     ArticleRepository.delete(article_id)
     return jsonify({'success': True})
 
-# backup and restore routes
+# delete_story route
+@app.route('/delete_story/<int:story_id>', methods=['DELETE'])
+def delete_story(story_id):
+    StoryRepository.delete(story_id)
+    return jsonify({'success': True})
+
+# Backup database route
 @app.route('/db_backup', methods=['GET'])
 def db_backup():
-    backup_path = f'/tmp/db_backup_{int(time.time())}.db'
-    article_db.backup_db(backup_path)
+    db_to_backup = request.args.get('db_backup')  # 'articles' or 'stories'
+    if db_to_backup == 'articles':
+        backup_path = f'/tmp/db_backup_articles_{int(time.time())}.db'
+        article_db.backup_db(backup_path)
+        logger.debug(f"Backing up Articles DB to {backup_path}")
+    elif db_to_backup == 'stories':
+        backup_path = f'/tmp/db_backup_stories_{int(time.time())}.db'
+        story_db.backup_db(backup_path)
+        logger.debug(f"Backing up Stories DB to {backup_path}")
+    else:
+        flash("Invalid database selection for backup.", "error")
+        return redirect(url_for('db_utils'))
+    
     return send_file(backup_path, as_attachment=True)
 
+# Restore database route
 @app.route('/db_restore', methods=['POST'])
 def db_restore():
-    backup_file = request.files['backup_file']
-    backup_path = os.path.join('/tmp', backup_file.filename)
+    db_to_restore = request.form.get('db_restore')  # 'articles' or 'stories'
+    backup_file = request.files.get('backup_file')
+    
+    if not db_to_restore or not backup_file:
+        flash("Missing database selection or backup file.", "error")
+        return redirect(url_for('db_utils'))
+    
+    backup_filename = backup_file.filename
+    backup_path = os.path.join('/tmp', backup_filename)
     backup_file.save(backup_path)
+    logger.debug(f"Saved backup file to {backup_path} for restoring {db_to_restore} DB.")
+    
     try:
-        article_db.restore_db(backup_path)
-        flash('Database restore successful!', 'success')
+        if db_to_restore == 'articles':
+            article_db.restore_db(backup_path)
+            logger.debug(f"Restored Articles DB from {backup_path}")
+        elif db_to_restore == 'stories':
+            story_db.restore_db(backup_path)
+            logger.debug(f"Restored Stories DB from {backup_path}")
+        else:
+            flash("Invalid database selection for restore.", "error")
+            return redirect(url_for('db_utils'))
+        flash(f"Database '{db_to_restore}' restored successfully.", "success")
     except Exception as e:
-        flash(f'Error during restore: {str(e)}', 'error')
+        logger.error(f"Failed to restore {db_to_restore} DB: {e}")
+        flash(f"Failed to restore {db_to_restore} DB: {e}", "error")
+    finally:
+        # Optionally remove the backup file after restoring
+        if os.path.exists(backup_path):
+            os.remove(backup_path)
+            logger.debug(f"Removed temporary backup file {backup_path}")
+    
     return redirect(url_for('db_utils'))
 
 if __name__ == '__main__':
