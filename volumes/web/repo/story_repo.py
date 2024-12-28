@@ -116,13 +116,14 @@ class StoryRepository:
     def fetch_last_x_stories(x: int) -> List[Story]:
         conn = story_db.connect_db()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM stories ORDER BY add_date DESC LIMIT ?", (x,))
+        cursor.execute("SELECT * FROM stories ORDER BY story_id DESC LIMIT ?", (x,))
         rows = cursor.fetchall()
         cursor.close()
-
-        stories = []
-        for row in rows:
-            story = Story(
+        if not rows:
+            return []   
+        
+        return [
+            Story(
                 guid=row["guid"],
                 story_id=row["story_id"],
                 headline=row["headline"],
@@ -140,10 +141,9 @@ class StoryRepository:
                 breakouts=BreakoutRepository.fetch_all_by_story_id(row["story_id"]),
                 add_date=row["add_date"]
             )
-            stories.append(story)
-            logging.debug(f"Fetched story: {story}")        
+            for row in rows
+        ]
 
-        return stories
     
     @staticmethod
     def delete(story_id: int) -> None:

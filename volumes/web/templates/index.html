@@ -44,7 +44,7 @@
         <!-- Recent Articles -->
         <div id="recent-articles" class="article-grid">
             {% if recent_articles %}
-                {% for article in recent_articles|reverse %}
+                {% for article in recent_articles %}
                 <div class="article-card">
                     <div class="instruction">{{ article.journal }}</div>
                     <h2 class="all-articles-article-title">
@@ -60,7 +60,7 @@
         <!-- Recent Stories -->
         <div id="recent-stories" class="story-grid">
             {% if recent_stories %}
-                {% for story in recent_stories|reverse %}
+                {% for story in recent_stories %}
                 <div class="story-card">
                     <div class="instruction">{{ story.publication }}</div>
                     <h2 class="all-stories-story-headline">

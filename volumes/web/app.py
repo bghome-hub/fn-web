@@ -7,7 +7,6 @@ from services import db_service_story as story_db
 
 from services.db_utils import ensure_tables_created
 
-from models import article, citation, figure, image
 from repo.article_repo import ArticleRepository
 from repo.story_repo import StoryRepository
 
@@ -30,15 +29,10 @@ def before_request():
 @app.route('/')
 def index():
     logger.debug("Route '/' accessed.")
-    try:
-        recent_articles = ArticleRepository.fetch_last_x_articles(5)
-        recent_stories = StoryRepository.fetch_last_x_stories(5)
-        logger.debug(f"Fetched {len(recent_articles)} recent articles.")
-        return render_template('index.html', recent_articles=recent_articles, recent_stories=recent_stories)
-    except Exception as e:
-        logger.error(f"Error fetching recent articles: {e}")
-        flash("An error occurred while fetching recent articles.", "error")
-        return render_template('index.html', recent_articles=[], recent_stories=[])
+
+    recent_articles = ArticleRepository.fetch_last_x_articles(5)
+    recent_stories = StoryRepository.fetch_last_x_stories(5)
+    return render_template('index.html', recent_articles=recent_articles, recent_stories=recent_stories)
 
 @app.route('/db_utils', methods=['GET', 'POST'])
 def db_utils():

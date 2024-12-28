@@ -69,6 +69,7 @@ def query_ollama(prompt: str, decode: bool = True) -> Union[Dict[str, Any], requ
         "model": config.OLLAMA_MODEL,
         "prompt": prompt,
         "stream": False,
+        "n": 1
     }
 
     Headers = {

@@ -152,7 +152,7 @@ class ArticleRepository:
     def fetch_last_x_articles(x: int) -> List[Article]:
         conn = article_db.connect_db()
         cursor = conn.cursor()
-        cursor.execute('SELECT * FROM articles ORDER BY add_date DESC LIMIT ?', (x,))
+        cursor.execute('SELECT * FROM articles ORDER BY article_id DESC LIMIT ?', (x,))
         rows = cursor.fetchall()
         cursor.close()
         if not rows:
@@ -182,6 +182,8 @@ class ArticleRepository:
             )
             for row in rows
         ]
+    
+        
 
     @staticmethod
     def count() -> int:
