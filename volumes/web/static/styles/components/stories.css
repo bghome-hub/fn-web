@@ -131,7 +131,7 @@ a {
   text-decoration: underline;
 }
 
-/* Image */
+/* Headcut Image */
 
 .hedcut-container {
   position: relative;
@@ -140,11 +140,13 @@ a {
 
 .hedcut-container img{
   display: block;
-  width: 200px;  
-  height: 200px;
+  width: 150px;  
+  height: auto;
   object-fit: cover;
   filter: grayscale(100%) contrast(120%) brightness(90%);
-  opacity: 0.5;
+  opacity: 1;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .hedcut-container::after{
@@ -170,14 +172,14 @@ a {
   font-style: italic; /* Italics for traditional quote styling */
   line-height: 1.6; /* Comfortable spacing */
   color: #444; /* Dark gray for a softer appearance */
-  text-align: center; /* Centered for focus */
-  margin: 20px auto; /* Centered in the layout with space around */
-  max-width: 800px; /* Constrain width for readability */
+  text-align: left; /* Left aligned for focus */
+  margin: 20px 0; /* Centered in the layout with space around */
   padding: 10px 20px;
   border-left: 5px solid #ccc; /* Vertical bar for a classic look */
   background-color: #f9f9f9; /* Subtle background to highlight */
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
   position: relative; /* Positioning for decorative quotes */
+  list-style: none; /* Remove list style */
 }
 
 /* Decorative Quotation Marks */
@@ -201,11 +203,71 @@ a {
   right: -10px;
 }
 
+ul > .standout-quote {
+  margin-bottom: 15px;
+}
+
+/* Header Section: Subtitle and Photo */
+.header-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px 0;
+  padding: 10px;
+}
+
+.header-section .page-subtitle {
+  flex: 1;
+  margin-right: 20px;
+  font-size: 1.2em;
+  color: var(--color-secondary);
+}
+
+.header-section .story-photo img {
+  background: radial-gradient(circle, black 10%, transparent 11%);
+  background-size: 3px 3px;
+  mix-blend-mode: multiply;
+  opacity: 1;
+  pointer-events: none;
+  width: 150px;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Apply Hedcut Styles to Story Photo */
+.story-photo img {
+  display: block;
+  width: 150px;  
+  height: auto;
+  object-fit: cover;
+  filter: grayscale(100%) contrast(120%) brightness(90%);
+  opacity: 1;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
 /* Reduce to 2 columns on tablets */
 @media (max-width: 768px) {
   .story-columns {
     column-count: 2;
     column-gap: 20px;
+  }
+  
+  .header-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .header-section .page-subtitle {
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+  
+  .header-section .story-photo img {
+    width: 100%;
+    max-width: 300px;
   }
 }
 
@@ -214,4 +276,27 @@ a {
   .story-columns {
     column-count: 1;
   }
+}
+
+/* Image */
+
+.story-photo-container {
+  position: relative;
+  display: inline-block;
+}
+
+
+.story-photo-container::after{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, black 10%, transparent 11%);
+  background-size: 3px 3px; /* Adjust dot size */
+  mix-blend-mode: multiply; /* Blend dots with the image */
+  opacity: 1; /* Adjust intensity */
+  pointer-events: none;
+
 }

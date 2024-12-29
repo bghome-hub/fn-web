@@ -1,9 +1,12 @@
 import json
 import re
-from typing import Union, Dict, Any, Optional
+from typing import Union, Dict, Any, Optional, List
 import requests
 from config import config
 import logging
+
+from ollama import chat
+from pydantic import BaseModel
 
 def sanitize_json_response(response: str) -> Optional[dict]:
     """
@@ -93,6 +96,4 @@ def query_ollama(prompt: str, decode: bool = True) -> Union[Dict[str, Any], requ
 
 
 
-
-
-
+    

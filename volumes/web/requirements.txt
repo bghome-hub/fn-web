@@ -3,3 +3,5 @@ requests==2.31.0
 titlecase==2.4.0
 matplotlib==3.4.3
 numpy==1.21.2
+ollama
+pydantic

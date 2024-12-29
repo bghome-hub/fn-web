@@ -37,6 +37,7 @@ class StoryRepository:
             title=row["title"],
             content=row["content"],
             keywords=row["keywords"],
+            photo_url=row["photo_url"],
             quotes=QuoteRepository.fetch_all_by_story_id(story_id),
             breakouts=BreakoutRepository.fetch_all_by_story_id(story_id),
             add_date=row["add_date"]
@@ -69,6 +70,7 @@ class StoryRepository:
                 title=row["title"],
                 content=row["content"],
                 keywords=row["keywords"],
+                photo_url=row["photo_url"],
                 quotes=QuoteRepository.fetch_all_by_story_id(row["story_id"]),
                 breakouts=BreakoutRepository.fetch_all_by_story_id(row["story_id"]),
                 add_date=row["add_date"]
@@ -86,9 +88,9 @@ class StoryRepository:
         conn = story_db.connect_db()
         cursor = conn.cursor()
         cursor.execute(
-            "INSERT INTO stories (guid, headline, subheadline, journalist_name, journalist_bio, journalist_email, journalist_photo, publication, publication_date, title, content, keywords, add_date) "
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            (story.guid, story.headline, story.subheadline, story.journalist_name, story.journalist_bio, story.journalist_email, story.journalist_photo, story.publication, story.publication_date, story.title, story.content, story.keywords, story.add_date)
+            "INSERT INTO stories (guid, headline, subheadline, journalist_name, journalist_bio, journalist_email, journalist_photo, publication, publication_date, title, content, keywords, add_date, photo_url) "
+            "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            (story.guid, story.headline, story.subheadline, story.journalist_name, story.journalist_bio, story.journalist_email, story.journalist_photo, story.publication, story.publication_date, story.title, story.content, story.keywords, story.add_date, story.photo_url)
         )
         conn.commit()
         story_id = cursor.lastrowid
@@ -137,6 +139,7 @@ class StoryRepository:
                 title=row["title"],
                 content=row["content"],
                 keywords=row["keywords"],
+                photo_url=row["photo_url"],
                 quotes=QuoteRepository.fetch_all_by_story_id(row["story_id"]),
                 breakouts=BreakoutRepository.fetch_all_by_story_id(row["story_id"]),
                 add_date=row["add_date"]

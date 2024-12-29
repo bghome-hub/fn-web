@@ -32,6 +32,7 @@ def create_tables():
                        title TEXT,
                        content TEXT,
                        keywords TEXT,
+                       photo_url TEXT,
                        user_input TEXT,
                        prompt TEXT,
                        add_date datetime DEFAULT CURRENT_TIMESTAMP

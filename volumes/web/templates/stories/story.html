@@ -3,57 +3,71 @@
 {% block title %}{{ story.title }}{% endblock %}
 
 {% block content %}
-<h1 class="story-headline">{{ story.headline }}</h1>
-<h2 class="page-subtitle">{{ story.subheadline }}</h2>
-
-<!-- Date and byline block -->
-<div class="story-date-byline">
-  <p class="story-date"><strong>{{ story.publication_date }}</strong></p>
-  <p class="story-byline">
-    By {{ story.journalist_name }}<br>
-    <em>{{ story.journalist_bio }}</em>
-  </p>
-</div>
-
-<!-- 3-column text flow -->
-<div class="story-columns">
+  <h1 class="story-headline">{{ story.headline }}</h1>
   
-  <!-- Optional: Remove if you want a single column for metadata -->
-  <div class="story-meta">
-    <div class="hedcut-container">
-      <img src="{{ story.journalist_photo }}" />
+  <!-- Header Section: Subtitle and Photo -->
+  <div class="header-section">
+    <h2 class="page-subtitle">{{ story.subheadline }}</h2>
+    {% if story.photo_url %}
+    <div class="story-photo">
+      <img src="{{ story.photo_url }}" alt="Story Photo" />
     </div>
+    {% endif %}
   </div>
   
-  <div class="story-content">
-    <p>{{ story.content }}</p>
+  <!-- Date and byline block -->
+  <div class="story-date-byline">
+    <p class="story-date"><strong>{{ story.publication_date }}</strong></p>
+    <p class="story-byline">
+      By {{ story.journalist_name }}<br>
+      <em>{{ story.journalist_bio }}</em>
+    </p>
   </div>
   
-  <!-- Quotes -->
-  {% if story.quotes %}
-  <h3>Voices</h3>
-  <div class="standout-quote">
+  <!-- 3-column text flow -->
+  <div class="story-columns">
+    
+    <!-- Optional: Remove if you want a single column for metadata -->
+    <div class="story-meta">
+      <div class="hedcut-container">
+        <img src="{{ story.journalist_photo }}" alt="Journalist Photo" />
+      </div>
+    </div>
+    
+    <!-- Content -->
+    <div class="story-content">
+      <p>{{ story.content }}</p>
+    </div>
+  
+    <!-- Quotes -->
+    {% if story.quotes %}
+    <h3>Voices</h3>
     <ul>
       {% for quote in story.quotes %}
-      "{{ quote.content }}" - {{ quote.speaker }}
-      
+      <!--If quote.content is not "none"-->
+        {% if quote.content != "none" %}
+        <li class="standout-quote">
+          "{{ quote.content }}" - {{ quote.speaker }}
+        </li>
+        {% endif %}
       {% endfor %}
     </ul>
+    {% endif %}
+    
+    <!-- Breakouts -->
+    {% if story.breakouts %}
+    <h3>Editor Comments:</h3>
+    <div class="story-breakouts">
+      <ul>
+        {% for breakout in story.breakouts %}
+          <li>
+            <h4>{{ breakout.title }}</h4>
+            <p>{{ breakout.content }}</p>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+    
   </div>
-  {% endif %}
-  
-  <!-- Breakouts -->
-  {% if story.breakouts %}
-  <h3>Editor Comments:</h3>
-  <div class="story-breakouts">
-    <ul>
-      {% for breakout in story.breakouts %}
-        <h4>{{ breakout.title }}</h4>
-        <p>{{ breakout.content }}</p>
-      {% endfor %}
-    </ul>
-  </div>
-  {% endif %}
-da
-</div>
 {% endblock %}

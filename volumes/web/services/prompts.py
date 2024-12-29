@@ -105,3 +105,43 @@ class Prompt:
                 ]
             }'''
          )
+    
+    @staticmethod
+    def story_prompt_simple(topic: str) -> str:
+        return (
+            f"Write a full-length realistic newspaper story based on the following topic: '{topic}'.\n"
+            "The story may contain fake information, but must be presented in a believable tone.\n"
+            "The content must be a minimum of 4 paragraphs and contain at least 2 quotes.\n"
+            "The story must be well-written, engaging, and informative.\n"
+            "The journalist information must be realistic and authoritative.\n"           
+            "Be sure the story is length, contains quotes and has proper paragraphs.\n"
+            "JSON Structure:\n"
+            '''{
+              "headline": "string: headline of the story",
+              "subheadline": "string: subheadline of the story",
+              "journalist_name": "string: realistic  name of the journalist",
+              "journalist_bio": "string: journalist's bio",
+              "journalist_email": "string: journalist's email",
+              "publication": "string: the publishing newspaper",
+              "publication_date": "string: the publication date",
+              "title": "string: the title of the article",
+              "content": "string: Full length news story with a minimum of 4 paragraphs. Needs to be thorough and engaging.",
+              "keywords": "[string: comma-separated list of 3 keywords related to the topic for image search]",
+              "quotes": [ 
+                  {
+                  "content": "string: quote from interviewee 1",
+                  "speaker": "string: name of the interviewee"
+                  },
+                  {
+                  "content": "string: quote from interviewee 2",
+                  "speaker": "string: name of the interviewee"
+                  }             
+                ],
+                "breakouts": [
+                  {
+                  "title": "string: stand-alone breakout title",
+                  "content": "string: stand-alone breakout content"
+                  }
+                ]
+            }'''
+         )

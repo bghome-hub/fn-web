@@ -114,7 +114,7 @@ def generate_story():
     # Save the story
     try:
         story_id = save_story_from_ollama_response(headline_input)
-        flash('Story generated successfully!', 'success')
+        #flash('Story generated successfully!', 'success')
         return redirect(url_for('view_story', story_id=story_id))
     
     except Exception as e:
@@ -141,7 +141,7 @@ def generate_article():
     # Save the article
     try:
         article_id = save_article_from_ollama_response(topic)
-        flash('Article generated successfully!', 'success')
+        #flash('Article generated successfully!', 'success')
         return redirect(url_for('view_article', article_id=article_id))
     
     except Exception as e:
